@@ -1,0 +1,22 @@
+{
+  "name": "tiplisk",
+  "version": "1.0.0",
+  "description": "TipLisk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lisknonanika/TipLisk.git"
+  },
+  "author": "lisknonanika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lisknonanika/TipLisk/issues"
+  },
+  "homepage": "https://github.com/lisknonanika/TipLisk#readme",
+  "dependencies": {
+    "lisk-elements": "^1.0.0"
+  }
+}
