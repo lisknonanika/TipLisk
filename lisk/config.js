@@ -2,8 +2,8 @@ const lisk = require('lisk-elements').default;
 
 const MODE = 0; //0:TESTNET, 1:MAINNET
 
-const ADDRESS_TESTNET = '';
-const PASSPHRASE_TESTNET = '';
+const ADDRESS_TESTNET = '5244341344295779314L';
+const PASSPHRASE_TESTNET = 'recall dose sauce draw middle arm grid slow vault chef truck erupt';
 const SECONDPASSPHRASE_TESTNET = '';
 
 const ADDRESS_MAINNET = '';
