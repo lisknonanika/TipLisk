@@ -2,7 +2,7 @@ const lisk = require('lisk-elements').default;
 const config = require('../config');
 const util = require('../util');
 
-module.exports = function(amount, recipientId){
+module.exports = function(amount, recipientId, twitterid){
     if (util.isNumber(amount) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0) return;
     var params = {};
     params['amount'] = +amount * 100000000;

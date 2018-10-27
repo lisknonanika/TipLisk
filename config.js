@@ -14,3 +14,4 @@ var client = config.mode === 'test'? lisk.APIClient.createTestnetAPIClient():
                                      lisk.APIClient.createMainnetAPIClient();
 define('liskclient', client);
 define('lisk', config.lisk);
+define('mongo', config.mongo);
