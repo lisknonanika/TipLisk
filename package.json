@@ -18,5 +18,8 @@
   "homepage": "https://github.com/lisknonanika/TipLisk#readme",
   "dependencies": {
     "lisk-elements": "^1.0.0"
+  },
+  "devDependencies": {
+    "config": "^2.0.1"
   }
 }
