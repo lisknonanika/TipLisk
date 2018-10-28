@@ -10,8 +10,8 @@ module.exports = function(amount, twitterId, type, targetNm, execDate){
             collection.find().toArray((error, docs) => {
                 if(docs.length > 0) {
                     // update user
-                    const condition = {"twitterId": twitterId};
-                    const userdata = {"twitterId": twitterId, $inc:{"amount": amount}};
+                    const condition = {twitterId: twitterId};
+                    const userdata = {$inc:{amount: amount}};
                     collection.updateOne(condition, userdata, (error, result) => {
                         if (error != null) {
                             console.log(error);
@@ -21,20 +21,12 @@ module.exports = function(amount, twitterId, type, targetNm, execDate){
                             console.log('[MongoDB] user update!!');
                             
                             // insert history
-                            db.collection(config.mongo.collectionHistory, (error, collection) => {
-                                const historydata = {"twitterId": twitterId, "type": type, "amount": amount, "execDate": execDate};
-                                collection.insertOne(userdata, (error, result) => {
-                                    if (error != null) {console.log(error);}
-                                    else {console.log('[MongoDB] history insert!!');}
-                                    console.log('[MongoDB] close!!');
-                                    client.close();
-                                });
-                            });
+                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate);
                         }
                     });
                 } else {
                     // insert user
-                    const userdata = {"twitterId": twitterId, "amount": amount};
+                    const userdata = {twitterId: twitterId, amount: amount};
                     collection.insertOne(userdata, (error, result) => {
                         if (error != null) {
                             console.log(error);
@@ -44,19 +36,27 @@ module.exports = function(amount, twitterId, type, targetNm, execDate){
                             console.log('[MongoDB] user insert!!');
                             
                             // insert history
-                            db.collection(config.mongo.collectionHistory, (error, collection) => {
-                                const historydata = {"twitterId": twitterId, "type": type, "amount": amount, "execDate": execDate};
-                                collection.insertOne(userdata, (error, result) => {
-                                    if (error != null) {console.log(error);}
-                                    else {console.log('[MongoDB] history insert!!');}
-                                    console.log('[MongoDB] close!!');
-                                    client.close();
-                                });
-                            });
+                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate);
                         }
                     });
                 }
             });
+        });
+    });
+}
+
+function insertHistory(db, client, amount, twitterId, type, targetNm, execDate) {
+    db.collection(config.mongo.collectionHistory, (error, collection) => {
+        const historydata = {twitterId: twitterId,
+                             type: type,
+                             amount: Math.abs(amount),
+                             targetNm: targetNm,
+                             execDate: execDate};
+        collection.insertOne(historydata, (error, result) => {
+            if (error != null) {console.log(error);}
+            else {console.log('[MongoDB] history insert!!');}
+            console.log('[MongoDB] close!!');
+            client.close();
         });
     });
 }
