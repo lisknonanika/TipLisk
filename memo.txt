@@ -4,6 +4,7 @@ npm install --save-dev config
 npm install async
 npm install mongodb
 npm install dateformat
+npm install twitter
 
 >mongo start
 mongod --config /usr/local/etc/mongod.conf

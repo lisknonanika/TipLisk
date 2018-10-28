@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
+const insertHistory = require('./insertHistory');
 
 module.exports = function(amount, twitterId, type, targetNm, execDate, callback){
     MongoClient.connect(config.mongo.url, (error, client) => {
@@ -37,27 +38,6 @@ module.exports = function(amount, twitterId, type, targetNm, execDate, callback)
                     });
                 }
             });
-        });
-    });
-}
-
-function insertHistory(db, client, amount, twitterId, type, targetNm, execDate, callback) {
-    db.collection(config.mongo.collectionHistory, (error, collection) => {
-        const historydata = {twitterId: twitterId,
-                             type: type,
-                             amount: Math.abs(amount),
-                             targetNm: targetNm,
-                             execDate: execDate};
-        collection.insertOne(historydata, (error, result) => {
-            if (error != null) {
-                console.log(error);
-                client.close();
-                callback(error);
-            } else {
-                console.log("insert history");
-                client.close();
-                callback();
-            }
         });
     });
 }

@@ -20,7 +20,8 @@
     "async": "^2.6.1",
     "dateformat": "^3.0.3",
     "lisk-elements": "^1.0.0",
-    "mongodb": "^3.1.8"
+    "mongodb": "^3.1.8",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "config": "^2.0.1"

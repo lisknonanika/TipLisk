@@ -67,14 +67,13 @@ function updUser() {
                 MongoClient.connect(config.mongo.url, (error, client) => {
                     const db = client.db(config.mongo.db);
                     db.collection(config.mongo.collectionUser, (error, collection) => {
-                        console.log(item.asset.data);
                         collection.find({_id: ObjectId(item.asset.data)}).toArray((error, docs) => {
-                            if(docs.length>0) {
+                            if(docs.length === 1) {
                                 client.close();
 
                                 // Update User
                                 const execDate = dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss');
-                                updateUser(item.amount / 100000000, item.asset.data, 1, "TipLisk", execDate, callback);
+                                updateUser(item.amount / 100000000, docs[0].twitterId, 1, 'TipLisk', execDate, callback);
                             } else {
                                 client.close();
                             }
