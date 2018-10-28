@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/lisknonanika/TipLisk#readme",
   "dependencies": {
-    "lisk-elements": "^1.0.0"
+    "async": "^2.6.1",
+    "dateformat": "^3.0.3",
+    "lisk-elements": "^1.0.0",
+    "mongodb": "^3.1.8"
   },
   "devDependencies": {
     "config": "^2.0.1"

@@ -1,42 +1,38 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
 
-module.exports = function(amount, twitterId, type, targetNm, execDate){
+module.exports = function(amount, twitterId, type, targetNm, execDate, callback){
     MongoClient.connect(config.mongo.url, (error, client) => {
         const db = client.db(config.mongo.db);
-        console.log('[MongoDB] open!!');
 
         db.collection(config.mongo.collectionUser, (error, collection) => {
-            collection.find().toArray((error, docs) => {
+            collection.find({twitterId: twitterId}).toArray((error, docs) => {
                 if(docs.length > 0) {
                     // update user
-                    const condition = {twitterId: twitterId};
-                    const userdata = {$inc:{amount: amount}};
-                    collection.updateOne(condition, userdata, (error, result) => {
+                    collection.updateOne({twitterId: twitterId}, {$inc:{amount: amount}}, (error, result) => {
                         if (error != null) {
                             console.log(error);
-                            console.log('[MongoDB] close!!');
                             client.close();
+                            callback(error);
                         } else {
-                            console.log('[MongoDB] user update!!');
-                            
+                            console.log("update user: " + twitterId);
+
                             // insert history
-                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate);
+                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate, callback);
                         }
                     });
                 } else {
                     // insert user
-                    const userdata = {twitterId: twitterId, amount: amount};
-                    collection.insertOne(userdata, (error, result) => {
+                    collection.insertOne({twitterId: twitterId, amount: amount}, (error, result) => {
                         if (error != null) {
                             console.log(error);
-                            console.log('[MongoDB] close!!');
-                            client.close();
+                            client.close(error);
+                            callback(error);
                         } else {
-                            console.log('[MongoDB] user insert!!');
-                            
+                            console.log("insert user: " + twitterId);
+
                             // insert history
-                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate);
+                            insertHistory(db, client, amount, twitterId, type, targetNm, execDate, callback);
                         }
                     });
                 }
@@ -45,7 +41,7 @@ module.exports = function(amount, twitterId, type, targetNm, execDate){
     });
 }
 
-function insertHistory(db, client, amount, twitterId, type, targetNm, execDate) {
+function insertHistory(db, client, amount, twitterId, type, targetNm, execDate, callback) {
     db.collection(config.mongo.collectionHistory, (error, collection) => {
         const historydata = {twitterId: twitterId,
                              type: type,
@@ -53,10 +49,15 @@ function insertHistory(db, client, amount, twitterId, type, targetNm, execDate) 
                              targetNm: targetNm,
                              execDate: execDate};
         collection.insertOne(historydata, (error, result) => {
-            if (error != null) {console.log(error);}
-            else {console.log('[MongoDB] history insert!!');}
-            console.log('[MongoDB] close!!');
-            client.close();
+            if (error != null) {
+                console.log(error);
+                client.close();
+                callback(error);
+            } else {
+                console.log("insert history");
+                client.close();
+                callback();
+            }
         });
     });
 }

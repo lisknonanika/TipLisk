@@ -4,18 +4,11 @@ const config = require('../config');
 module.exports = function(trxId){
     MongoClient.connect(config.mongo.url, (error, client) => {
         const db = client.db(config.mongo.db);
-        console.log('[MongoDB] open!!');
-
         db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
-            // update processedTransactionId
-            const userdata = {$set: {transactionId: trxId}};
-            collection.updateOne({}, userdata, {upsert: true}, (error, result) => {
-                if (error != null) {
-                    console.log(error);
-                    console.log('[MongoDB] close!!');
-                } else {
-                    console.log('[MongoDB] processedTransactionId update!!');
-                }
+            // update latestTransactionId
+            collection.updateOne({}, {$set: {transactionId: trxId}}, {upsert: true}, (error, result) => {
+                if (error != null) console.log(error);
+                else console.log("upsert latestTransactionId");
                 client.close();
             });
         });

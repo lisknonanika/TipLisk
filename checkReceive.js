@@ -1,5 +1,6 @@
-const lisk = require('lisk-elements').default;
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
+const async = require('async');
 const dateformat = require('dateformat');
 const config = require('./config');
 const updateTransactionId = require('./mongo/updateTransactionId');
@@ -14,17 +15,13 @@ module.exports = function(){
 function getProcessedTransactionId() {
     MongoClient.connect(config.mongo.url, (error, client) => {
         const db = client.db(config.mongo.db);
-        console.log('[MongoDB] open!!');
-
         db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
             collection.find().toArray((error, docs) => {
                 if (error != null) {
                     console.log(error);
-                    console.log('[MongoDB] close!!');
                     client.close();
                 } else {
                     var trxId = docs.length > 0? docs[0].transactionId: "";
-                    console.log('[MongoDB] close!!');
                     client.close();
 
                     // Get Transaction
@@ -44,7 +41,6 @@ function getTransaction(limit, idx, trxId) {
         sort: 'timestamp:desc'}
     config.LiskClient.transactions.get(param)
         .then(res => {
-            console.log(res.data);
             var infos = res.data;
             if (infos.length === 0) return;
             for (i=0; i < infos.length; i++) {
@@ -52,24 +48,45 @@ function getTransaction(limit, idx, trxId) {
                 if (info.id === trxId) break;
                 trxData.push(info);
             }
-            if (trxData.length === limit * (idx + 1)) {getTransaction(limit, idx + 1, trxId);
-            } else {
-                // Update ProcessedTransactionId
-                updateTransactionId(trxData[0].id);
-
-                // Update User
-                updUser();
-            }
+            if (trxData.length === limit * (idx + 1)) getTransaction(limit, idx + 1, trxId);
+            else if (trxData.length > 0 ) updUser();
         });
 }
 
 function updUser() {
+    var items = trxData.reverse();
+    var successIdx = -1;
     // update user
-    trxData.forEach(element => {
-        if (element.asset.data != null &&
-            element.asset.data.length > 0 &&
-            element.asset.data.toUpperCase() !== 'TIPLISK') {
-                console.log('user update');
+    async.eachSeries(items, function(item, callback){
+        successIdx += 1;
+        if (item.asset.data != null &&
+            item.asset.data.length > 0 &&
+            item.asset.data.toUpperCase() !== 'TIPLISK') {
+                console.log("transaction id: " + item.id);
+
+                MongoClient.connect(config.mongo.url, (error, client) => {
+                    const db = client.db(config.mongo.db);
+                    db.collection(config.mongo.collectionUser, (error, collection) => {
+                        console.log(item.asset.data);
+                        collection.find({_id: ObjectId(item.asset.data)}).toArray((error, docs) => {
+                            if(docs.length>0) {
+                                client.close();
+
+                                // Update User
+                                const execDate = dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss');
+                                updateUser(item.amount / 100000000, item.asset.data, 1, "TipLisk", execDate, callback);
+                            } else {
+                                client.close();
+                            }
+                        });
+                    });
+                });
+        } else {
+            callback();
         }
+    }, function (error) {
+        // Update ProcessedTransactionId
+        if (error != null) successIdx -= 1;
+        if (successIdx >= 0) updateTransactionId(trxData[successIdx].id);
     });
 }
