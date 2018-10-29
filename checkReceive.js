@@ -48,10 +48,10 @@ function getTransaction(limit, idx, trxId) {
 }
 
 function updUser() {
-    var items = trxData.reverse();
+    trxData.reverse();
     var successIdx = -1;
     // update user
-    async.eachSeries(items, function(item, callback){
+    async.eachSeries(trxData, function(item, callback){
         successIdx += 1;
         if (item.asset.data != null &&
             item.asset.data.length > 0 &&
@@ -63,8 +63,13 @@ function updUser() {
                     db.collection(config.mongo.collectionUser, (error, collection) => {
                         collection.find({_id: ObjectId(item.asset.data)}).toArray((error, docs) => {
                             client.close();
-                            if(docs.length === 1) updateUser(Decimal(item.amount).div(100000000).toNumber(), docs[0].twitterId, 1, 'TipLisk', dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss'), callback);
-                            else client.close();
+                            if(docs.length === 1) {
+                                var execDate = dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss');
+                                updateUser(Decimal(item.amount).div(100000000).toNumber(), docs[0].twitterId, 1, 'TipLisk', execDate, callback);
+                            } else {
+                                client.close();
+                                callback();
+                            }
                         });
                     });
                 });
