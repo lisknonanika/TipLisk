@@ -1,0 +1,24 @@
+{
+    "mode": "release",
+    "lisk": {
+        "address": "",
+        "passphrase": "",
+        "secondPassphrase": ""
+    },
+    "mongo": {
+        "url": "",
+        "db": "",
+        "user": "",
+        "password": "",
+        "collectionUser": "",
+        "collectionHistory": "",
+        "collectionLiskTrx": "",
+        "collectionMentionId": ""
+    },
+    "twitter": {
+        "apiKey": "",
+        "apiSecret": "",
+        "accessToken": "",
+        "accessTokenSecret": ""
+    }
+}
