@@ -14,25 +14,28 @@ function getMention(maxId, idx) {
         params['max_id'] = maxId;
     }
 
-    // config.TwitterClient.get('application/rate_limit_status', params, function(error, tweets, response) {
-    //     console.log(tweets.resources.statuses);
-    // });
-
-    config.TwitterClient.get('statuses/mentions_timeline', params, function(error, tweets, response) {
+    config.TwitterClient.get('application/rate_limit_status', params, (error, result, response) => {
         if (!error) {
-            for (i = 0; i < tweets.length; i++) {
-                if (mentionData.length === 0 || mentionData[mentionData.length - 1].id !== tweets[i].id) {
-                    mentionData.push(tweets[i]);
-                    console.log(tweets[i]);
-                }
-            }
-            if (mentionData.length === (idx + 1) * MENTION_LIMIT && mentionData.length < 800) {
-                getMention(tweets[tweets.length - 1].id, idx + 1);
-            } else {
+            console.log(result.resources.statuses['/statuses/mentions_timeline']);
+            if (result.resources.statuses['/statuses/mentions_timeline'].remaining === 0) return;
 
-            }
-        } else {
-            console.log(error);
+            config.TwitterClient.get('statuses/mentions_timeline', params, (error, tweets, response) => {
+                if (!error) {
+                    for (i = 0; i < tweets.length; i++) {
+                        if (mentionData.length === 0 || mentionData[mentionData.length - 1].id !== tweets[i].id) {
+                            mentionData.push(tweets[i]);
+                            console.log(tweets[i]);
+                        }
+                    }
+                    if (mentionData.length === (idx + 1) * MENTION_LIMIT && mentionData.length < 800) {
+                        getMention(tweets[tweets.length - 1].id, idx + 1);
+                    } else {
+        
+                    }
+                } else {
+                    console.log(error);
+                }
+            });
         }
     });
 }

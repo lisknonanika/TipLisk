@@ -1,6 +1,7 @@
 >npm install
 npm install --save lisk-elements
 npm install --save-dev config
+npm install decimal
 npm install async
 npm install mongodb
 npm install dateformat

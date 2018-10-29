@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
+const Decimal = require('decimal');
 const async = require('async');
 const dateformat = require('dateformat');
 const config = require('./config');
@@ -13,20 +14,13 @@ module.exports = function(){
 }
 
 function getProcessedTransactionId() {
-    MongoClient.connect(config.mongo.url, (error, client) => {
+    MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
         const db = client.db(config.mongo.db);
         db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
             collection.find().toArray((error, docs) => {
-                if (error != null) {
-                    console.log(error);
-                    client.close();
-                } else {
-                    var trxId = docs.length > 0? docs[0].transactionId: "";
-                    client.close();
-
-                    // Get Transaction
-                    getTransaction(TRX_LIMIT, 0, trxId);
-                }
+                client.close();
+                if (!error) getTransaction(TRX_LIMIT, 0, docs.length > 0? docs[0].transactionId: "");
+                else console.log(error);
             });
         });
     });
@@ -64,19 +58,13 @@ function updUser() {
             item.asset.data.toUpperCase() !== 'TIPLISK') {
                 console.log("transaction id: " + item.id);
 
-                MongoClient.connect(config.mongo.url, (error, client) => {
+                MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
                     const db = client.db(config.mongo.db);
                     db.collection(config.mongo.collectionUser, (error, collection) => {
                         collection.find({_id: ObjectId(item.asset.data)}).toArray((error, docs) => {
-                            if(docs.length === 1) {
-                                client.close();
-
-                                // Update User
-                                const execDate = dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss');
-                                updateUser(item.amount / 100000000, docs[0].twitterId, 1, 'TipLisk', execDate, callback);
-                            } else {
-                                client.close();
-                            }
+                            client.close();
+                            if(docs.length === 1) updateUser(Decimal(item.amount).div(100000000).toNumber(), docs[0].twitterId, 1, 'TipLisk', dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss'), callback);
+                            else client.close();
                         });
                     });
                 });
@@ -85,7 +73,7 @@ function updUser() {
         }
     }, function (error) {
         // Update ProcessedTransactionId
-        if (error != null) successIdx -= 1;
-        if (successIdx >= 0) updateTransactionId(trxData[successIdx].id);
+        if (error) successIdx -= 1;
+        if (!error && successIdx >= 0) updateTransactionId(trxData[successIdx].id);
     });
 }

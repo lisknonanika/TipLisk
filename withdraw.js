@@ -1,4 +1,5 @@
 const lisk = require('lisk-elements').default;
+const Decimal = require('decimal');
 const dateformat = require('dateformat');
 const config = require('./config');
 const util = require('./util');
@@ -20,6 +21,6 @@ module.exports = function(amount, recipientId, twitteriId, callback){
         .then(res => {
             console.log(res.data);
             const execDate = dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss');
-            updateUser(+amount * -1, twitteriId, 0, recipientId, execDate, callback);
+            updateUser(Decimal(amount).mul(-1).toNumber(), twitteriId, 0, recipientId, execDate, callback);
         });
 }

@@ -8,15 +8,10 @@ module.exports = function(db, client, amount, twitterId, type, targetNm, execDat
                              targetNm: targetNm,
                              execDate: execDate};
         collection.insertOne(historydata, (error, result) => {
-            if (error != null) {
-                console.log(error);
-                client.close();
-                callback(error);
-            } else {
-                console.log("insert history");
-                client.close();
-                callback();
-            }
+            client.close();
+            if (!error) console.log("insert history");
+            else console.log(error);
+            callback(error);
         });
     });
 }

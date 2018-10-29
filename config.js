@@ -25,3 +25,6 @@ define('LiskClient', liskClient);
 define('TwitterClient', twitterClient);
 define('lisk', config.lisk);
 define('mongo', config.mongo);
+var mongoClientParams = {auth:{user: config.mongo.user, password: config.mongo.password},
+                         authSource: config.mongo.db, useNewUrlParser: true}
+define('mongoClientParams', mongoClientParams);
