@@ -1,10 +1,15 @@
-const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
 
-module.exports = function(){
-    config.TwitterClient.get('application/rate_limit_status', params, (error, result, response) => {
-        if (!error) {
-            console.log(result.resources);
-        }
+module.exports = function(twitterId){
+    return new Promise(function(resolve, reject){
+        config.TwitterClient.post('friendships/create', {user_id: twitterId, follow: false}, (error, result, response) => {
+            if (!error) {
+                console.log("follow: " + result.id_str);
+                resolve();
+            } else {
+                console.log(error);
+                reject(error);
+            }
+        });
     });
 }

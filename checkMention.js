@@ -55,18 +55,37 @@ function getMention(sinceId, maxId, idx) {
 function allocate() {
     mentionData.reverse();
     async.eachSeries(mentionData, function(item, callback){
+        // check blacklist
+        if (config.blacklist.indexOf(item.user.id_str) >= 0) callback();
 
+        // allocate
+        if (config.regexp.tip.test(item.text)) {
+            console.log("tip!");
+        } else if (config.regexp.tip_s.test(item.text)) {
+            console.log("tip!");
 
-        // twitter.user.id_str = '1052365035895283712'は除外（自分のツイートのため）
-        // 宛先がない場合は返信先へ送付 例：@tiplsk tip 1 ->　tweets.in_reply_to_user_id_str
+            //item.in_reply_to_user_id_strがnullなら無視
 
-        // config.TwitterClient.get('users/show', {user_id:"900864154793197568"}, (error, result, response) => {
-        //     if (!error) {
-        //         console.log(result);
-        //     }
-        // });
+        } else if (config.regexp.balance.test(item.text)) {
+            console.log("balance!");
+            callback();
 
-        callback();
+        } else if (config.regexp.deposit.test(item.text)) {
+            console.log("deposit!");
+            callback();
+
+        } else if (config.regexp.withdraw.test(item.text)) {
+            console.log("withdraw!");
+            callback();
+
+        } else if (config.regexp.followme.test(item.text)) {
+            console.log("followme!");
+            followme(item.user.id_str)
+            .then(function(){callback()})
+            .catch(function(err){callback(err);});
+        } else {
+            callback();
+        }
 
     }, function (error) {
         updateMentionId(mentionData[mentionData.length-1].id);

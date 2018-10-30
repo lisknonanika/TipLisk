@@ -12,6 +12,7 @@ function define(name, value) {
 }
 
 define('lisk', config.lisk);
+define('twitter', config.twitter);
 define('mongo', config.mongo);
 
 var liskClient = config.mode === 'test'? lisk.APIClient.createTestnetAPIClient():
@@ -29,6 +30,9 @@ define('TwitterClient', twitterClient);
 var mongoClientParams = {auth:{user: config.mongo.user, password: config.mongo.password},
                          authSource: config.mongo.db, useNewUrlParser: true}
 define('mongoClientParams', mongoClientParams);
+
+var blacklist = ["1052365035895283712"];
+define('blacklist', blacklist);
 
 var regexp = {
     "tip": new RegExp(/(^|\s)@tiplsk\s(tip|send|チップ)\s@[0-9a-zA-Z_]{5,15}\s[0-9]+(\.[0-9]+)?($|\s)/),
@@ -57,3 +61,4 @@ var message = {
                   "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。" +
                   "(KEY：%s, 入金先アドレス：%s)"]
 }
+define('message', message);
