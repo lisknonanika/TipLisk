@@ -21,7 +21,7 @@ module.exports = function(){
 
 var mentionData = new Array();
 function getMention(sinceId, maxId, idx) {
-    var params = {count: MENTION_LIMIT}
+    var params = {count: config.twitter.getMentionCount}
     if (maxId > 0) params['max_id'] = maxId;
     if (sinceId > 0) params['since_id'] = sinceId;
 
@@ -39,7 +39,7 @@ function getMention(sinceId, maxId, idx) {
                             console.log(tweets[i].entities.user_mentions);
                         }
                     }
-                    if (mentionData.length === (idx + 1) * MENTION_LIMIT && mentionData.length < 800) {
+                    if (mentionData.length === (idx + 1) * MENTION_LIMIT && mentionData.length < config.twitter.getMentionLimit) {
                         getMention(tweets[tweets.length - 1].id, idx + 1);
                     } else if (mentionData.length > 0) {
                         allocate();

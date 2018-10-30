@@ -3,7 +3,8 @@
     "lisk": {
         "address": "",
         "passphrase": "",
-        "secondPassphrase": ""
+        "secondPassphrase": "",
+        "getTransactionLimit": 100
     },
     "mongo": {
         "url": "",
@@ -19,6 +20,8 @@
         "apiKey": "",
         "apiSecret": "",
         "accessToken": "",
-        "accessTokenSecret": ""
+        "accessTokenSecret": "",
+        "getMentionCount": 101,
+        "getMentionLimit": 800
     }
 }

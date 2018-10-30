@@ -1,17 +1,28 @@
+const MongoClient = require('mongodb').MongoClient;
+const dateformat = require('dateformat');
 const config = require('../config');
 
-module.exports = function(db, client, amount, twitterId, type, targetNm, execDate, callback){
-    db.collection(config.mongo.collectionHistory, (error, collection) => {
-        const historydata = {twitterId: twitterId,
-                             type: type,
-                             amount: Math.abs(amount),
-                             targetNm: targetNm,
-                             execDate: execDate};
-        collection.insertOne(historydata, (error, result) => {
-            client.close();
-            if (!error) console.log("insert history");
-            else console.log(error);
-            callback(error);
+module.exports = function(amount, twitterId, type, targetNm){
+    return new Promise(function(resolve, reject){
+		MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
+            const db = client.db(config.mongo.db);
+            db.collection(config.mongo.collectionHistory, (error, collection) => {
+                const historydata = {twitterId: twitterId,
+                                    type: type,
+                                    amount: Math.abs(amount),
+                                    targetNm: targetNm,
+                                    execDate: dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss')};
+                collection.insertOne(historydata, (error, result) => {
+                    client.close();
+                    if (!error) {
+                        console.log("insert history");
+                        resolve();
+                    } else {
+                        console.log(error);
+                        reject(new Error(error));
+                    }
+                });
+            });
         });
-    });
+	});
 }
