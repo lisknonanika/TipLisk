@@ -6,6 +6,7 @@ npm install async
 npm install mongodb
 npm install dateformat
 npm install twitter
+npm install shuffle-array
 
 >mongo start
 mongod --config /usr/local/etc/mongod.conf

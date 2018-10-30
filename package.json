@@ -22,7 +22,8 @@
     "decimal": "0.0.2",
     "lisk-elements": "^1.0.0",
     "mongodb": "^3.1.8",
-    "twitter": "^1.7.1"
+    "shuffle-array": "^1.0.1",
+    "twitter-lite": "^0.7.0"
   },
   "devDependencies": {
     "config": "^2.0.1"

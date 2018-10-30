@@ -32,7 +32,7 @@ function getTransaction(limit, idx, trxId) {
         offset: limit * idx,
         sort: 'timestamp:desc'}
     config.LiskClient.transactions.get(param)
-    .then(res => {
+    .then((res) => {
         var infos = res.data;
         if (infos.length === 0) return;
         for (i=0; i < infos.length; i++) {
@@ -62,11 +62,10 @@ function updUser() {
                             client.close();
                             if(docs.length === 1) {
                                 var amount = Decimal(item.amount).div(100000000).toNumber();
-
                                 updateUser(amount, docs[0].twitterId)
-                                .then(insertHistory(amount, docs[0].twitterId, 1, 'TipLisk'))
-                                .then(function(){callback();})
-                                .catch(function(err){callback(err);});
+                                .then(() => {return insertHistory(amount, docs[0].twitterId, 1, 'TipLisk')})
+                                .then(() => {callback();})
+                                .catch((err) => {callback(err);});
                                 
                             } else {
                                 callback();
