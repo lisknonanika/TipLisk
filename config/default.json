@@ -14,14 +14,16 @@
         "collectionUser": "",
         "collectionHistory": "",
         "collectionLiskTrx": "",
-        "collectionMentionId": ""
+        "collectionMentionId": "",
+        "collectionLimitCtrl": ""
     },
     "twitter": {
         "apiKey": "",
         "apiSecret": "",
         "accessToken": "",
         "accessTokenSecret": "",
-        "getMentionCount": 101,
-        "getMentionLimit": 800
+        "mention": {"name": "mention", "max": 800, "count": 101},
+        "tweet": {"name": "tweet", "max": 90, "interval": 60},
+        "dm": {"name": "dm", "max": 15000, "interval": 1440}
     }
 }

@@ -4,7 +4,10 @@ const util = require('../util');
 
 module.exports = function(amount, recipientId){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(amount) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0) return;
+        if (util.isNumber(amount) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0) {
+            resolve();
+            return;
+        }
         var params = {
             amount: +amount * 100000000,
             recipientId: recipientId,

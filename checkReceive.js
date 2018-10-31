@@ -15,9 +15,9 @@ function getProcessedTransactionId() {
     MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
         const db = client.db(config.mongo.db);
         db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
-            collection.find().toArray((error, docs) => {
+            collection.findOne((error, result) => {
                 client.close();
-                if (!error) getTransaction(config.lisk.getTransactionLimit, 0, docs.length > 0? docs[0].transactionId: "");
+                if (!error) getTransaction(config.lisk.getTransactionLimit, 0, !result? "": result.transactionId);
                 else console.log(error);
             });
         });
@@ -58,17 +58,16 @@ function updUser() {
                 MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
                     const db = client.db(config.mongo.db);
                     db.collection(config.mongo.collectionUser, (error, collection) => {
-                        collection.find({_id: ObjectId(item.asset.data)}).toArray((error, docs) => {
+                        collection.findOne({_id: ObjectId(item.asset.data)}, (error, result) => {
                             client.close();
-                            if(docs.length === 1) {
-                                var amount = Decimal(item.amount).div(100000000).toNumber();
-                                updateUser(amount, docs[0].twitterId)
-                                .then(() => {return insertHistory(amount, docs[0].twitterId, 1, 'TipLisk')})
-                                .then(() => {callback();})
-                                .catch((err) => {callback(err);});
-                                
-                            } else {
+                            if(!result) {
                                 callback();
+                            } else {
+                                var amount = Decimal(item.amount).div(100000000).toNumber();
+                                updateUser(amount, result.twitterId)
+                                .then(() => {return insertHistory(amount, result.twitterId, 1, 'TipLisk')})
+                                .then(() => {callback()})
+                                .catch((err) => {callback(err)});
                             }
                         });
                     });

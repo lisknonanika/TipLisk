@@ -6,15 +6,11 @@ module.exports = function(twitterId){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
             db.collection(config.mongo.collectionUser, (error, collection) => {
-                collection.find({twitterId: twitterId}).toArray((error, docs) => {
+                collection.findOne({twitterId: twitterId}, (error, result) => {
                     client.close();
-                    if(docs.length > 0) {
-                        console.log("getDepositKey: " + docs[0]._id.toHexString());
-                        resolve(docs[0]._id.toHexString());
-                    } else {
-                        console.log("getDepositKey: none");
-                        resolve("");
-                    }
+                    console.log("getDepositKey: " + (!result? "none": result._id.toHexString()));
+                    if (!result) reject("could not get depositKey.");
+                    else resolve(result._id.toHexString());
                 });
             });
         });

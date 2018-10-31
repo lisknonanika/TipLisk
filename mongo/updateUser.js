@@ -7,25 +7,26 @@ module.exports = function(amount, twitterId){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
             db.collection(config.mongo.collectionUser, (error, collection) => {
-                collection.find({twitterId: twitterId}).toArray((error, docs) => {
-                    if(docs.length > 0) {
-                        // update user
-                        collection.updateOne({twitterId: twitterId}, {$set:{amount: Decimal(docs[0].amount).add(amount).toNumber()}}, (error, result) => {
+                collection.findOne({twitterId: twitterId}, (error, result) => {
+                    if(!result) {
+                        // insert user
+                        collection.insertOne({twitterId: twitterId, amount: amount}, (error, result) => {
                             client.close();
                             if (!error) {
-                                console.log("update user: " + twitterId);
+                                console.log("insert user: " + twitterId);
                                 resolve();
                             } else {
                                 console.log(error);
                                 reject(error);
                             }
                         });
+
                     } else {
-                        // insert user
-                        collection.insertOne({twitterId: twitterId, amount: amount}, (error, result) => {
+                        // update user
+                        collection.updateOne({twitterId: twitterId}, {$set:{amount: Decimal(result.amount).add(amount).toNumber()}}, (error, result) => {
                             client.close();
                             if (!error) {
-                                console.log("insert user: " + twitterId);
+                                console.log("update user: " + twitterId);
                                 resolve();
                             } else {
                                 console.log(error);

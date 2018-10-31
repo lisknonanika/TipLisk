@@ -1,5 +1,4 @@
 const MongoClient = require('mongodb').MongoClient;
-const dateformat = require('dateformat');
 const config = require('../config');
 
 module.exports = function(amount, twitterId, type, targetNm){
@@ -11,7 +10,7 @@ module.exports = function(amount, twitterId, type, targetNm){
                                     type: type,
                                     amount: Math.abs(amount),
                                     targetNm: targetNm,
-                                    execDate: dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss')};
+                                    execDate: new Date()};
                 collection.insertOne(historydata, (error, result) => {
                     client.close();
                     if (!error) {

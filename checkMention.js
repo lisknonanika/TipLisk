@@ -7,16 +7,13 @@ const getDepositKey = require('./mongo/getDepositKey');
 const depositDM = require('./twitter/depositDM');
 const followme = require('./twitter/followme');
 
-const MENTION_LIMIT = 101;
-
 module.exports = function(){
     MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
         const db = client.db(config.mongo.db);
         db.collection(config.mongo.collectionMentionId, (error, collection) => {
-            collection.find().toArray((error, docs) => {
+            collection.findOne((error, result) => {
                 client.close();
-                var sinceId = docs.length === 0? 0: docs[0].mentionId;
-                getMention(sinceId, 0, 0);
+                getMention(!result? 0: result.mentionId, 0, 0);
             });
         });
     });
@@ -24,13 +21,12 @@ module.exports = function(){
 
 var mentionData = new Array();
 function getMention(sinceId, maxId, idx) {
-
-    config.TwitterClient.get('application/rate_limit_status')
+    config.TwitterClient.get('application/rate_limit_status', {resources: "statuses"})
     .then((result) => {
         console.log(result.resources.statuses['/statuses/mentions_timeline']);
         if (result.resources.statuses['/statuses/mentions_timeline'].remaining === 0) return;
 
-        var params = {count: config.twitter.getMentionCount}
+        var params = {count: config.twitter.mention.count}
         if (maxId > 0) params['max_id'] = maxId;
         if (sinceId > 0) params['since_id'] = sinceId;
         config.TwitterClient.get('statuses/mentions_timeline', params)
@@ -42,7 +38,9 @@ function getMention(sinceId, maxId, idx) {
                     console.log(result[i].entities.user_mentions);
                 }
             }
-            if (mentionData.length === (idx + 1) * MENTION_LIMIT && mentionData.length < config.twitter.getMentionLimit) {
+            var maxsize = config.twitter.mention.count;
+            if (idx > 0) maxsize += ((config.twitter.mention.count - 1) * idx);
+            if (mentionData.length === maxsize && mentionData.length < config.twitter.mention.max) {
                 getMention(result[result.length - 1].id, idx + 1);
             } else if (mentionData.length > 0) {
                 allocate();
@@ -77,7 +75,7 @@ function allocate() {
             .then(() => {return getDepositKey(item.user.id_str)})
             .then((depositKey) => {return depositDM(item.user.id_str, depositKey)})
             .then(() => {callback()})
-            .catch((err) => {callback(err)});
+            .catch((err) => {callback()});  // continue
 
         } else if (config.regexp.withdraw.test(item.text)) {
             console.log("withdraw!");
@@ -87,7 +85,7 @@ function allocate() {
             console.log("followme!");
             followme(item.user.id_str)
             .then(() => {callback()})
-            .catch((err) => {callback(err);});
+            .catch((err) => {callback();});  // continue
         } else {
             callback();
         }

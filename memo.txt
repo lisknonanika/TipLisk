@@ -5,7 +5,7 @@ npm install decimal
 npm install async
 npm install mongodb
 npm install dateformat
-npm install twitter
+npm install twitter-lite
 npm install shuffle-array
 
 >mongo start

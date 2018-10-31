@@ -9,3 +9,9 @@ module.exports.formatString = function(msg, params) {
     }
     return msg;
 }
+
+module.exports.getDateTime = function(addminutes) {
+  var d = new Date();
+  if (addminutes) d.setMinutes(d.getMinutes() + addminutes);
+  return d;
+}
