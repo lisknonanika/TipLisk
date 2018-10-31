@@ -24,6 +24,7 @@
         "accessTokenSecret": "",
         "mention": {"name": "mention", "max": 800, "count": 101},
         "tweet": {"name": "tweet", "max": 90, "interval": 60},
-        "dm": {"name": "dm", "max": 15000, "interval": 1440}
+        "dm": {"name": "dm", "max": 15000, "interval": 1440},
+        "follow": {"name": "follow", "max": 1000, "interval": 1440}
     }
 }

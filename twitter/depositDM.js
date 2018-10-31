@@ -1,16 +1,33 @@
 const shuffle = require('shuffle-array');
 const updateLimitCtrl = require('../mongo/updateLimitCtrl');
+const getDepositKey = require('../mongo/getDepositKey');
 const config = require('../config');
 const util = require('../util');
 
-module.exports = function(twitterId, depositKey){
+var depositKey = "";
+module.exports = function(twitterId){
     return new Promise(function(resolve, reject){
-        updateLimitCtrl(config.twitter.dm.name)
+        getDepositKey(twitterId)
+        .then((key) => {return setDepositKey(key)})
+        .then(() => {return updateLimitCtrl(config.twitter.dm.name)})
         .then((remain) => {return sendDM(twitterId, depositKey, remain)})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
     });
 }
+
+var setDepositKey = function(key) {
+    return new Promise(function(resolve, reject){
+        if (!result) {
+            depositKey = "";
+            reject("depositKey empty");
+        } else {
+            depositKey = key;
+            resolve();
+        }
+    });
+}
+
 var sendDM = function(twitterId, depositKey, remain){
     return new Promise(function(resolve, reject){
         if(remain > 0) {

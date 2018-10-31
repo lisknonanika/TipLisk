@@ -1,15 +1,13 @@
+const config = require('./config');
 const updateUser = require('./mongo/updateUser');
 const insertHistory = require('./mongo/insertHistory');
 const withdraw = require('./lisk/withdraw');
 const checkreceive = require('./checkReceive');
 const checkMention = require('./checkMention');
 const updateLimitCtrl = require('./mongo/updateLimitCtrl');
+const tweet = require('./twitter/tweet');
 
-//withdraw(100000000, '5244341344295779314L')
-// .then(updateUser(100000000, '1052365035895283712'))
-// .then(insertHistory(100000000, '1052365035895283712', 0, '5244341344295779314L'))
-// .then(function(){callback();})
-// .catch(function(err){callback(err);});
-
+//withdraw("900864154793197568", 0, '5244341344295779314L', "", "");
+//tweet("test",null,null);
 //checkreceive();
 checkMention();

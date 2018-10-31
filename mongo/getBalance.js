@@ -8,8 +8,8 @@ module.exports = function(twitterId){
             db.collection(config.mongo.collectionUser, (error, collection) => {
                 collection.findOne({twitterId: twitterId}, (error, result) => {
                     client.close();
-                    console.log("getDepositKey: " + (!result? "none": result._id.toHexString()));
-                    resolve(!result? "": result._id.toHexString());
+                    console.log("getBalance: " + (!result? 0: result.amount));
+                    resolve(!result? 0: result.amount);
                 });
             });
         });
