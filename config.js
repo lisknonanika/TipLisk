@@ -11,6 +11,7 @@ function define(name, value) {
     });
 }
 
+define('mode', config.mode);
 define('lisk', config.lisk);
 define('twitter', config.twitter);
 define('mongo', config.mongo);
@@ -62,8 +63,8 @@ var message = {
                 "残高は{0}LSKみたい。",
                 "残高は～、{0}LSK？へー。",
                 "んー？{0}LSKかな？"],
-    "depositDM": ["入金の際は発行されたKEYをトランザクションのメモ欄に入力してください。" +
-                  "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。" +
-                  "（KEY：{0}, 入金先アドレス：{1}）"]
+    "depositDM": ["入金の際は発行されたKEYをトランザクションのメモ欄に入力してください。\n" +
+                  "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。\n" +
+                  "・KEY：{0}\n・入金先：{1}"]
 }
 define('message', message);

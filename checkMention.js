@@ -1,11 +1,10 @@
 const MongoClient = require('mongodb').MongoClient;
 const async = require('async');
-const Decimal = require('decimal');
-const shuffle = require('shuffle-array');
 const config = require('./config');
 const util = require('./util');
 const updateUser = require('./mongo/updateUser');
 const updateMentionId = require('./mongo/updateMentionId');
+const insertHistory = require('./mongo/insertHistory');
 const tweet = require('./twitter/tweet');
 const getBalance = require('./mongo/getBalance');
 const depositDM = require('./twitter/depositDM');
@@ -75,27 +74,22 @@ function allocate() {
         } else if (config.regexp.balance.test(item.text)) {
             console.log("balance!");
             getBalance(item.user.id_str)
-            .then((balance) => {
-                var text = shuffle(config.message.balance, {'copy': true})[0];
-                text = util.formatString(text, [balance]);
-                return tweet(text, item.id_str, item.user.screen_name);
-            })
+            .then((balance) => {return tweet(util.getMessage(config.message.balance, [util.number2String(balance)]), item.id_str, item.user.screen_name)})
             .then(() => {callback()})
             .catch((err) => {callback()});  // continue
 
         } else if (config.regexp.deposit.test(item.text)) {
             console.log("deposit!");
-            updateUser(0, item.user.id_str)
-            .then(() => {return depositDM(item.user.id_str)})
+            depositDM(item.user.id_str)
             .then(() => {callback()})
             .catch((err) => {callback()});  // continue
 
         } else if (config.regexp.withdraw.test(item.text)) {
             console.log("withdraw!");
             var commands = item.text.match(config.regexp.withdraw)[0].split(/\s/);
-            withdraw(item.user.id_str, Decimal(commands[3]).toNumber(), commands[2], item.id_str, item.user.screen_name)          
-            .then(updateUser(Decimal(commands[3]).div(-1).toNumber(), item.user.id_str))
-            .then(insertHistory(Decimal(commands[3]).toNumber(), item.user.id_str, 0, commands[2]))
+            withdraw(item.user.id_str, +commands[3], commands[2], item.id_str, item.user.screen_name)          
+            .then(updateUser(util.divide(commands[3], -1), item.user.id_str))
+            .then(insertHistory(commands[3], item.user.id_str, 0, commands[2]))
             .then(() => {callback()})
             .catch((err) => {callback()});  // continue
 

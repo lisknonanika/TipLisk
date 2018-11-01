@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-const Decimal = require('decimal');
 const config = require('../config');
+const util = require('../util');
 
 module.exports = function(amount, twitterId){
     return new Promise(function(resolve, reject){
@@ -10,7 +10,7 @@ module.exports = function(amount, twitterId){
                 collection.findOne({twitterId: twitterId}, (error, result) => {
                     if(!result) {
                         // insert user
-                        collection.insertOne({twitterId: twitterId, amount: amount}, (error, result) => {
+                        collection.insertOne({twitterId: twitterId, amount: util.number2String(amount)}, (error, result) => {
                             client.close();
                             if (!error) {
                                 console.log("insert user: " + twitterId);
@@ -23,7 +23,7 @@ module.exports = function(amount, twitterId){
 
                     } else {
                         // update user
-                        collection.updateOne({twitterId: twitterId}, {$set:{amount: Decimal(result.amount).add(amount).toNumber()}}, (error, result) => {
+                        collection.updateOne({twitterId: twitterId}, {$set:{amount: util.number2String(util.plus(result.amount, amount))}}, (error, result) => {
                             client.close();
                             if (!error) {
                                 console.log("update user: " + twitterId);

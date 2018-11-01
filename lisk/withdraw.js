@@ -1,6 +1,5 @@
 const lisk = require('lisk-elements').default;
 const shuffle = require('shuffle-array');
-const Decimal = require('decimal');
 const getBalance = require('../mongo/getBalance');
 const tweet = require('../twitter/tweet');
 const config = require('../config');
@@ -16,12 +15,12 @@ module.exports = function(twitterId, amount, recipientId, replyId, screenName){
     });
 }
 
-var checkBalance = function(amount, replyId, screenName){
+var checkBalance = function(amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(amount) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0 ||
-            balance === 0 || Decimal(balance).sub(0.1).toNumber() < amount) {
+        if (util.isNumber(util.number2String(amount)) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0 ||
+            balance === 0 || util.minus(balance, 0.1) < amount) {
             var text = shuffle(config.message.withdrawError, {'copy': true})[0];
-            text = util.formatString(text, [balance < 0.1? 0: Decimal(balance).sub(0.1).toNumber()]);
+            text = util.formatString(text, [balance < 0.1? 0: util.number2String(util.minus(balance, 0.1))]);
 
             tweet(text, replyId, screenName)
             .then(() => {reject("amount less than 0.00000001")})
@@ -35,7 +34,7 @@ var checkBalance = function(amount, replyId, screenName){
 var withdraw = function(amount, recipientId){
     return new Promise(function(resolve, reject){
         var params = {
-            amount: Decimal(amount).mul(100000000).toNumber(),
+            amount: util.multiply(amount, 100000000),
             recipientId: recipientId,
             passphrase: config.lisk.passphrase,
             data: 'TipLisk'

@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
+const util = require('../util');
 
 module.exports = function(amount, twitterId, type, targetNm){
     return new Promise(function(resolve, reject){
@@ -8,7 +9,7 @@ module.exports = function(amount, twitterId, type, targetNm){
             db.collection(config.mongo.collectionHistory, (error, collection) => {
                 const historydata = {twitterId: twitterId,
                                     type: type,
-                                    amount: Math.abs(amount),
+                                    amount: util.number2String(amount),
                                     targetNm: targetNm,
                                     execDate: new Date()};
                 collection.insertOne(historydata, (error, result) => {

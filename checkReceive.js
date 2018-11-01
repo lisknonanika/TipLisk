@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const Decimal = require('decimal');
 const async = require('async');
 const config = require('./config');
+const util = require('./util');
 const updateTransactionId = require('./mongo/updateTransactionId');
 const updateUser = require('./mongo/updateUser');
 const insertHistory = require('./mongo/insertHistory');
@@ -63,8 +63,7 @@ function updUser() {
                             if(!result) {
                                 callback();
                             } else {
-                                var amount = Decimal(item.amount).div(100000000).toNumber();
-                                updateUser(amount, result.twitterId)
+                                updateUser(util.divide(item.amount, 100000000), result.twitterId)
                                 .then(() => {return insertHistory(amount, result.twitterId, 1, 'TipLisk')})
                                 .then(() => {callback()})
                                 .catch((err) => {callback(err)});
