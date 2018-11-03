@@ -2,11 +2,10 @@ const MongoClient = require('mongodb').MongoClient;
 const async = require('async');
 const config = require('./config');
 const util = require('./util');
-const updateUser = require('./mongo/updateUser');
-const updateMentionId = require('./mongo/updateMentionId');
-const insertHistory = require('./mongo/insertHistory');
+const userCollection = require('./mongo/user');
+const mentionIdCollection = require('./mongo/mentionId');
+const historyCollection = require('./mongo/history');
 const tweet = require('./twitter/tweet');
-const getBalance = require('./mongo/getBalance');
 const depositDM = require('./twitter/depositDM');
 const followme = require('./twitter/followme');
 const withdraw = require('./lisk/withdraw');
@@ -73,8 +72,11 @@ function allocate() {
 
         } else if (config.regexp.balance.test(item.text)) {
             console.log("balance!");
-            getBalance(item.user.id_str)
-            .then((balance) => {return tweet(util.getMessage(config.message.balance, [util.number2String(balance)]), item.id_str, item.user.screen_name)})
+            userCollection.find({twitterId: item.user.id_str})
+            .then((result) => {
+                var balance = !result? "0": util.num2str(balance);
+                return tweet(util.getMessage(config.message.balance, [balance]), item.id_str, item.user.screen_name)
+            })
             .then(() => {callback()})
             .catch((err) => {callback()});  // continue
 
@@ -88,8 +90,8 @@ function allocate() {
             console.log("withdraw!");
             var commands = item.text.match(config.regexp.withdraw)[0].split(/\s/);
             withdraw(item.user.id_str, +commands[3], commands[2], item.id_str, item.user.screen_name)          
-            .then(updateUser(util.divide(commands[3], -1), item.user.id_str))
-            .then(insertHistory(commands[3], item.user.id_str, 0, commands[2]))
+            .then(userCollection.update({twitterId: tem.user.id_str, amount: util.divide(commands[3], -1), i}))
+            .then(historyCollection.insert({twitterId: item.user.id_str, amount: commands[3], type: 0, targetNm: commands[2]}))
             .then(() => {callback()})
             .catch((err) => {callback()});  // continue
 
@@ -104,6 +106,6 @@ function allocate() {
         }
 
     }, function (error) {
-        updateMentionId(mentionData[mentionData.length-1].id);
+        mentionIdCollection.update(mentionData[mentionData.length-1].id);
     });
 }

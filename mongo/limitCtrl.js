@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
 const util = require('../util');
 
-module.exports = function(target){
+module.exports.update = function(target){
     return new Promise(function(resolve, reject){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
@@ -20,7 +20,7 @@ module.exports = function(target){
                     collection.updateOne({name: target}, data, {upsert: true}, (error, result) => {
                         client.close();
                         if (!error) {
-                            console.log("upsert limitCtrl:" + target + ", remain: " + data["$set"].remain);
+                            console.log(`upsert limitCtrl: ${target}, remain: ${data["$set"].remain}`);
                             resolve(data["$set"].remain);
                         } else {
                             console.log(error);

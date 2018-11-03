@@ -3,9 +3,9 @@ const ObjectId = require('mongodb').ObjectId;
 const async = require('async');
 const config = require('./config');
 const util = require('./util');
-const updateTransactionId = require('./mongo/updateTransactionId');
-const updateUser = require('./mongo/updateUser');
-const insertHistory = require('./mongo/insertHistory');
+const updateCollection = require('./mongo/trxId');
+const userCollection = require('./mongo/user');
+const historyCollection = require('./mongo/history');
 
 module.exports = function(){
     getProcessedTransactionId();
@@ -53,7 +53,7 @@ function updUser() {
         if (item.asset.data != null &&
             item.asset.data.length > 0 &&
             item.asset.data.toUpperCase() !== 'TIPLISK') {
-                console.log("transaction id: " + item.id);
+                console.log(`transaction id: ${item.id}`);
 
                 MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
                     const db = client.db(config.mongo.db);
@@ -63,8 +63,8 @@ function updUser() {
                             if(!result) {
                                 callback();
                             } else {
-                                updateUser(util.divide(item.amount, 100000000), result.twitterId)
-                                .then(() => {return insertHistory(amount, result.twitterId, 1, 'TipLisk')})
+                                userCollection.update(util.divide(item.amount, 100000000), result.twitterId)
+                                .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: 'TipLisk'})})
                                 .then(() => {callback()})
                                 .catch((err) => {callback(err)});
                             }
@@ -77,6 +77,6 @@ function updUser() {
     }, function (error) {
         // Update ProcessedTransactionId
         if (error) successIdx -= 1;
-        if (!error && successIdx >= 0) updateTransactionId(trxData[successIdx].id);
+        if (!error && successIdx >= 0) updateCollection.update(trxData[successIdx].id);
     });
 }

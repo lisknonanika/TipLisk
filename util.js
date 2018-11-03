@@ -1,5 +1,5 @@
-const Decimal = require('decimal');
 const shuffle = require('shuffle-array');
+const Decimal = require('decimal');
 const config = require('./config');
 
 module.exports.isNumber = function(val){
@@ -26,7 +26,7 @@ module.exports.getDateTime = function(addminutes) {
   return d;
 }
 
-module.exports.number2String = function(num) {
+module.exports.num2str = function(num) {
   var arr = num.toString().split('e');
   if(arr.length === 1) return arr[0];
   var prec = arr[0].indexOf('.');
@@ -34,18 +34,49 @@ module.exports.number2String = function(num) {
   return Number(num).toFixed(Math.abs(arr[1]));   
 }
 
-module.exports.plus = function(num1, num2) {
-  return Decimal(this.number2String(num1)).add(this.number2String(num2)).toNumber();
+module.exports.calc = function(num1, num2, type) {
+  var fix = getFix(num1, num2);
+  var n1 = num1;
+  var n2 = num2;
+  if (fix > 0) {
+    n1 = Decimal(this.num2str(n1)).mul(10**fix);
+    n2 = Decimal(this.num2str(n2)).mul(10**fix);
+  }
+  var result = 0;
+  var decp = 0;
+  if(type==='add') {
+    result = Decimal(n1).add(n2);
+    decp = 10**fix;
+
+  } else if (type === 'sub') {
+    result = Decimal(n1).sub(n2);
+    decp = 10**fix;
+
+  } else if (type === 'mul') {
+    result = Decimal(n1).mul(n2);
+    decp = (10**fix)**2;
+
+  } else if (type === 'div') {
+    result = Decimal(n1).div(n2);
+    decp = 1;
+  }
+  return fix > 0? this.num2str(Decimal(result).div(decp)): this.num2str(result);
 }
 
-module.exports.minus = function(num1, num2) {
-  return Decimal(this.number2String(num1)).sub(this.number2String(num2)).toNumber();
+function getFix(num1, num2) {
+  var exp1 = getExp(num1);
+  var exp2 = getExp(num2);
+  var fix = 0;
+  if(exp1 < 0 || exp2 < 0) {
+    fix = +exp1 < +exp2? exp1: exp2;
+  }
+  return Math.abs(fix);
 }
 
-module.exports.multiply = function(num1, num2) {
-  return Decimal(this.number2String(num1)).mul(this.number2String(num2)).toNumber();
-}
-
-module.exports.divide = function(num1, num2) {
-  return Decimal(this.number2String(num1)).div(this.number2String(num2)).toNumber();
+function getExp(num) {
+  var arr = num.toString().split('e');
+  if(arr.length === 1) return Decimal(num).as_int.exp;
+  var prec = arr[0].indexOf('.');
+  if (0 < prec) arr[1] -= prec;
+  return arr[1];   
 }

@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
 
-module.exports = function(mentionId){
+module.exports.update = function(mentionId){
     return new Promise(function(resolve, reject){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);

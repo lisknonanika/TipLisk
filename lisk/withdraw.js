@@ -1,14 +1,14 @@
 const lisk = require('lisk-elements').default;
 const shuffle = require('shuffle-array');
-const getBalance = require('../mongo/getBalance');
+const userCollection = require('../mongo/user');
 const tweet = require('../twitter/tweet');
 const config = require('../config');
 const util = require('../util');
 
 module.exports = function(twitterId, amount, recipientId, replyId, screenName){
     return new Promise(function(resolve, reject){
-        getBalance(twitterId)
-        .then((balance) => {return checkBalance(amount, replyId, balance, screenName)})
+        userCollection.find({twitterId: twitterId})
+        .then((result) => {return checkBalance(amount, replyId, !result? 0: result.amount, screenName)})
         .then(() => {return withdraw(amount, recipientId)})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
@@ -17,11 +17,10 @@ module.exports = function(twitterId, amount, recipientId, replyId, screenName){
 
 var checkBalance = function(amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(util.number2String(amount)) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0 ||
-            balance === 0 || util.minus(balance, 0.1) < amount) {
+        if (util.isNumber(util.num2str(amount)) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0 ||
+            balance === 0 || +util.calc(balance, 0.1, "sub") < amount) {
             var text = shuffle(config.message.withdrawError, {'copy': true})[0];
-            text = util.formatString(text, [balance < 0.1? 0: util.number2String(util.minus(balance, 0.1))]);
-
+            text = util.formatString(text, [balance < 0.1? 0: util.calc(balance, 0.1, "sub")]);
             tweet(text, replyId, screenName)
             .then(() => {reject("amount less than 0.00000001")})
             .catch((err) => {reject(err)});
