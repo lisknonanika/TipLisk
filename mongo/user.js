@@ -18,7 +18,8 @@ var findOne = function(condition) {
             db.collection(config.mongo.collectionUser, (error, collection) => {
                 collection.findOne(condition, (error, result) => {
                     client.close();
-                    console.log(`user.find: ${result.twitterId}`);
+                    if (!result) console.log(`user.find: not found`);
+                    else console.log(`user.find: ${result.twitterId}`);
                     resolve(result);
                 });
             });
@@ -33,8 +34,10 @@ module.exports.update = function(param){
         if (param.twitterId) condition['twitterId'] = param.twitterId;
         findOne(condition)
         .then((result) => {
-            if (!result) return updateOne(param);
-            else {
+            if (!result) {
+                param['amount'] = !param['amount']? "0": param['amount'];
+                return updateOne(param);
+            } else {
                 param['amount'] = !param['amount']? result.amount: util.calc(param['amount'], result.amount, "add");
                 return updateOne(param);
             }

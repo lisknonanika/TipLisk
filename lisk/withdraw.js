@@ -8,7 +8,7 @@ const util = require('../util');
 module.exports = function(twitterId, amount, recipientId, replyId, screenName){
     return new Promise(function(resolve, reject){
         userCollection.find({twitterId: twitterId})
-        .then((result) => {return checkBalance(amount, replyId, !result? 0: result.amount, screenName)})
+        .then((result) => {return checkBalance(amount, replyId, !result? "0": result.amount, screenName)})
         .then(() => {return withdraw(amount, recipientId)})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
@@ -17,12 +17,12 @@ module.exports = function(twitterId, amount, recipientId, replyId, screenName){
 
 var checkBalance = function(amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(util.num2str(amount)) === false || amount < 0.00000001 || config.lisk.passphrase.length === 0 ||
+        if (util.isNumber(util.num2str(amount)) === false || amount < 0.00000001 ||
             balance === 0 || +util.calc(balance, 0.1, "sub") < amount) {
             var text = shuffle(config.message.withdrawError, {'copy': true})[0];
             text = util.formatString(text, [balance < 0.1? 0: util.calc(balance, 0.1, "sub")]);
             tweet(text, replyId, screenName)
-            .then(() => {reject("amount less than 0.00000001")})
+            .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {reject(err)});
         } else {
             resolve();
@@ -33,7 +33,7 @@ var checkBalance = function(amount, replyId, balance, screenName){
 var withdraw = function(amount, recipientId){
     return new Promise(function(resolve, reject){
         var params = {
-            amount: util.multiply(amount, 100000000),
+            amount: util.calc(amount, 100000000, "mul"),
             recipientId: recipientId,
             passphrase: config.lisk.passphrase,
             data: 'TipLisk'

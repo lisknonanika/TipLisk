@@ -21,12 +21,23 @@ const config = require('./config');
 // const trxIdCollection = require('./mongo/trxId');
 // trxIdCollection.update("test");
 
+// const checkMention = require('./checkMention');
+// checkMention();
+
+// const checkReceive = require('./checkReceive');
+// checkReceive();
+
 var params = {
-    track: "@tiplsk"
+    track: "@tiplsk",
+    language: "ja"
 }
 config.TwitterClient.stream('statuses/filter', params)
 .on("start", response => console.log(`stream start: status=${response.status}`))
-.on("data", data => console.log(data))
+.on("data", data => {
+    console.log(!data.retweeted_status);
+    console.log(data.text);
+    console.log(data.entities.user_mentions);
+})
 .on("ping", () => console.log("ping ok"))
 .on("error", error => console.log(error))
 .on("end", _response => console.log("stream end"));

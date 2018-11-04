@@ -1,14 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 const async = require('async');
 const config = require('./config');
-const util = require('./util');
-const userCollection = require('./mongo/user');
+const allocate = require('./allocate');
 const mentionIdCollection = require('./mongo/mentionId');
-const historyCollection = require('./mongo/history');
-const tweet = require('./twitter/tweet');
-const depositDM = require('./twitter/depositDM');
-const followme = require('./twitter/followme');
-const withdraw = require('./lisk/withdraw');
 
 module.exports = function(){
     MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
@@ -35,77 +29,30 @@ function getMention(sinceId, maxId, idx) {
         config.TwitterClient.get('statuses/mentions_timeline', params)
         .then((result) => {
             for (i = 0; i < result.length; i++) {
-                if (mentionData.length === 0 || mentionData[mentionData.length - 1].id !== result[i].id) {
+                if (mentionData.length === 0 || mentionData[mentionData.length - 1].id_str !== result[i].id_str) {
                     mentionData.push(result[i]);
                     console.log(result[i]);
                     console.log(result[i].entities.user_mentions);
                 }
             }
-            var maxsize = config.twitter.mention.count;
-            if (idx > 0) maxsize += ((config.twitter.mention.count - 1) * idx);
-            if (mentionData.length === maxsize && mentionData.length < config.twitter.mention.max) {
+            if (mentionData.length > 0 && idx < 5) {
                 getMention(result[result.length - 1].id, idx + 1);
             } else if (mentionData.length > 0) {
-                allocate();
+                execCommand();
             }
         })
         .catch((err) => {console.log(err)});
     })
-    .catch((err) => {console.log(err)});;
+    .catch((err) => {console.log(err)});
 }
 
-function allocate() {
+function execCommand() {
     mentionData.reverse();
     async.eachSeries(mentionData, function(item, callback){
-        // check blacklist
-        if (config.blacklist.indexOf(item.user.id_str) >= 0) {
-            callback();
-            return;
-        }
-
-        // allocate
-        if (config.regexp.tip.test(item.text)) {
-            console.log("tip!");
-        } else if (config.regexp.tip_s.test(item.text)) {
-            if (!item.in_reply_to_user_id_str) callback();
-            console.log("tip!");
-
-        } else if (config.regexp.balance.test(item.text)) {
-            console.log("balance!");
-            userCollection.find({twitterId: item.user.id_str})
-            .then((result) => {
-                var balance = !result? "0": util.num2str(balance);
-                return tweet(util.getMessage(config.message.balance, [balance]), item.id_str, item.user.screen_name)
-            })
-            .then(() => {callback()})
-            .catch((err) => {callback()});  // continue
-
-        } else if (config.regexp.deposit.test(item.text)) {
-            console.log("deposit!");
-            depositDM(item.user.id_str)
-            .then(() => {callback()})
-            .catch((err) => {callback()});  // continue
-
-        } else if (config.regexp.withdraw.test(item.text)) {
-            console.log("withdraw!");
-            var commands = item.text.match(config.regexp.withdraw)[0].split(/\s/);
-            withdraw(item.user.id_str, +commands[3], commands[2], item.id_str, item.user.screen_name)          
-            .then(userCollection.update({twitterId: tem.user.id_str, amount: util.divide(commands[3], -1), i}))
-            .then(historyCollection.insert({twitterId: item.user.id_str, amount: commands[3], type: 0, targetNm: commands[2]}))
-            .then(() => {callback()})
-            .catch((err) => {callback()});  // continue
-
-        } else if (config.regexp.followme.test(item.text)) {
-            console.log("followme!");
-            followme(item.user.id_str)
-            .then(() => {callback()})
-            .catch((err) => {callback();});  // continue
-
-        } else {
-            callback();
-        }
-
+        allocate(item)
+        .then(() => callback())
+        .catch((err) => callback());    // continue
     }, function (error) {
-        mentionIdCollection.update(mentionData[mentionData.length-1].id);
+        mentionIdCollection.update(mentionData[mentionData.length-1].id_str);
     });
 }

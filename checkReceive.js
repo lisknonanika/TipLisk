@@ -1,27 +1,15 @@
-const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const async = require('async');
 const config = require('./config');
 const util = require('./util');
-const updateCollection = require('./mongo/trxId');
+const trxIdCollection = require('./mongo/trxId');
 const userCollection = require('./mongo/user');
 const historyCollection = require('./mongo/history');
 
 module.exports = function(){
-    getProcessedTransactionId();
-}
-
-function getProcessedTransactionId() {
-    MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
-        const db = client.db(config.mongo.db);
-        db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
-            collection.findOne((error, result) => {
-                client.close();
-                if (!error) getTransaction(config.lisk.getTransactionLimit, 0, !result? "": result.transactionId);
-                else console.log(error);
-            });
-        });
-    });
+    trxIdCollection.find()
+    .then((result) => {return getTransaction(config.lisk.getTransactionLimit, 0, !result? "": result.transactionId)})
+    .catch((err) => console.log(err));
 }
 
 var trxData = new Array();
@@ -53,30 +41,22 @@ function updUser() {
         if (item.asset.data != null &&
             item.asset.data.length > 0 &&
             item.asset.data.toUpperCase() !== 'TIPLISK') {
-                console.log(`transaction id: ${item.id}`);
-
-                MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
-                    const db = client.db(config.mongo.db);
-                    db.collection(config.mongo.collectionUser, (error, collection) => {
-                        collection.findOne({_id: ObjectId(item.asset.data)}, (error, result) => {
-                            client.close();
-                            if(!result) {
-                                callback();
-                            } else {
-                                userCollection.update(util.divide(item.amount, 100000000), result.twitterId)
-                                .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: 'TipLisk'})})
-                                .then(() => {callback()})
-                                .catch((err) => {callback(err)});
-                            }
-                        });
-                    });
-                });
+                console.log(`transactionId: ${item.id}, userId: ${item.asset.data}`);
+                userCollection.find({_id: ObjectId(item.asset.data)})
+                .then((result) => {
+                    if(!result) callback();
+                    else {
+                        userCollection.update({twitterId: result.twitterId, amout: util.calc(item.amount, 100000000, "div")})
+                        .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: item.amount, type: 1, targetNm: 'TipLisk'})})
+                        .then(() => {callback()})
+                        .catch((err) => {callback()});
+                    }
+                })
+                .catch((err) => {callback()});
         } else {
             callback();
         }
     }, function (error) {
-        // Update ProcessedTransactionId
-        if (error) successIdx -= 1;
-        if (!error && successIdx >= 0) updateCollection.update(trxData[successIdx].id);
+        trxIdCollection.update(trxData[successIdx].id);
     });
 }
