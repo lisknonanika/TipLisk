@@ -27,17 +27,17 @@ const config = require('./config');
 // const checkReceive = require('./checkReceive');
 // checkReceive();
 
-var params = {
-    track: "@tiplsk",
-    language: "ja"
-}
-config.TwitterClient.stream('statuses/filter', params)
-.on("start", response => console.log(`stream start: status=${response.status}`))
-.on("data", data => {
-    console.log(!data.retweeted_status);
-    console.log(data.text);
-    console.log(data.entities.user_mentions);
-})
-.on("ping", () => console.log("ping ok"))
-.on("error", error => console.log(error))
-.on("end", _response => console.log("stream end"));
+// var params = {
+//     track: "@tiplsk",
+//     language: "ja"
+// }
+// config.TwitterClient.stream('statuses/filter', params)
+// .on("start", response => console.log(`stream start: status=${response.status}`))
+// .on("data", data => {
+//     console.log(!data.retweeted_status);
+//     console.log(data.text);
+//     console.log(data.entities.user_mentions);
+// })
+// .on("ping", () => console.log("ping ok"))
+// .on("error", error => console.log(error))
+// .on("end", _response => console.log("stream end"));

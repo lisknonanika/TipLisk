@@ -4,7 +4,7 @@ const tweet = require('./tweet');
 const config = require('../config');
 const util = require('../util');
 
-module.exports = function(twitterId, amount, recipientId, replyId, screenName){
+module.exports = function(twitterId, amount, replyId, screenName){
     return new Promise(function(resolve, reject){
         userCollection.find({twitterId: twitterId})
         .then((result) => {return checkBalance(amount, replyId, !result? "0": result.amount, screenName)})

@@ -35,7 +35,7 @@ function getMention(sinceId, maxId, idx) {
                     console.log(result[i].entities.user_mentions);
                 }
             }
-            if (mentionData.length > 0 && idx < 5) {
+            if (result.length > 0 && idx < 5) {
                 getMention(result[result.length - 1].id, idx + 1);
             } else if (mentionData.length > 0) {
                 execCommand();
@@ -49,9 +49,13 @@ function getMention(sinceId, maxId, idx) {
 function execCommand() {
     mentionData.reverse();
     async.eachSeries(mentionData, function(item, callback){
-        allocate(item)
-        .then(() => callback())
-        .catch((err) => callback());    // continue
+        if (item.user.protected) {
+            callback();
+        } else {
+            allocate(item)
+            .then(() => callback())
+            .catch((err) => callback());    // continue
+        }
     }, function (error) {
         mentionIdCollection.update(mentionData[mentionData.length-1].id_str);
     });
