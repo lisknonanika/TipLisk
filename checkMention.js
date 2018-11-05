@@ -1,19 +1,12 @@
-const MongoClient = require('mongodb').MongoClient;
 const async = require('async');
 const config = require('./config');
 const allocate = require('./allocate');
 const mentionIdCollection = require('./mongo/mentionId');
 
 module.exports = function(){
-    MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
-        const db = client.db(config.mongo.db);
-        db.collection(config.mongo.collectionMentionId, (error, collection) => {
-            collection.findOne((error, result) => {
-                client.close();
-                getMention(!result? 0: result.mentionId, 0, 0);
-            });
-        });
-    });
+    mentionIdCollection.find({flg:1})
+    .then((result) => {getMention(!result? 0: result.mentionId, 0, 0)})
+    .catch((err) => console.log(err));
 }
 
 var mentionData = new Array();
@@ -53,10 +46,10 @@ function execCommand() {
             callback();
         } else {
             allocate(item)
-            .then(() => callback())
-            .catch((err) => callback());    // continue
+            .then(() => {callback()})
+            .catch((err) => {console.log(err);callback()});    // continue
         }
     }, function (error) {
-        mentionIdCollection.update(mentionData[mentionData.length-1].id_str);
+        mentionIdCollection.update({flg:1}, {$set: {mentionId: mentionData[mentionData.length-1].id_str, flg: 1}});
     });
 }
