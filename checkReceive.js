@@ -2,6 +2,7 @@ const ObjectId = require('mongodb').ObjectId;
 const async = require('async');
 const config = require('./config');
 const util = require('./util');
+const receiveDM = require('./twitter/receiveDM');
 const trxIdCollection = require('./mongo/trxId');
 const userCollection = require('./mongo/user');
 const historyCollection = require('./mongo/history');
@@ -48,6 +49,7 @@ function updUser() {
                     else {
                         userCollection.update({twitterId: result.twitterId, amout: util.calc(item.amount, 100000000, "div")})
                         .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: item.amount, type: 1, targetNm: 'TipLisk'})})
+                        .then(() => {return receiveDM(result.twitterId, item.amount, item.id)})
                         .then(() => {callback()})
                         .catch((err) => {callback()});
                     }

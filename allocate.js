@@ -4,7 +4,7 @@ const userCollection = require('./mongo/user');
 const historyCollection = require('./mongo/history');
 const mentionIdCollection = require('./mongo/mentionId');
 const depositDM = require('./twitter/depositDM');
-const checkTip = require('./twitter/checkTip');
+const tipTweet = require('./twitter/tipTweet');
 const balanceTweet = require('./twitter/balanceTweet');
 const followme = require('./twitter/followme');
 const withdraw = require('./lisk/withdraw');
@@ -65,7 +65,7 @@ var execTip = function(tweetInfo, isReply) {
             resolve();
             return;
         }
-        checkTip(tweetInfo.user.id_str, +amount, tweetInfo.id_str, tweetInfo.user.screen_name)
+        tipTweet(tweetInfo.user.id_str, +amount, tweetInfo.id_str, tweetInfo.user.screen_name, targetNm)
         .then(() => {return userCollection.update({twitterId: tweetInfo.user.id_str, amount: util.calc(amount, -1, "mul")})})
         .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
         .then(() => {return historyCollection.insert({twitterId: tweetInfo.user.id_str, amount: amount, type: 0, targetNm: targetNm})})

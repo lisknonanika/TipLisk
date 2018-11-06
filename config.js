@@ -45,13 +45,33 @@ var regexp = {
 }
 define('regexp', regexp);
 
+var filter = {
+    track: "@tiplsk tip, @tiplsk send, @tiplsk チップ, " +
+           "@tiplsk balance, @tiplsk 残高, @tiplsk 所持金, " +
+           "@tiplsk deposit, @tiplsk 入金, " +
+           "@tiplsk withdraw, @tiplsk 出勤, " +
+           "@tiplsk followme, @tiplsk フォローして"
+}
+define('filter', filter);
+
+var liskExplorer = config.mode === 'test'? "https://testnet-explorer.lisk.io/tx/":
+                                           "https://explorer.lisk.io/tx/";
 var message = {
+    "tipOk": ["{0} さんから {1}LSK チップが届きました！",
+              "{0} さんが {1}LSK くれましたよ！",
+              "{0} さんがチップをくれたみたい。（{1}LSK）",
+              "{1}LSK {0}さんがくれたみたい。\nやったね！",
+              "なんと！ {0} さんが {1}LSK くれましたよ！",
+              "{0} さんからチップだよ！\nつ【{1}LSK】"],
     "tipError": ["残高不足のためチップを渡せませんでした。\n\n残高：{0}LSK",
                  "残高が不足しているみたいですよ？\n\n残高：{0}LSK",
                  "ごめんなさい！\n残高が足りない時はチップを渡せないんです！\n\n残高：{0}LSK",
                  "ん？間違っちゃいましたか？\n\n残高：{0}LSK",
                  "残高が足りない時はチップ渡せないって知りませんでした？\n\n残高：{0}LSK",
                  "チップむーりー\n\n残高：{0}LSK"],
+    "withdrawOk": ["{0}LSK を {1} へ送金しました。\n" +
+                   "承認状況はLisk Explorer等で確認してください。\n\n" +
+                   liskExplorer + "{2}"],
     "withdrawError": ["残高不足のため出金できませんでした。\n\n出金可能：{0}LSK",
                       "出金できないみたい。\nLiskの手数料もあるから注意してね？\n\n出金可能：{0}LSK",
                       "ごめんなさい！\n残高より多い枚数は出金できないんです！\n\n出金可能：{0}LSK",
@@ -65,6 +85,9 @@ var message = {
                 "んー？\n{0}LSKかな？"],
     "depositDM": ["入金の際は発行されたKEYをトランザクションのメモ欄に入力してください。\n" +
                   "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。\n" +
-                  "・KEY：{0}\n・入金先：{1}"]
+                  "・KEY：{0}\n・入金先：{1}"],
+    "receiveDM": ["{0}LSK 入金を確認しました。\n" +
+                  "承認状況はLisk Explorer等で確認してください。\n\n" +
+                  liskExplorer + "{1}"]
 }
 define('message', message);

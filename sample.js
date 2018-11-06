@@ -1,8 +1,5 @@
 const config = require('./config');
 
-// const withdraw = require('./lisk/withdraw');
-// withdraw("900864154793197568", 0, '5244341344295779314L', "", "tiplsk");
-
 // const util = require('./util');
 // console.log(util.calc(0.0000001, 0.0000002, "add"));
 
@@ -27,17 +24,8 @@ const config = require('./config');
 // const checkReceive = require('./checkReceive');
 // checkReceive();
 
-// var params = {
-//     track: "@tiplsk",
-//     language: "ja"
-// }
-// config.TwitterClient.stream('statuses/filter', params)
-// .on("start", response => console.log(`stream start: status=${response.status}`))
-// .on("data", data => {
-//     console.log(!data.retweeted_status);
-//     console.log(data.text);
-//     console.log(data.entities.user_mentions);
-// })
-// .on("ping", () => console.log("ping ok"))
-// .on("error", error => console.log(error))
-// .on("end", _response => console.log("stream end"));
+// const streamTweetFilter = require('./streamTweetFilter');
+// streamTweetFilter();
+
+// const checkFollow = require('./checkFollow');
+// checkFollow();
