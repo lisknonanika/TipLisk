@@ -1,16 +1,29 @@
 const lisk = require('lisk-elements').default;
 const userCollection = require('../mongo/user');
+const historyCollection = require('../mongo/history');
 const tweet = require('../twitter/tweet');
-const withdrawDM = require('../twitter/withdrawDM');
+const dm = require('../twitter/dm');
 const config = require('../config');
 const util = require('../util');
 
-module.exports = function(twitterId, amount, recipientId, replyId, screenName){
+module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
+        var commands = tweetInfo.text.match(config.regexp.withdraw)[0].split(/\s/);
+        var twitterId = tweetInfo.user.id_str;
+        var amount = commands[3];
+        var recipientId = commands[2];
+        var replyId = tweetInfo.id_str;
+        var screenName = tweetInfo.user.screen_name;
+
         userCollection.find({twitterId: twitterId})
-        .then((result) => {return checkBalance(amount, replyId, !result? "0": result.amount, screenName)})
+        .then((result) => {return checkBalance(+amount, replyId, !result? "0": result.amount, screenName)})
         .then(() => {return withdraw(amount, recipientId)})
-        .then((trxId) => {return withdrawDM(twitterId, amount, recipientId,trxId)})
+        .then((trxId) => {
+            var text = util.getMessage(config.message.withdrawOk, [amount, recipientId, trxId]);
+            return dm(twitterId, text);
+        })
+        .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
+        .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: recipientId})})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
     });

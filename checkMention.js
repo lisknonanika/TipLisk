@@ -47,7 +47,10 @@ function execCommand() {
         } else {
             allocate(item)
             .then(() => {callback()})
-            .catch((err) => {console.log(err);callback()});    // continue
+            .catch((err) => {
+                console.log(err);
+                callback(); // continue
+            });
         }
     }, function (error) {
         mentionIdCollection.update({flg:1}, {$set: {mentionId: mentionData[mentionData.length-1].id_str, flg: 1}});

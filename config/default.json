@@ -15,7 +15,8 @@
         "collectionHistory": "",
         "collectionLiskTrx": "",
         "collectionMentionId": "",
-        "collectionLimitCtrl": ""
+        "collectionLimitCtrl": "",
+        "collectionFriends": ""
     },
     "twitter": {
         "apiKey": "",
@@ -25,6 +26,6 @@
         "mention": {"name": "mention", "max": 800, "count": 101},
         "tweet": {"name": "tweet", "max": 90, "interval": 60},
         "dm": {"name": "dm", "max": 15000, "interval": 1440},
-        "follow": {"name": "follow", "max": 1000, "interval": 1440}
+        "follow": {"name": "follow", "max": 100, "interval": 1440}
     }
 }

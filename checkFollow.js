@@ -1,6 +1,8 @@
 const async = require('async');
 const config = require('./config');
-const followme = require('./twitter/followme')
+const follow = require('./twitter/follow')
+const userShow = require('./twitter/userShow')
+const friendsCollection = require('./mongo/friends')
 
 module.exports = function(){
     getFollowers()
@@ -53,18 +55,31 @@ function getFriends() {
 function followBack() {
     return new Promise(function(resolve, reject){
         async.each(followers,  function(id, callback){
-            if (friends.indexOf(id) < 0) {
-                friends.push(id);
-                console.log(id);
-                followme(id)
+            friendsCollection.find({twitterId: id})
+            .then((result) => {
+                if (result ) {
+                    console.log("already friends!");
+                    callback();
+                    return;
+                }
+                friendsCollection.update({twitterId: id}, {$set:{twitterId: id, friend: 0}})
+                .then(() => {return userShow(id)})
+                .then((result) => {
+                    if (result || result.protected) {
+                        return friendsCollection.update({twitterId: id}, {$set:{twitterId: id, friend: 1}})
+                    }
+                    return;
+                })
                 .then(() => {callback()})
                 .catch((err) => {
                     console.log(err);
                     callback();
                 });
-            } else {
+            })
+            .catch((err) => {
+                console.log(err);
                 callback();
-            }
+            });
         }, function (error) {
             resolve();
         });
