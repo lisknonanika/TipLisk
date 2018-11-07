@@ -3,44 +3,23 @@ const config = require('../config');
 
 module.exports.find = function(condition){
     return new Promise(function(resolve, reject){
-        findOne(condition)
+        findByCondition(condition)
         .then((result) => {resolve(result)})
-        .catch((err) => reject(err));
+        .catch((err) => {reject(err)});
     });
 }
 
-var findOne = function(condition) {
+var findByCondition = function(condition) {
     return new Promise(function(resolve, reject){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
             db.collection(config.mongo.collectionFriends, (error, collection) => {
-                collection.findOne(condition, (error, result) => {
+                collection.find(condition).toArray((error, items) => {
+                    var friends = items;
                     client.close();
-                    if (!result) console.log(`friends.find: not found`);
-                    else console.log(`friends.find: ${result.twitterId}`);
-                    resolve(result);
-                });
-            });
-        });
-    });
-}
-module.exports.findAll = function(){
-    return new Promise(function(resolve, reject){
-        findAll()
-        .then((result) => {resolve(result)})
-        .catch((err) => reject(err));
-    });
-}
-
-var findAll = function() {
-    return new Promise(function(resolve, reject){
-        MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
-            const db = client.db(config.mongo.db);
-            db.collection(config.mongo.collectionFriends, (error, collection) => {
-                collection.find({}, (error, result) => {
-                    client.close();
-                    if (!result) console.log(`friends.find: not found`);
-                    resolve(result);
+                    if (friends.length === 0) console.log(`friends.find: not found`);
+                    else console.log(`friends.find: ${friends.length}人`);
+                    resolve(friends);
                 });
             });
         });

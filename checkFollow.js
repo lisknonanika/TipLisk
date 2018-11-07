@@ -4,15 +4,35 @@ const follow = require('./twitter/follow')
 const userShow = require('./twitter/userShow')
 const friendsCollection = require('./mongo/friends')
 
+var friends = [];
+var followers = [];
 module.exports = function(){
-    getFollowers()
-    .then(() => {return getFriends()})
-    .then(() => {return followBack()})
+    getFriends()
+    .then(() => {return getFollowers()})
+    .then(() => {return reflesh()})
+    .then(() => {return execute(followers.pop())})
     .catch((err) => {console.log(err)});
 }
 
-var followers = [];
-function getFollowers() {
+var getFriends = function() {
+    return new Promise(function(resolve, reject){
+        config.TwitterClient.get('application/rate_limit_status', {resources: "friends"})
+        .then((result) => {
+            console.log(result.resources.friends['/friends/ids']);
+            if (result.resources.friends['/friends/ids'].remaining === 0) return;
+            config.TwitterClient.get('friends/ids', {stringify_ids: true, count: 5000})
+            .then((result) => {
+                if (!result) friends = [];
+                else friends = result.ids;
+                resolve();
+            })
+            .catch((err) => {reject(err)});
+        })
+        .catch((err) => {reject(err)});
+    });
+}
+
+var getFollowers = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "followers"})
         .then((result) => {
@@ -33,55 +53,60 @@ function getFollowers() {
     });
 }
 
-var friends = [];
-function getFriends() {
+var reflesh = function() {
     return new Promise(function(resolve, reject){
-        config.TwitterClient.get('application/rate_limit_status', {resources: "friends"})
+        friendsCollection.find({friend: 1})
         .then((result) => {
-            console.log(result.resources.friends['/friends/ids']);
-            if (result.resources.friends['/friends/ids'].remaining === 0) return;
-            config.TwitterClient.get('friends/ids', {stringify_ids: true, count: 5000})
-            .then((result) => {
-                if (!result) friends = [];
-                else friends = result.ids;
+            async.each(result, function(item, callback){
+                if (friends.indexOf(item.twitterId) < 0) {
+                    friendsCollection.delete({twitterId: item.twitterId})
+                    .then(() => {callback()})
+                    .catch(() => {callback()});
+                }
+            }, function (error) {
                 resolve();
-            })
-            .catch((err) => {reject(err)});
-        })
-        .catch((err) => {reject(err)});
+            });
+        });
     });
 }
 
-function followBack() {
+var execute = function(twitterId) {
     return new Promise(function(resolve, reject){
-        async.each(followers,  function(id, callback){
-            friendsCollection.find({twitterId: id})
-            .then((result) => {
-                if (result ) {
-                    console.log("already friends!");
-                    callback();
-                    return;
-                }
-                friendsCollection.update({twitterId: id}, {$set:{twitterId: id, friend: 0}})
-                .then(() => {return userShow(id)})
-                .then((result) => {
-                    if (result || result.protected) {
-                        return friendsCollection.update({twitterId: id}, {$set:{twitterId: id, friend: 1}})
-                    }
-                    return;
-                })
-                .then(() => {callback()})
-                .catch((err) => {
-                    console.log(err);
-                    callback();
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                callback();
-            });
-        }, function (error) {
-            resolve();
+        var friend = 0;
+        findFriends(twitterId)
+        .then(() => {return isTarget(twitterId)})
+        .then((result) => {
+            friend = result;
+            if (result) return follow(twitterId);
+        })
+        .then(() => {return friendsCollection.update({twitterId: twitterId}, {$set:{twitterId: twitterId, friend: friend}})})
+        .then(() => {
+            if (followers.length > 0) return execute(followers.pop());
+            else resolve();
+        })
+        .catch((err) => {
+            if (followers.length > 0) return execute(followers.pop());
+            else resolve();
+        });
+    });
+}
+
+var findFriends = function(twitterId) {
+    return new Promise(function(resolve, reject){
+        friendsCollection.find({twitterId: twitterId})
+        .then((result) => {
+            if (result.length === 0) resolve();
+            else reject("already friends!");
+        });
+    });
+}
+
+var isTarget = function(twitterId) {
+    return new Promise(function(resolve, reject){
+        userShow(twitterId)
+        .then((result) => {
+            if (result && result.protected) resolve(1);
+            else resolve(0);
         });
     });
 }
