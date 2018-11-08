@@ -1,4 +1,5 @@
 const config = require('./config');
+const userCollection = require('./mongo/user');
 const mentionIdCollection = require('./mongo/mentionId');
 const tip = require('./command/tip');
 const balance = require('./command/balance');
@@ -19,7 +20,8 @@ module.exports = function(tweetInfo){
                 reject("already execute");
                 return;
             }
-            mentionIdCollection.insertHistory(tweetInfo.id_str)
+            userCollection.update({twitterId: tweetInfo.user.id_str, amount: "0", noupd: true})     
+            .then(() => {return mentionIdCollection.insertHistory(tweetInfo.id_str)})
             .then(() => {
                 if (config.regexp.tip.test(tweetInfo.text)) return tip(tweetInfo, false);
                 else if (config.regexp.tip_s.test(tweetInfo.text)) return tip(tweetInfo, true);

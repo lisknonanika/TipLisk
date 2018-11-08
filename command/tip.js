@@ -12,7 +12,7 @@ module.exports = function(tweetInfo, isReply) {
         var screenName = tweetInfo.user.screen_name;
         var recipientId = "";
         var targetNm = "";
-        var amount = 0;
+        var amount = "0";
         if (isReply) {
             var commands = tweetInfo.text.match(config.regexp.tip_s)[0].split(/\s/);
             recipientId = tweetInfo.in_reply_to_user_id_str;
@@ -36,14 +36,14 @@ module.exports = function(tweetInfo, isReply) {
         }
         userCollection.find({twitterId: twitterId})
         .then((result) => {return checkBalance(amount, !result? "0": result.amount, replyId, screenName)})
-        .then(() => {
-            var text = util.getMessage(config.message.tipOk, [screenName, util.num2str(amount)]);
-            return tweet(text, "", targetNm);
-        })
         .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
         .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
         .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: targetNm})})
         .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
+        .then(() => {
+            var text = util.getMessage(config.message.tipOk, [screenName, amount]);
+            return tweet(text, "", targetNm);
+        })
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
     });
@@ -51,7 +51,7 @@ module.exports = function(tweetInfo, isReply) {
 
 var checkBalance = function(amount, balance, replyId, screenName){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(util.num2str(amount)) === false || amount < 0.00000001 || balance === 0 || +balance < amount) {
+        if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 || +balance === 0 || +balance < +amount) {
             console.log("tip: not have enough Lisk");
             var text = util.getMessage(config.message.tipError, [balance]);
             tweet(text, replyId, screenName)

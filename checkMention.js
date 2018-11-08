@@ -1,4 +1,3 @@
-const async = require('async');
 const config = require('./config');
 const allocate = require('./allocate');
 const mentionIdCollection = require('./mongo/mentionId');
@@ -15,7 +14,6 @@ function getMention(sinceId, maxId, idx) {
     .then((result) => {
         console.log(result.resources.statuses['/statuses/mentions_timeline']);
         if (result.resources.statuses['/statuses/mentions_timeline'].remaining === 0) return;
-
         var params = {count: config.twitter.mention.count}
         if (maxId > 0) params['max_id'] = maxId;
         if (sinceId > 0) params['since_id'] = sinceId;
@@ -28,31 +26,23 @@ function getMention(sinceId, maxId, idx) {
                     console.log(result[i].entities.user_mentions);
                 }
             }
-            if (result.length > 0 && idx < 5) {
-                getMention(result[result.length - 1].id, idx + 1);
-            } else if (mentionData.length > 0) {
-                execCommand();
-            }
+            if (result.length > 0 && idx < 5) getMention(result[result.length - 1].id, idx + 1);
+            else if (mentionData.length > 0) execCommand(mentionData.pop());
         })
         .catch((err) => {console.log(err)});
     })
     .catch((err) => {console.log(err)});
 }
 
-function execCommand() {
-    mentionData.reverse();
-    async.eachSeries(mentionData, function(item, callback){
+function execCommand(item) {
+    mentionIdCollection.update({flg:1}, {$set: {mentionId: item.id_str, flg: 1}})
+    .then(() => {
         if (item.user.protected) {
-            callback();
-        } else {
             allocate(item)
-            .then(() => {callback()})
-            .catch((err) => {
-                console.log(err);
-                callback(); // continue
-            });
+            .then(() => {if (mentionData.length > 0) return execCommand(mentionData.pop())})
+            .catch((err) => {console.log(err);if (mentionData.length > 0) return execCommand(mentionData.pop())});
+        } else {
+            if (mentionData.length > 0) execCommand(mentionData.pop());
         }
-    }, function (error) {
-        mentionIdCollection.update({flg:1}, {$set: {mentionId: mentionData[mentionData.length-1].id_str, flg: 1}});
-    });
+    })
 }

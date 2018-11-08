@@ -39,22 +39,22 @@ module.exports.calc = function(num1, num2, type) {
   var n1 = num1;
   var n2 = num2;
   if (fix > 0) {
-    n1 = Decimal(this.num2str(n1)).mul(10**fix);
-    n2 = Decimal(this.num2str(n2)).mul(10**fix);
+    n1 = Decimal(this.num2str(n1)).mul(Math.pow(10,fix));
+    n2 = Decimal(this.num2str(n2)).mul(Math.pow(10,fix));
   }
   var result = 0;
   var decp = 0;
   if(type==='add') {
     result = Decimal(n1).add(n2);
-    decp = 10**fix;
+    decp = Math.pow(10,fix);
 
   } else if (type === 'sub') {
     result = Decimal(n1).sub(n2);
-    decp = 10**fix;
+    decp = Math.pow(10,fix);
 
   } else if (type === 'mul') {
     result = Decimal(n1).mul(n2);
-    decp = (10**fix)**2;
+    decp = Math.pow(Math.pow(10,fix),2);
 
   } else if (type === 'div') {
     result = Decimal(n1).div(n2);

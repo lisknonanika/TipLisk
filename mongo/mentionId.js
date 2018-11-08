@@ -33,7 +33,7 @@ module.exports.update = function(condition, data){
                 collection.updateOne(condition, data, {upsert: true}, (error, result) => {
                     client.close();
                     if (!error) {
-                        console.log("upsert latestMentionId");
+                        console.log("upsert mentionId");
                         resolve();
                     } else {
                         console.log(error);

@@ -9,10 +9,7 @@ module.exports = function(tweetInfo){
         var tweetId = tweetInfo.id_str;
         var screenNm = tweetInfo.user.screen_name;
         userCollection.find({twitterId: twitterId})
-        .then((result) => {
-            var balance = !result? "0": util.num2str(result.amount);
-            return tweet(util.getMessage(config.message.balance, [balance]), tweetId, screenNm)
-        })
+        .then((result) => {return tweet(util.getMessage(config.message.balance, [!result? "0": result.amount]), tweetId, screenNm)})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
     });

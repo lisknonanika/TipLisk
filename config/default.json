@@ -4,7 +4,7 @@
         "address": "",
         "passphrase": "",
         "secondPassphrase": "",
-        "getTransactionLimit": 100
+        "transactionLimit": 100
     },
     "mongo": {
         "url": "",

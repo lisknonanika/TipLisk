@@ -19,10 +19,7 @@ var sendDM = function(twitterId, text, remain){
                 console.log(`DM: ${twitterId}`);
                 resolve();
             })
-            .catch((err) => {
-                console.log(err);
-                reject(err);
-            });
+            .catch((err) => {reject(err);});
         } else {
             console.log("Limit: DM");
             reject("Limit: DM");

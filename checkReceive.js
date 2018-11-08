@@ -1,5 +1,4 @@
 const ObjectId = require('mongodb').ObjectId;
-const async = require('async');
 const config = require('./config');
 const util = require('./util');
 const trxIdCollection = require('./mongo/trxId');
@@ -9,7 +8,7 @@ const dm = require('./twitter/dm');
 
 module.exports = function(){
     trxIdCollection.find()
-    .then((result) => {return getTransaction(config.lisk.getTransactionLimit, 0, !result? "": result.transactionId)})
+    .then((result) => {return getTransaction(config.lisk.transactionLimit, 0, !result? "": result.transactionId)})
     .catch((err) => console.log(err));
 }
 
@@ -30,35 +29,29 @@ function getTransaction(limit, idx, trxId) {
             trxData.push(info);
         }
         if (trxData.length === limit * (idx + 1)) getTransaction(limit, idx + 1, trxId);
-        else if (trxData.length > 0 ) receive();
+        else if (trxData.length > 0 ) receive(trxData.pop());
     });
 }
 
-function receive() {
-    trxData.reverse();
-    var successIdx = -1;
-    async.eachSeries(trxData, function(item, callback){
-        successIdx += 1;
-        if (item.asset.data != null && item.asset.data.length > 0 && item.asset.data.toUpperCase() !== 'TIPLISK') {
-                console.log(`transactionId: ${item.id}, userId: ${item.asset.data}`);
-                userCollection.find({_id: ObjectId(item.asset.data)})
-                .then((result) => {
-                    if(!result) callback();
-                    else {
-                        var amount = util.calc(item.amount, 100000000, "div");
-                        var text = util.getMessage(config.message.receiveDM, [amount, item.id]);
-                        dm(twitterId, text)
-                        .then(() => {return userCollection.update({twitterId: result.twitterId, amout: amount})})
-                        .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: 'TipLisk'})})
-                        .then(() => {callback()})
-                        .catch((err) => {callback()});
-                    }
+function receive(item) {
+    var key = item.asset.data;
+    if (key != null && key.length > 0 && config.regexp.receivekey.test(key)) {
+        console.log(`transactionId: ${item.id}, userId: ${key}`);
+        trxIdCollection.update(item.id)
+        .then(() => {return userCollection.find({_id: ObjectId(key)})})
+        .then((result) => {
+            if(result) {
+                var amount = util.calc(item.amount, 100000000, "div");
+                userCollection.update({twitterId: result.twitterId, amout: amount})
+                .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: item.senderId})})
+                .then(() => {
+                    var text = util.getMessage(config.message.receiveDM, [amount, item.id]);
+                    return dm(result.twitterId, text)
                 })
-                .catch((err) => {callback()});
-        } else {
-            callback();
-        }
-    }, function (error) {
-        trxIdCollection.update(trxData[successIdx].id);
-    });
+                .catch((err) => {console.log(err);if (trxData.length > 0) return receive(trxData.pop());})
+            }
+        })
+        .then(() => {if (trxData.length > 0) return receive(trxData.pop())})
+        .catch((err) => {console.log(err);if (trxData.length > 0) return receive(trxData.pop());})
+    } else {if (trxData.length > 0) return receive(trxData.pop());}
 }

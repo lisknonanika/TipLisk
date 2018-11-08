@@ -35,9 +35,9 @@ module.exports.update = function(param){
         findOne(condition)
         .then((result) => {
             if (!result) {
-                param['amount'] = !param['amount']? "0": param['amount'];
+                param['amount'] = !param['amount']? "0": util.num2str(param['amount']);
                 return updateOne(param);
-            } else {
+            } else if (!param.noupd) {
                 param['amount'] = !param['amount']? result.amount: util.calc(param['amount'], result.amount, "add");
                 return updateOne(param);
             }

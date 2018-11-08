@@ -15,15 +15,19 @@ module.exports = function(tweetInfo){
         var replyId = tweetInfo.id_str;
         var screenName = tweetInfo.user.screen_name;
 
+        var trxId = "";
         userCollection.find({twitterId: twitterId})
-        .then((result) => {return checkBalance(+amount, replyId, !result? "0": result.amount, screenName)})
+        .then((result) => {return checkBalance(amount, replyId, !result? "0": result.amount, screenName)})
         .then(() => {return withdraw(amount, recipientId)})
-        .then((trxId) => {
+        .then((result) => {
+            trxId = result;
+            return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")});
+        })
+        .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: recipientId})})
+        .then(() => {
             var text = util.getMessage(config.message.withdrawOk, [amount, recipientId, trxId]);
             return dm(twitterId, text);
         })
-        .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
-        .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: recipientId})})
         .then(() => {resolve()})
         .catch((err) => {reject(err)});
     });
@@ -31,9 +35,9 @@ module.exports = function(tweetInfo){
 
 var checkBalance = function(amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
-        if (util.isNumber(util.num2str(amount)) === false || amount < 0.00000001 ||
-            balance === 0 || +util.calc(balance, 0.1, "sub") < amount) {
-            var text = util.getMessage(config.message.withdrawError, [balance < 0.1? 0: util.calc(balance, 0.1, "sub")]);
+        if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 ||
+            +balance === 0 || +util.calc(balance, 0.1, "sub") < +amount) {
+            var text = util.getMessage(config.message.withdrawError, [+balance < 0.1? "0": util.calc(balance, 0.1, "sub")]);
             tweet(text, replyId, screenName)
             .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {reject(err)});
