@@ -16,8 +16,9 @@ module.exports.formatString = function(msg, params) {
 
 module.exports.getMessage = function(messages, params) {
   var text = shuffle(messages, {'copy': true})[0];
+  text = this.formatString(text, params);
   text = config.mode === "test"? text + "\n\n※Testnetで実行中です。ご注意ください。": text;
-  return this.formatString(text, params);
+  return text;
 }
 
 module.exports.getDateTime = function(addminutes) {

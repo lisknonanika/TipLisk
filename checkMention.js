@@ -22,8 +22,7 @@ function getMention(sinceId, maxId, idx) {
             for (i = 0; i < result.length; i++) {
                 if (mentionData.length === 0 || mentionData[mentionData.length - 1].id_str !== result[i].id_str) {
                     mentionData.push(result[i]);
-                    console.log(result[i]);
-                    console.log(result[i].entities.user_mentions);
+                    console.log(`name: ${result[i].user.screen_name} text: ${result[i].text}`);
                 }
             }
             if (result.length > 0 && idx < 5) getMention(result[result.length - 1].id, idx + 1);

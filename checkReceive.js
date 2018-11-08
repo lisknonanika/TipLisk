@@ -42,7 +42,7 @@ function receive(item) {
         .then((result) => {
             if(result) {
                 var amount = util.calc(item.amount, 100000000, "div");
-                userCollection.update({twitterId: result.twitterId, amout: amount})
+                userCollection.update({twitterId: result.twitterId, amount: amount})
                 .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: item.senderId})})
                 .then(() => {
                     var text = util.getMessage(config.message.receiveDM, [amount, item.id]);
