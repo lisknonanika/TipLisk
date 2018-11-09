@@ -22,7 +22,7 @@
   例2： @tiplsk 入金
   ```
   - このコマンドを受け取ると**DMで**入金先のLiskアドレスと入金キーを送ります。<br>(入金先、入金キーは以降変わりません。)
-  - 入金キーは Lisk Hub などから入金時にメッセージ欄に入力して下さい。
+  - 入金キーは Lisk Hub などから入金時にメッセージ欄に入力して下さい。<br>
     <img src="https://lisknonanika.github.io/tiplisk/img/howto_deposit.png" width="20%" height="20%"/>
   - 入力間違い、入力忘れの際は [@tiplsk](https://twitter.com/tiplsk) または [中の人](https://twitter.com/ys_mdmg) にDM下さい。
 
