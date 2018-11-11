@@ -19,7 +19,7 @@ var tweet = function(text, replyId, screenName, remain){
             param['in_reply_to_status_id'] = !replyId? null: replyId;
             config.TwitterClient.post('statuses/update', null, param)
             .then((result) => {
-                console.log(`TweetId: ${result.id}`);
+                // console.log(`TweetId: ${result.id}`);
                 resolve();
             })
             .catch((err) => {
@@ -28,7 +28,7 @@ var tweet = function(text, replyId, screenName, remain){
             });
 
         } else {
-            console.log("Limit: tweet");
+            // console.log("Limit: tweet");
             reject("Limit: tweet");
         }
     });

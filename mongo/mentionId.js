@@ -16,8 +16,8 @@ var findOne = function(condition) {
             db.collection(config.mongo.collectionMentionId, (error, collection) => {
                 collection.findOne(condition, (error, result) => {
                     client.close();
-                    if (!result) console.log(`mentionId.find: not found`);
-                    else console.log(`mentionId.find: ${result.mentionId}`);
+                    // if (!result) console.log(`mentionId.find: not found`);
+                    // else console.log(`mentionId.find: ${result.mentionId}`);
                     resolve(result);
                 });
             });
@@ -33,7 +33,7 @@ module.exports.update = function(condition, data){
                 collection.updateOne(condition, data, {upsert: true}, (error, result) => {
                     client.close();
                     if (!error) {
-                        console.log("upsert mentionId");
+                        // console.log("upsert mentionId");
                         resolve();
                     } else {
                         console.log(error);
@@ -53,7 +53,7 @@ module.exports.insertHistory = function(mentionId){
                 collection.insertOne({mentionId: mentionId, execDate: new Date(), flg: 0}, (error, result) => {
                     client.close();
                     if (!error) {
-                        console.log("insert mentionId");
+                        // console.log("insert mentionId");
                         resolve();
                     } else {
                         console.log(error);

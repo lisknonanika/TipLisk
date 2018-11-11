@@ -9,7 +9,7 @@ module.exports = function(tweetInfo){
             if (!result || result.friend === 0) {
                 return follow(twitterId);
             } else {
-                console.log("already friends!");
+                // console.log("already friends!");
                 reject("already friends!");
             }
         })

@@ -18,8 +18,8 @@ var findOne = function(condition) {
             db.collection(config.mongo.collectionUser, (error, collection) => {
                 collection.findOne(condition, (error, result) => {
                     client.close();
-                    if (!result) console.log(`user.find: not found`);
-                    else console.log(`user.find: ${result.twitterId}`);
+                    // if (!result) console.log(`user.find: not found`);
+                    // else console.log(`user.find: ${result.twitterId}`);
                     resolve(result);
                 });
             });
@@ -59,7 +59,7 @@ var updateOne = function(param) {
                 collection.updateOne(condition, {$set: data}, {upsert: true}, (error, result) => {
                     client.close();
                     if (!error) {
-                        console.log(`upsert user: ${param.twitterId}`);
+                        // console.log(`upsert user: ${param.twitterId}`);
                         resolve();
                     } else {
                         console.log(error);

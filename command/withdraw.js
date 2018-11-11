@@ -58,10 +58,10 @@ var withdraw = function(amount, recipientId){
         if (config.lisk.secondPassphrase.length > 0) params['secondPassphrase'] = config.lisk.secondPassphrase;
     
         var trxstr = lisk.transaction.transfer(params);
-        console.log(trxstr);
+        // console.log(trxstr);
         config.LiskClient.transactions.broadcast(trxstr)
         .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             resolve(trxstr.id);
         }, function(error){
             console.log(error);

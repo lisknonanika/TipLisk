@@ -16,7 +16,7 @@ var show = function(twitterId){
             if (result.resources.users['/users/show/:id'].remaining < 100) return;
             config.TwitterClient.get('users/show/:id', {user_id: twitterId})
             .then((result) => {
-                console.log(`show: id:${result.id_str} name:${result.screen_name}`);
+                // console.log(`show: id:${result.id_str} name:${result.screen_name}`);
                 resolve(result);
             })
             .catch((err) => {

@@ -52,7 +52,7 @@ var checkBalance = function(amount, balance, replyId, screenName){
     return new Promise(function(resolve, reject){
         console.log(amount, balance, replyId, screenName)
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 || +balance === 0 || +balance < +amount) {
-            console.log("tip: not have enough Lisk");
+            // console.log("tip: not have enough Lisk");
             var text = util.getMessage(config.message.tipError, [balance]);
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
