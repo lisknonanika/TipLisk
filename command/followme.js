@@ -3,7 +3,7 @@ const friendsCollection = require('../mongo/friends');
 
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
-        var twitterId = tweetInfo.user.id_st;
+        var twitterId = tweetInfo.user.id_str;
         friendsCollection.find({twitterId: twitterId})
         .then((result) => {
             if (!result || result.length === 0 || result[0].friend === 0) {
