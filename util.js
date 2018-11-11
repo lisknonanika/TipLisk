@@ -1,5 +1,6 @@
 const shuffle = require('shuffle-array');
 const Decimal = require('decimal');
+const dateformat = require('dateformat');
 const config = require('./config');
 
 module.exports.isNumber = function(val){
@@ -17,7 +18,9 @@ module.exports.formatString = function(msg, params) {
 module.exports.getMessage = function(messages, params) {
   var text = shuffle(messages, {'copy': true})[0];
   text = this.formatString(text, params);
-  text = config.mode === "test"? text + "\n\n※Testnetで実行中です。ご注意ください。": text;
+  text = text + shuffle(config.message.random, {'copy': true})[0];
+  text = text + "\n\n（受付時刻：" + dateformat(new Date(), 'HH:MM:ss' + "）")
+  if (config.mode === "test") text = text + "\n\n※Testnetで実行中です。ご注意ください。";
   return text;
 }
 
