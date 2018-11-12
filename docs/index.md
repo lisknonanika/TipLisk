@@ -11,9 +11,12 @@ Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするため�
 - [@zenyhime](https://twitter.com/zenyhime)：BitZenyのやり取り
 - [@tipxrp](https://twitter.com/tipxrp)：XRPのやり取り
 
-## 注意事項
+## 入出金とチップについて
 - Liskの仕様上、tiplskへの入金および、tiplskからの出金には0.1LSKの手数料が発生します。
 - Tipのやり取りはチェーン外で行われるため、[Lisk Blockchain Explorer](https://explorer.lisk.io/)には表示されません。
+![tipimg](https://lisknonanika.github.io/tiplisk/img/tipimg.png)
+
+## 注意事項
 - Twitterを使用するため、Twitterの制限等で利用が出来なくなる可能性があります。
 - 過度なコマンド発行でわざと制限をかけさせようとする行為は決して行わないでください。
 - ウォレット代わりに使用することはせず、チップのやり取りに最低限必要なLSKのみ入金するようにしてください。
