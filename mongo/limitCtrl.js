@@ -23,7 +23,7 @@ module.exports.update = function(target){
                             // console.log(`upsert limitCtrl: ${target}, remain: ${data["$set"].remain}`);
                             resolve(data["$set"].remain);
                         } else {
-                            console.log(error);
+                            console.log("[" + util.getDateTimeString() + "]" + error);
                             reject(error);
                         }
                     });

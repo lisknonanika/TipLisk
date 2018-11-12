@@ -1,12 +1,16 @@
 const limitCtrlCollection = require('../mongo/limitCtrl');
 const config = require('../config');
+const util = require('../util');
 
 module.exports = function(twitterId, text){
     return new Promise(function(resolve, reject){
         limitCtrlCollection.update(config.twitter.dm.name)
         .then((remain) => {return sendDM(twitterId, text, remain)})
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -19,7 +23,10 @@ var sendDM = function(twitterId, text, remain){
                 // console.log(`DM: ${twitterId}`);
                 resolve();
             })
-            .catch((err) => {reject(err);});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         } else {
             // console.log("Limit: DM");
             reject("Limit: DM");

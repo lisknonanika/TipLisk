@@ -18,8 +18,8 @@ module.exports.insert = function(param){
                         // console.log("insert history");
                         resolve();
                     } else {
-                        console.log(error);
-                        reject(new Error(error));
+                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        reject(error);
                     }
                 });
             });

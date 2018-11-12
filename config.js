@@ -47,69 +47,69 @@ var regexp = {
 define('regexp', regexp);
 
 var filter = {
-    track: "@tiplsk tip, @tiplsk send, @tiplsk チップ, " +
-           "@tiplsk balance, @tiplsk 残高, @tiplsk 所持金, " +
-           "@tiplsk deposit, @tiplsk 入金, " +
-           "@tiplsk withdraw, @tiplsk 出金, @tiplsk 送金, " +
-           "@tiplsk followme, @tiplsk フォローして"
+    track: "@tiplsk tip,@tiplsk send,@tiplsk チップ, " +
+           "@tiplsk balance,@tiplsk 残高,@tiplsk 所持金, " +
+           "@tiplsk deposit,@tiplsk 入金, " +
+           "@tiplsk withdraw,@tiplsk 出金,@tiplsk 送金, " +
+           "@tiplsk followme,@tiplsk フォローして"
 }
 define('filter', filter);
 
 var liskExplorer = config.mode === 'test'? "https://testnet-explorer.lisk.io/tx/":
                                            "https://explorer.lisk.io/tx/";
 var message = {
-    "tipOk": ["\n{0} さんから {1}LSK チップが届きました！",
-              "\n{0} さんが {1}LSK くれましたよ！",
-              "\n{0} さんがチップをくれたみたい。（{1}LSK）",
-              "\n{1}LSK {0}さんがくれたみたい。\nやったね！",
-              "\nなんと！\n{0} さんが {1}LSK くれましたよ！",
-              "\n{0} さんからチップだよ！\n（ ・ω・）つ【{1}LSK】",
-              "\n{0} さんが {1}LSK くれるみたいですよ！",
-              "\n{0} さんが {1}LSK くれましたー！",
-              "\n{0} さんがあなたにって {1}LSK くれましたよ？\n今日は何かのお祝いですか？",
-              "\nやったやん！\n{0} さんから {1}LSK 届いたで！",
-              "\n{0} さんから {1}LSK だーよー！",
-              "\n{1}LSKが {0} さんから届きました！",
-              "\nおぉ！？\n{0} さんが {1}LSK くれたよ！"],
-    "tipError": ["\n残高不足のためチップを渡せませんでした。\n\n残高：{0}LSK",
-                 "\n残高が不足しているみたいですよ？\n\n残高：{0}LSK",
-                 "\nごめんなさい！\n残高が足りない時はチップを渡せないんです！\n\n残高：{0}LSK",
-                 "\nん？間違っちゃいましたか？\n\n残高：{0}LSK",
-                 "\n残高が足りない時はチップ渡せないって知りませんでした？\n\n残高：{0}LSK",
-                 "\nチップむーりー\n\n残高：{0}LSK",
-                 "\nちょいちょい！\n残高 {0}LSK なんやから無理やで！",
-                 "\nごめんなぁ。。\n残高たりひんみたいやわぁ？\n\n残高：{0}LSK"],
+    "tipOk": ["\n\n{0} さんから {1}LSK チップが届きました！",
+              "\n\n{0} さんが {1}LSK くれましたよ！",
+              "\n\n{0} さんがチップをくれたみたい。（{1}LSK）",
+              "\n\n{1}LSK {0}さんがくれたみたい。\nやったね！",
+              "\n\nなんと！\n{0} さんが {1}LSK くれましたよ！",
+              "\n\n{0} さんからチップだよ！\n（ ・ω・）つ【{1}LSK】",
+              "\n\n{0} さんが {1}LSK くれるみたいですよ！",
+              "\n\n{0} さんが {1}LSK くれましたー！",
+              "\n\n{0} さんがあなたにって {1}LSK くれましたよ？\n今日は何かのお祝いですか？",
+              "\n\nやったやん！\n{0} さんから {1}LSK 届いたで！",
+              "\n\n{0} さんから {1}LSK だーよー！",
+              "\n\n{1}LSKが {0} さんから届きました！",
+              "\n\nおぉ！？\n{0} さんが {1}LSK くれたよ！"],
+    "tipError": ["\n\n残高不足のためチップを渡せませんでした。\n\n残高：{0}LSK",
+                 "\n\n残高が不足しているみたいですよ？\n\n残高：{0}LSK",
+                 "\n\nごめんなさい！\n残高が足りない時はチップを渡せないんです！\n\n残高：{0}LSK",
+                 "\n\nん？間違っちゃいましたか？\n\n残高：{0}LSK",
+                 "\n\n残高が足りない時はチップ渡せないって知りませんでした？\n\n残高：{0}LSK",
+                 "\n\nチップむーりー\n\n残高：{0}LSK",
+                 "\n\nちょいちょい！\n残高 {0}LSK なんやから無理やで！",
+                 "\n\nごめんなぁ。。\n残高たりひんみたいやわぁ？\n\n残高：{0}LSK"],
     "withdrawDM": ["{0}LSK を {1} へ送金しました。\n" +
-                   "承認状況はLisk Explorer等で確認してください。\n\n" +
+                   "承認状況はLisk Explorer等で確認してください。\n" +
                    liskExplorer + "{2}"],
-    "withdrawError": ["\n残高不足のため出金できませんでした。\n\n出金可能：{0}LSK",
-                      "\n出金できないみたい。\nLiskの手数料もあるから注意してね？\n\n出金可能：{0}LSK",
-                      "\nごめんなさい！\n残高より多い枚数は出金できないんです！\n\n出金可能：{0}LSK",
-                      "\nん？間違っちゃいましたか？\n\n出金可能：{0}LSK",
-                      "\nそんなに出金できるほど持ってないでしょ？\n\n出金可能：{0}LSK",
-                      "\n出金？\nムリムリ\n\n出金可能：{0}LSK",
-                      "\n出金するにはちょーっと足りひんみたいやわぁ。。\n\n出金可能：{0}LSK"],
-    "balance": ["\n残高は {0}LSK です。\n出金時はLiskの送金手数料がかかるのでご注意ください。",
-                "\n残高は {0}LSK だよ！\n出金するときはLiskの送金手数料がかかるから注意してね？",
-                "\n残高は {0}LSK みたい。",
-                "\n残高は～。。\n{0}LSK？\nへー。",
-                "\nんー？\n{0}LSK かな？",
-                "\n{0}LSK だよ！",
-                "\n{0}LSK やで～",
-                "\nウチの調べによると、残高は {0}LSK みたいやで？",
-                "\n残高はなんと！\n\n{0}LSK！",
-                "\nえーっと、残高は。。\n\n{0}LSK！",
-                "\n{0}LSK ですよ。",
-                "\n{0}LSK 持ってるよ。",
-                "\nな、なんと！\n{0}LSK です！"],
+    "withdrawError": ["\n\n残高不足のため出金できませんでした。\n\n出金可能：{0}LSK",
+                      "\n\n出金できないみたい。\nLiskの手数料もあるから注意してね？\n\n出金可能：{0}LSK",
+                      "\n\nごめんなさい！\n残高より多い枚数は出金できないんです！\n\n出金可能：{0}LSK",
+                      "\n\nん？間違っちゃいましたか？\n\n出金可能：{0}LSK",
+                      "\n\nそんなに出金できるほど持ってないでしょ？\n\n出金可能：{0}LSK",
+                      "\n\n出金？\nムリムリ\n\n出金可能：{0}LSK",
+                      "\n\n出金するにはちょーっと足りひんみたいやわぁ。。\n\n出金可能：{0}LSK"],
+    "balance": ["\n\n残高は {0}LSK です。\n出金時はLiskの送金手数料がかかるのでご注意ください。",
+                "\n\n残高は {0}LSK だよ！\n出金するときはLiskの送金手数料がかかるから注意してね？",
+                "\n\n残高は {0}LSK みたい。",
+                "\n\n残高は～。。\n{0}LSK？\nへー。",
+                "\n\nんー？\n{0}LSK かな？",
+                "\n\n{0}LSK だよ！",
+                "\n\n{0}LSK やで～",
+                "\n\nウチの調べによると、残高は {0}LSK みたいやで？",
+                "\n\n残高はなんと！\n{0}LSK！",
+                "\n\nえーっと、残高は。。\n{0}LSK！",
+                "\n\n{0}LSK ですよ。",
+                "\n\n{0}LSK 持ってるよ。",
+                "\n\nな、なんと！\n{0}LSK です！"],
     "depositDM": ["入金の際は発行されたKEYをトランザクションのメモ欄に入力してください。\n" +
                   "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。\n" +
                   "・KEY：{0}\n・入金先：{1}"],
     "receiveDM": ["{0}LSK 入金を確認しました。\n" +
-                  "承認状況はLisk Explorer等で確認してください。\n\n" +
+                  "承認状況はLisk Explorer等で確認してください。\n" +
                   liskExplorer + "{1}"],
     "random": ["",
-               "\ntiplskって？：https://lisknonanika.github.io/tiplisk/",
-               "\ntiplskの使い方：https://lisknonanika.github.io/tiplisk/howto.html"]
+               "\n\ntiplskって？：https://lisknonanika.github.io/tiplisk/",
+               "\n\ntiplskの使い方：https://lisknonanika.github.io/tiplisk/howto.html"]
 }
 define('message', message);

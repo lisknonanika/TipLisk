@@ -11,6 +11,9 @@ module.exports = function(tweetInfo){
         userCollection.find({twitterId: twitterId})
         .then((result) => {return tweet(util.getMessage(config.message.balance, [!result? "0": result.amount]), tweetId, screenNm)})
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }

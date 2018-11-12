@@ -1,11 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
+const util = require('../util');
 
 module.exports.find = function(condition){
     return new Promise(function(resolve, reject){
         findOne(condition)
         .then((result) => {resolve(result)})
-        .catch((err) => reject(err));
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -36,7 +40,7 @@ module.exports.update = function(condition, data){
                         // console.log("upsert mentionId");
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });
@@ -56,7 +60,7 @@ module.exports.insertHistory = function(mentionId){
                         // console.log("insert mentionId");
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });

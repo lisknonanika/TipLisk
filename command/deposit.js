@@ -16,6 +16,9 @@ module.exports = function(tweetInfo){
             return dm(twitterId, text);
         })
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }

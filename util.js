@@ -19,7 +19,7 @@ module.exports.getMessage = function(messages, params) {
   var text = shuffle(messages, {'copy': true})[0];
   text = this.formatString(text, params);
   text = text + shuffle(config.message.random, {'copy': true})[0];
-  text = text + "\n\n（受付時刻：" + dateformat(new Date(), 'HH:MM:ss' + "）")
+  text = text + "\n（受付時刻：" + this.getTimeString() + "）"
   if (config.mode === "test") text = text + "\n\n※Testnetで実行中です。ご注意ください。";
   return text;
 }
@@ -28,6 +28,14 @@ module.exports.getDateTime = function(addminutes) {
   var d = new Date();
   if (addminutes) d.setMinutes(d.getMinutes() + addminutes);
   return d;
+}
+
+module.exports.getTimeString = function() {
+  return dateformat(new Date(), 'HH:MM:ss.l');
+}
+
+module.exports.getDateTimeString = function() {
+  return dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss.l');
 }
 
 module.exports.num2str = function(num) {

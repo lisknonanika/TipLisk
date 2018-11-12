@@ -1,12 +1,16 @@
 const limitCtrlCollection = require('../mongo/limitCtrl');
 const config = require('../config');
+const util = require('../util');
 
 module.exports = function(twitterId){
     return new Promise(function(resolve, reject){
         limitCtrlCollection.update(config.twitter.follow.name)
         .then((remain) => {return follow(twitterId, remain)})
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -19,7 +23,7 @@ var follow = function(twitterId, remain){
                 resolve();
             })
             .catch((err) => {
-                console.log(err);
+                console.log("[" + util.getDateTimeString() + "]" + err);
                 reject(err);
             });
         } else {

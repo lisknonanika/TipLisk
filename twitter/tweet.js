@@ -7,7 +7,10 @@ module.exports = function(text, replyId, screenName){
         limitCtrlCollection.update(config.twitter.tweet.name)
         .then((remain) => {return tweet(text, replyId, screenName, remain)})
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -23,7 +26,7 @@ var tweet = function(text, replyId, screenName, remain){
                 resolve();
             })
             .catch((err) => {
-                console.log(err);
+                console.log("[" + util.getDateTimeString() + "]" + err);
                 reject(err);
             });
 

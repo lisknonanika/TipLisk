@@ -1,5 +1,6 @@
 const async = require('async');
 const config = require('./config');
+const util = require('./util');
 const follow = require('./twitter/follow')
 const userShow = require('./twitter/userShow')
 const friendsCollection = require('./mongo/friends')
@@ -11,7 +12,7 @@ module.exports = function(){
     .then(() => {return getFollowers()})
     .then(() => {return reflesh()})
     .then(() => {return execute(followers.pop())})
-    .catch((err) => {console.log(err)});
+    .catch((err) => {console.log("[" + util.getDateTimeString() + "]" + err)});
 }
 
 var getFriends = function() {
@@ -26,9 +27,15 @@ var getFriends = function() {
                 else friends = result.ids;
                 resolve();
             })
-            .catch((err) => {reject(err)});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         })
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -47,9 +54,15 @@ var getFollowers = function() {
                 followers = result.ids;
                 resolve();
             })
-            .catch((err) => {reject(err)});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         })
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -64,6 +77,7 @@ var reflesh = function() {
                     .catch(() => {callback()});
                 }
             }, function (error) {
+                if (!error) console.log("[" + util.getDateTimeString() + "]" + error);
                 resolve();
             });
         });
@@ -85,6 +99,7 @@ var execute = function(twitterId) {
             else resolve();
         })
         .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
             if (followers.length > 0) return execute(followers.pop());
             else resolve();
         });

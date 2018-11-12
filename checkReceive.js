@@ -9,7 +9,7 @@ const dm = require('./twitter/dm');
 module.exports = function(){
     trxIdCollection.find()
     .then((result) => {return getTransaction(config.lisk.transactionLimit, 0, !result? "": result.transactionId)})
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("[" + util.getDateTimeString() + "]" + err));
 }
 
 var trxData = new Array();
@@ -48,10 +48,16 @@ function receive(item) {
                     var text = util.getMessage(config.message.receiveDM, [amount, item.id]);
                     return dm(result.twitterId, text)
                 })
-                .catch((err) => {console.log(err);if (trxData.length > 0) return receive(trxData.pop());})
+                .catch((err) => {
+                    console.log("[" + util.getDateTimeString() + "]" + err);
+                    if (trxData.length > 0) return receive(trxData.pop());
+                })
             }
         })
         .then(() => {if (trxData.length > 0) return receive(trxData.pop())})
-        .catch((err) => {console.log(err);if (trxData.length > 0) return receive(trxData.pop());})
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            if (trxData.length > 0) return receive(trxData.pop());
+        });
     } else {if (trxData.length > 0) return receive(trxData.pop());}
 }

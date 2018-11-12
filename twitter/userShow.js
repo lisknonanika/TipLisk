@@ -1,10 +1,14 @@
 const config = require('../config');
+const util = require('../util');
 
 module.exports = function(twitterId){
     return new Promise(function(resolve, reject){
         show(twitterId)
         .then((result) => {resolve(result)})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -20,7 +24,7 @@ var show = function(twitterId){
                 resolve(result);
             })
             .catch((err) => {
-                console.log(err);
+                console.log("[" + util.getDateTimeString() + "]" + err);
                 reject(err);
             });
         });

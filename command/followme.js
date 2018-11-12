@@ -1,3 +1,4 @@
+const util = require('../util');
 const follow = require('../twitter/follow');
 const friendsCollection = require('../mongo/friends');
 
@@ -15,6 +16,9 @@ module.exports = function(tweetInfo){
         })
         .then(() => {return friendsCollection.update({twitterId: twitterId}, {$set:{twitterId: twitterId, friend: 1}})})
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }

@@ -7,7 +7,10 @@ module.exports.find = function(condition){
     return new Promise(function(resolve, reject){
         findOne(condition)
         .then((result) => {resolve(result)})
-        .catch((err) => reject(err));
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -43,7 +46,10 @@ module.exports.update = function(param){
             }
         })
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -62,7 +68,7 @@ var updateOne = function(param) {
                         // console.log(`upsert user: ${param.twitterId}`);
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });

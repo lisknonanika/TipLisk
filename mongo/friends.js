@@ -1,11 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
+const util = require('../util');
 
 module.exports.find = function(condition){
     return new Promise(function(resolve, reject){
         findByCondition(condition)
         .then((result) => {resolve(result)})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -37,7 +41,7 @@ module.exports.update = function(condition, data){
                         // console.log("upsert friends");
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });
@@ -57,7 +61,7 @@ module.exports.delete = function(condition){
                         // console.log("delete friends");
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });

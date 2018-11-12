@@ -41,10 +41,13 @@ module.exports = function(tweetInfo, isReply) {
         .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
         .then(() => {
             var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount]);
-            return tweet(text, "", targetNm);
+            return tweet(text, replyId, targetNm);
         })
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -56,7 +59,10 @@ var checkBalance = function(amount, balance, replyId, screenName){
             var text = util.getMessage(config.message.tipError, [balance]);
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
-            .catch((err) => {reject(err)});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         } else {
             resolve();
         }

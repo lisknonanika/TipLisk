@@ -1,11 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('../config');
+const util = require('../util');
 
 module.exports.find = function(){
     return new Promise(function(resolve, reject){
         findOne()
         .then((result) => {resolve(result)})
-        .catch((err) => reject(err));
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -37,7 +41,7 @@ module.exports.update = function(trxId){
                         // console.log("upsert latestTransactionId");
                         resolve();
                     } else {
-                        console.log(error);
+                        console.log("[" + util.getDateTimeString() + "]" + error);
                         reject(error);
                     }
                 });

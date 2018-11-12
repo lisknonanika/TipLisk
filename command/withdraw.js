@@ -29,7 +29,10 @@ module.exports = function(tweetInfo){
             return dm(twitterId, text);
         })
         .then(() => {resolve()})
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
 
@@ -40,7 +43,10 @@ var checkBalance = function(amount, replyId, balance, screenName){
             var text = util.getMessage(config.message.withdrawError, [+balance < 0.1? "0": util.calc(balance, 0.1, "sub")]);
             tweet(text, replyId, screenName)
             .then(() => {reject("withdraw: not have enough Lisk")})
-            .catch((err) => {reject(err)});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         } else {
             resolve();
         }
@@ -64,7 +70,7 @@ var withdraw = function(amount, recipientId){
             // console.log(res.data);
             resolve(trxstr.id);
         }, function(error){
-            console.log(error);
+            console.log("[" + util.getDateTimeString() + "]" + error);
             reject(error);
         });
     });

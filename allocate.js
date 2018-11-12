@@ -1,4 +1,5 @@
 const config = require('./config');
+const util = require('./util');
 const userCollection = require('./mongo/user');
 const mentionIdCollection = require('./mongo/mentionId');
 const tip = require('./command/tip');
@@ -31,8 +32,14 @@ module.exports = function(tweetInfo){
                 else if (config.regexp.followme.test(tweetInfo.text)) return followme(tweetInfo);
             })
             .then(() => {resolve()})
-            .catch((err) => {reject(err)});
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         })
-        .catch((err) => {reject(err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err);
+        });
     });
 }
