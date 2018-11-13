@@ -2,6 +2,7 @@ const userCollection = require('../mongo/user');
 const config = require('../config');
 const util = require('../util');
 const tweet = require('../twitter/tweet');
+const lisk2jpy = require('../api/lisk2jpy');
 
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
