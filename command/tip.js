@@ -42,7 +42,7 @@ module.exports = function(tweetInfo, isReply) {
             .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
             .then(() => {
                 var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount]);
-                return tweet(text, replyId, targetNm);
+                return tweet(`${targetNm}さんへ\n${text}`, replyId, targetNm);
             })
             .then(() => {resolve()})
             .catch((err) => {

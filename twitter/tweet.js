@@ -18,7 +18,7 @@ var tweet = function(text, replyId, screenName, remain){
     return new Promise(function(resolve, reject){
         if(remain > 0) {
             var param ={}
-            param['status'] = !screenName? text: `@${screenName} さん${text}`;
+            param['status'] = !screenName? text: `@${screenName} ${text}`;
             param['in_reply_to_status_id'] = !replyId? null: replyId;
             config.TwitterClient.post('statuses/update', null, param)
             .then((result) => {
