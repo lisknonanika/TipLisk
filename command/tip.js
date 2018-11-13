@@ -2,6 +2,7 @@ const userCollection = require('../mongo/user');
 const historyCollection = require('../mongo/history');
 const tweet = require('../twitter/tweet');
 const config = require('../config');
+const lisk2jpy = require('../api/lisk2jpy');
 const util = require('../util');
 
 module.exports = function(tweetInfo, isReply) {
@@ -40,8 +41,9 @@ module.exports = function(tweetInfo, isReply) {
             .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
             .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: targetNm})})
             .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
-            .then(() => {
-                var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount]);
+            .then(() => {return lisk2jpy(amount)})
+            .then((jpy) => {
+                var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount, jpy]);
                 return tweet(`${targetNm}さんへ\n${text}`, replyId, targetNm);
             })
             .then(() => {resolve()})
