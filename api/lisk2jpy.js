@@ -9,7 +9,7 @@ module.exports = function(amount) {
             json: true
         }
         webclient(options, function (err, res, body) {
-            if (!err && res.statusCode == 200) resolve(util.calc(amount, body.rate, "mul"));
+            if (!err && res.statusCode == 200) resolve(Number(util.calc(amount, Number(body.rate).toFixed(3), "mul")).toFixed(3));
             else {
                 console.log("can not get LSK_JPY");
                 resolve("？");
