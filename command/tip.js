@@ -30,24 +30,26 @@ module.exports = function(tweetInfo, isReply) {
             amount = commands[3];
         }
         if (!recipientId) {
+            console.log("[" + util.getDateTimeString() + "]recipientId not found");
             resolve();
-            return;
+
+        } else {
+            userCollection.find({twitterId: twitterId})
+            .then((result) => {return checkBalance(amount, !result? "0": result.amount, replyId, screenName)})
+            .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
+            .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
+            .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: targetNm})})
+            .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
+            .then(() => {
+                var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount]);
+                return tweet(text, replyId, targetNm);
+            })
+            .then(() => {resolve()})
+            .catch((err) => {
+                console.log("[" + util.getDateTimeString() + "]" + err);
+                reject(err);
+            });
         }
-        userCollection.find({twitterId: twitterId})
-        .then((result) => {return checkBalance(amount, !result? "0": result.amount, replyId, screenName)})
-        .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
-        .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
-        .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: targetNm})})
-        .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
-        .then(() => {
-            var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount]);
-            return tweet(text, replyId, targetNm);
-        })
-        .then(() => {resolve()})
-        .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
-            reject(err);
-        });
     });
 }
 
