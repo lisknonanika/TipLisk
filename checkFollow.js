@@ -19,7 +19,7 @@ var getFriends = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "friends"})
         .then((result) => {
-            console.log("[/friends/ids] " + result.resources.friends['/friends/ids']);
+            console.log("[/friends/ids] " + JSON.stringify(result.resources.friends['/friends/ids']));
             if (result.resources.friends['/friends/ids'].remaining === 0) return;
             config.TwitterClient.get('friends/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
@@ -43,7 +43,7 @@ var getFollowers = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "followers"})
         .then((result) => {
-            console.log("[/followers/ids] " + result.resources.followers['/followers/ids']);
+            console.log("[/followers/ids] " + JSON.stringify(result.resources.followers['/followers/ids']));
             if (result.resources.followers['/followers/ids'].remaining === 0) return;
             config.TwitterClient.get('followers/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
