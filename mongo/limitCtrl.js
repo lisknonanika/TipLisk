@@ -20,7 +20,6 @@ module.exports.update = function(target){
                     collection.updateOne({name: target}, data, {upsert: true}, (error, result) => {
                         client.close();
                         if (!error) {
-                            // console.log(`upsert limitCtrl: ${target}, remain: ${data["$set"].remain}`);
                             resolve(data["$set"].remain);
                         } else {
                             console.log("[" + util.getDateTimeString() + "]" + error);

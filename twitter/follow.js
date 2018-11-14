@@ -19,7 +19,6 @@ var follow = function(twitterId, remain){
         if(remain > 0) {
             config.TwitterClient.post('friendships/create', null, {user_id: twitterId, follow: false})
             .then((result) => {
-                // console.log(`follow: ${result.id_str}`);
                 resolve();
             })
             .catch((err) => {
@@ -27,7 +26,6 @@ var follow = function(twitterId, remain){
                 reject(err);
             });
         } else {
-            // console.log("Limit: follow");
             reject("Limit: follow");
         }
     });

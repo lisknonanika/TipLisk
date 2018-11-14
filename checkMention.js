@@ -13,7 +13,7 @@ var mentionData = new Array();
 function getMention(sinceId, maxId, idx) {
     config.TwitterClient.get('application/rate_limit_status', {resources: "statuses"})
     .then((result) => {
-        console.log(result.resources.statuses['/statuses/mentions_timeline']);
+        console.log("[/statuses/mentions_timeline] " + result.resources.statuses['/statuses/mentions_timeline']);
         if (result.resources.statuses['/statuses/mentions_timeline'].remaining === 0) return;
         var params = {count: config.twitter.mention.count}
         if (maxId > 0) params['max_id'] = maxId;
@@ -23,7 +23,6 @@ function getMention(sinceId, maxId, idx) {
             for (i = 0; i < result.length; i++) {
                 if (mentionData.length === 0 || mentionData[mentionData.length - 1].id_str !== result[i].id_str) {
                     mentionData.push(result[i]);
-                    // console.log(`name: ${result[i].user.screen_name} text: ${result[i].text}`);
                 }
             }
             if (result.length > 0 && idx < 5) getMention(result[result.length - 1].id, idx + 1);

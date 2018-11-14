@@ -1,9 +1,9 @@
 const async = require('async');
 const config = require('./config');
 const util = require('./util');
-const follow = require('./twitter/follow')
-const userShow = require('./twitter/userShow')
-const friendsCollection = require('./mongo/friends')
+const follow = require('./twitter/follow');
+const userShow = require('./twitter/userShow');
+const friendsCollection = require('./mongo/friends');
 
 var friends = [];
 var followers = [];
@@ -19,7 +19,7 @@ var getFriends = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "friends"})
         .then((result) => {
-            console.log(result.resources.friends['/friends/ids']);
+            console.log("[/friends/ids] " + result.resources.friends['/friends/ids']);
             if (result.resources.friends['/friends/ids'].remaining === 0) return;
             config.TwitterClient.get('friends/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
@@ -43,7 +43,7 @@ var getFollowers = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "followers"})
         .then((result) => {
-            console.log(result.resources.followers['/followers/ids']);
+            console.log("[/followers/ids] " + result.resources.followers['/followers/ids']);
             if (result.resources.followers['/followers/ids'].remaining === 0) return;
             config.TwitterClient.get('followers/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
@@ -70,16 +70,20 @@ var reflesh = function() {
     return new Promise(function(resolve, reject){
         friendsCollection.find({friend: 1})
         .then((result) => {
-            async.each(result, function(item, callback){
-                if (friends.indexOf(item.twitterId) < 0) {
-                    friendsCollection.delete({twitterId: item.twitterId})
-                    .then(() => {callback()})
-                    .catch(() => {callback()});
-                }
-            }, function (error) {
-                if (!error) console.log("[" + util.getDateTimeString() + "]" + error);
-                resolve();
-            });
+            if (result.length === 0) resolve();
+            else {
+                async.each(result, function(item, callback){
+                    if (friends.indexOf(item.twitterId) < 0) {
+                        console.log("[" + util.getDateTimeString() + "]remove：" + item.twitterId);
+                        friendsCollection.delete({twitterId: item.twitterId})
+                        .then(() => {callback()})
+                        .catch(() => {callback()});
+                    }
+                }, function (error) {
+                    if (!error) console.log("[" + util.getDateTimeString() + "]" + error);
+                    resolve();
+                });
+            }
         });
     });
 }
@@ -99,7 +103,7 @@ var execute = function(twitterId) {
             else resolve();
         })
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            if (err && err !== "already friends!") console.log("[" + util.getDateTimeString() + "]" + err);
             if (followers.length > 0) return execute(followers.pop());
             else resolve();
         });

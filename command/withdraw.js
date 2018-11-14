@@ -40,7 +40,7 @@ var checkBalance = function(amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 ||
             +balance === 0 || +util.calc(balance, 0.1, "sub") < +amount) {
-            var text = util.getMessage(config.message.withdrawError, [+balance < 0.1? "0": util.calc(balance, 0.1, "sub")]);
+            var text = util.getMessage(config.message.withdrawError, []);
             tweet(text, replyId, screenName)
             .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {
@@ -64,10 +64,8 @@ var withdraw = function(amount, recipientId){
         if (config.lisk.secondPassphrase.length > 0) params['secondPassphrase'] = config.lisk.secondPassphrase;
     
         var trxstr = lisk.transaction.transfer(params);
-        // console.log(trxstr);
         config.LiskClient.transactions.broadcast(trxstr)
         .then(res => {
-            // console.log(res.data);
             resolve(trxstr.id);
         }, function(error){
             console.log("[" + util.getDateTimeString() + "]" + error);

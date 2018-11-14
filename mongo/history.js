@@ -15,7 +15,6 @@ module.exports.insert = function(param){
                 collection.insertOne(historydata, (error, result) => {
                     client.close();
                     if (!error) {
-                        // console.log("insert history");
                         resolve();
                     } else {
                         console.log("[" + util.getDateTimeString() + "]" + error);

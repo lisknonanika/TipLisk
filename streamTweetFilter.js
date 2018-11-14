@@ -3,7 +3,6 @@ const util = require('./util');
 const allocate = require('./allocate');
 
 module.exports = function(){
-    // console.log(config.filter);
     config.TwitterClient.stream('statuses/filter', config.filter)
     .on("start", response => console.log(`stream start: status=${response.status}`))
     .on("data", data => {

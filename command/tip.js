@@ -43,8 +43,8 @@ module.exports = function(tweetInfo, isReply) {
             .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
             .then(() => {return lisk2jpy(amount)})
             .then((jpy) => {
-                var text = util.getMessage(config.message.tipOk, [`@${screenName}`, amount, jpy]);
-                return tweet(`${targetNm}さんへ\n${text}`, replyId, targetNm);
+                var text = util.getMessage(config.message.tipOk, [targetNm, `@${screenName}`, amount, jpy]);
+                return tweet(text, replyId, targetNm);
             })
             .then(() => {resolve()})
             .catch((err) => {
@@ -59,8 +59,7 @@ var checkBalance = function(amount, balance, replyId, screenName){
     return new Promise(function(resolve, reject){
         console.log(amount, balance, replyId, screenName)
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 || +balance === 0 || +balance < +amount) {
-            // console.log("tip: not have enough Lisk");
-            var text = util.getMessage(config.message.tipError, [balance]);
+            var text = util.getMessage(config.message.tipError, []);
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
             .catch((err) => {

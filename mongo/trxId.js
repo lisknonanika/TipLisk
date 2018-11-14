@@ -20,8 +20,6 @@ var findOne = function() {
             db.collection(config.mongo.collectionLiskTrx, (error, collection) => {
                 collection.findOne((error, result) => {
                     client.close();
-                    // if (!result) console.log(`transactionId.find: not found`);
-                    // else console.log(`transactionId.find: ${result.transactionId}`);
                     resolve(result);
                 });
             });
@@ -38,7 +36,6 @@ module.exports.update = function(trxId){
                 collection.updateOne({}, {$set: {transactionId: trxId}}, {upsert: true}, (error, result) => {
                     client.close();
                     if (!error) {
-                        // console.log("upsert latestTransactionId");
                         resolve();
                     } else {
                         console.log("[" + util.getDateTimeString() + "]" + error);
