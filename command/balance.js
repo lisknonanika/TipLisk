@@ -15,7 +15,7 @@ module.exports = function(tweetInfo){
         userCollection.find({twitterId: twitterId})
         .then((result) => {
             amount = !result? "0": result.amount;
-            if (!isJPY) return lisk2jpy(amount)
+            if (isJPY) return lisk2jpy(amount)
         })
         .then((jpy) => {
             var params = [`${amount}LSK`];
