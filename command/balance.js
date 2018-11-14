@@ -10,12 +10,18 @@ module.exports = function(tweetInfo){
         var tweetId = tweetInfo.id_str;
         var screenNm = tweetInfo.user.screen_name;
         var amount = "0";
+        var commands = tweetInfo.text.match(config.regexp.balance)[0].trim().split(/\s/);
+        var isJPY = (commands[1] !== "balance");
         userCollection.find({twitterId: twitterId})
         .then((result) => {
             amount = !result? "0": result.amount;
-            return lisk2jpy(amount)
+            if (!isJPY) return lisk2jpy(amount)
         })
-        .then((jpy) => {return tweet(util.getMessage(config.message.balance, [amount, jpy]), tweetId, screenNm)})
+        .then((jpy) => {
+            var params = [`${amount}LSK`];
+            if (isJPY) params = [`${amount}LSK（約${jpy}円）`];
+            return tweet(util.getMessage(config.message.balance, params), tweetId, screenNm)
+        })
         .then(() => {resolve()})
         .catch((err) => {
             console.log("[" + util.getDateTimeString() + "]" + err);

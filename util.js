@@ -19,7 +19,7 @@ module.exports.getMessage = function(messages, params) {
   var text = shuffle(messages, {'copy': true})[0];
   text = this.formatString(text, params);
   text = text + shuffle(config.message.random, {'copy': true})[0];
-  text = text + "\n（受付時刻：" + this.getTimeString() + "）"
+  text = text + "\n受付時刻：" + this.getTimeString()
   if (config.mode === "test") text = text + "\n\n※Testnetで実行中です。ご注意ください。";
   return text;
 }
