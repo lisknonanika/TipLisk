@@ -45,14 +45,16 @@
   ```
   - このコマンドを受け取ると相手へ指定枚数分のLSKを渡します。
   - リプライ時は相手の入力を省略できます。(リプライ先のツイート主に渡します)
+  - 「@tiplsk チップ」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
   - 0.00001〜99999.99999枚まで指定出来ます。
 
-### 残高確認： ```@tiplsk [balance|残高]```
+### 残高確認： ```@tiplsk [balance|残高|所持金]```
   ```
   例1： @tiplsk balance
   例2： @tiplsk 残高
   ```
   - このコマンドを受け取ると残高をリプライします。
+  - 「@tiplsk 残高」 or 「@tiplsk 所持金」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
 
 ### フォロー依頼： ```@tiplsk [followme|フォローして]```
   ```
