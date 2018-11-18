@@ -48,10 +48,41 @@ module.exports.update = function(condition, data){
 
 module.exports.insertHistory = function(mentionId){
     return new Promise(function(resolve, reject){
+        delHistory().
+        then(() => {return insHistory(mentionId)})
+        .then(() => {resolve()})
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "]" + err);
+            reject(err)
+        });
+    });
+}
+
+var insHistory = function(mentionId){
+    return new Promise(function(resolve, reject){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
             db.collection(config.mongo.collectionMentionId, (error, collection) => {
                 collection.insertOne({mentionId: mentionId, execDate: new Date(), flg: 0}, (error, result) => {
+                    client.close();
+                    if (!error) {
+                        resolve();
+                    } else {
+                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        reject(error);
+                    }
+                });
+            });
+        });
+    });
+}
+
+var delHistory = function() {
+    return new Promise(function(resolve, reject){
+        MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
+            const db = client.db(config.mongo.db);
+            db.collection(config.mongo.collectionMentionId, (error, collection) => {
+                collection.deleteMany({execDate:{$lte: util.getDateTime(-1440)}}, (error, result) => {
                     client.close();
                     if (!error) {
                         resolve();

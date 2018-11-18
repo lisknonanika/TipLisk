@@ -19,8 +19,11 @@ var getFriends = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "friends"})
         .then((result) => {
-            console.log("[/friends/ids] " + JSON.stringify(result.resources.friends['/friends/ids']));
-            if (result.resources.friends['/friends/ids'].remaining === 0) return;
+            // console.log("[/friends/ids] " + JSON.stringify(result.resources.friends['/friends/ids']));
+            if (result.resources.friends['/friends/ids'].remaining === 0) {
+                console.log("[" + util.getDateTimeString() + "] /friends/ids limit");
+                return;
+            }
             config.TwitterClient.get('friends/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
                 if (!result) friends = [];
@@ -43,8 +46,11 @@ var getFollowers = function() {
     return new Promise(function(resolve, reject){
         config.TwitterClient.get('application/rate_limit_status', {resources: "followers"})
         .then((result) => {
-            console.log("[/followers/ids] " + JSON.stringify(result.resources.followers['/followers/ids']));
-            if (result.resources.followers['/followers/ids'].remaining === 0) return;
+            // console.log("[/followers/ids] " + JSON.stringify(result.resources.followers['/followers/ids']));
+            if (result.resources.followers['/followers/ids'].remaining === 0) {
+                console.log("[" + util.getDateTimeString() + "] /followers/ids limit");
+                return;
+            }
             config.TwitterClient.get('followers/ids', {stringify_ids: true, count: 5000})
             .then((result) => {
                 if (!result) {
@@ -68,16 +74,22 @@ var getFollowers = function() {
 
 var reflesh = function() {
     return new Promise(function(resolve, reject){
-        friendsCollection.find({friend: 1})
+        friendsCollection.find({})
         .then((result) => {
             if (result.length === 0) resolve();
             else {
                 async.each(result, function(item, callback){
-                    if (friends.indexOf(item.twitterId) < 0) {
+                    if (item.friend === 1 && friends.indexOf(item.twitterId) < 0) {
                         console.log("[" + util.getDateTimeString() + "]remove：" + item.twitterId);
-                        friendsCollection.delete({twitterId: item.twitterId})
+                        friendsCollection.deleteOne({twitterId: item.twitterId})
                         .then(() => {callback()})
                         .catch(() => {callback()});
+                    } else if (item.friend === 0 && friends.indexOf(item.twitterId) >= 0) {
+                        friendsCollection.update({twitterId: item.twitterId}, {$set:{twitterId: item.twitterId, friend: 1}})
+                        .then(() => {callback()})
+                        .catch(() => {callback()});
+                    } else {
+                        callback();
                     }
                 }, function (error) {
                     if (!error) console.log("[" + util.getDateTimeString() + "]" + error);
