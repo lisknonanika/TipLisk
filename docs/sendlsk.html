@@ -148,8 +148,9 @@
         .then(res => {
           swal({position: 'center',type: 'info',text: '送金しました！'});
           
+          var explorerurl = "https://testnet-explorer.lisk.io/tx/" + transactionstring.id;
           document.getElementById('result').innerHTML = '<div>状況は以下で確認してください。</div><br>' +
-                                                        ’<a href="https://testnet-explorer.lisk.io/tx/' + transactionstring + '">Lisk Explorer</a>' +
+                                                        '<a href="' + explorerurl + '">Lisk Explorer</a>' +
                                                         '<div style="color:red;font-weight:bold;">Lisk Address: ' + senderAddress + '</div><br>' +
                                                         '<div style="color:red;font-weight:bold;">TransactionID: ' + transactionstring.id + '</div>' +
                                                         '<br>' +
