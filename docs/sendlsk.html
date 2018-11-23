@@ -81,8 +81,8 @@
         swal({position: 'center',type: 'error',text: 'amount を入力して下さい。'});
         return;
       }
-      if (Number(amount) < 0.00000001) {
-        swal({position: 'center',type: 'error',text: 'amount は 0.00000001 以上で入力して下さい。'});
+      if (Number(amount) < 0.00001) {
+        swal({position: 'center',type: 'error',text: 'amount は 0.00001 以上で入力して下さい。'});
         return;
       }
 
