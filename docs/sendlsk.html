@@ -31,11 +31,12 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
-  <script src="https://js.lisk.io/lisk-elements-1.0.0.min.js"></script>
+  <script src="https://js.lisk.io/lisk-elements-1.1.0.min.js"></script>
   <script>
     var senderAddress = "";
     var recipientAddress = "10242065482765502110L";
-    var client = lisk.APIClient.createMainnetAPIClient();
+    var client = lisk.APIClient.createTestnetAPIClient();
+    //var client = lisk.APIClient.createMainnetAPIClient();
     
     function checksender(arg) {
       var liskaddressElem = document.getElementById('senderaddress');
@@ -148,7 +149,7 @@
         .then(res => {
           swal({position: 'center',type: 'info',text: '送金しました！'});
           
-          var explorerurl = "https://testnet-explorer.lisk.io/tx/" + transactionstring.id;
+          var explorerurl = "https://explorer.lisk.io/tx/" + transactionstring.id;
           document.getElementById('result').innerHTML = '<div>状況は以下で確認してください。</div><br>' +
                                                         '<a href="' + explorerurl + '">Lisk Explorer</a>' +
                                                         '<div style="color:red;font-weight:bold;">Lisk Address: ' + senderAddress + '</div><br>' +
