@@ -48,11 +48,12 @@ var regexp = {
 define('regexp', regexp);
 
 var filter = {
-    track: "@tiplsk tip,@tiplsk send,@tiplsk チップ, " +
-           "@tiplsk balance,@tiplsk 残高,@tiplsk 所持金, " +
-           "@tiplsk deposit,@tiplsk 入金, " +
-           "@tiplsk withdraw,@tiplsk 出金,@tiplsk 送金, " +
-           "@tiplsk followme,@tiplsk フォローして"
+    track: "@tiplsk tip,@tiplsk send,@tiplsk チップ," +
+           "@tiplsk balance,@tiplsk 残高,@tiplsk 所持金," +
+           "@tiplsk deposit,@tiplsk 入金," +
+           "@tiplsk withdraw,@tiplsk 出金,@tiplsk 送金," +
+           "@tiplsk followme,@tiplsk フォローして," +
+           "@tiplsk history,@tiplsk 履歴"
 }
 define('filter', filter);
 
