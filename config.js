@@ -42,7 +42,8 @@ var regexp = {
     "balance": new RegExp(/(^|\s)@tiplsk\s(balance|残高|所持金)($|\s)/),
     "deposit": new RegExp(/(^|\s)@tiplsk\s(deposit|入金)($|\s)/),
     "withdraw": new RegExp(/(^|\s)@tiplsk\s(withdraw|出金|送金)\s[0-9]{1,}L\s([1-9][0-9]{0,4}|0)(\.\d{1,8})?($|\s)/),
-    "followme": new RegExp(/(^|\s)@tiplsk\s(followme|フォローして)($|\s)/)
+    "followme": new RegExp(/(^|\s)@tiplsk\s(followme|フォローして)($|\s)/),
+    "history": new RegExp(/(^|\s)@tiplsk\s(history|履歴)($|\s)/)
 }
 define('regexp', regexp);
 

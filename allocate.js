@@ -7,6 +7,7 @@ const balance = require('./command/balance');
 const deposit = require('./command/deposit');
 const withdraw = require('./command/withdraw');
 const followme = require('./command/followme');
+const history = require('./command/history');
 
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
@@ -30,6 +31,7 @@ module.exports = function(tweetInfo){
                 else if (config.regexp.deposit.test(tweetInfo.text)) return deposit(tweetInfo);
                 else if (config.regexp.withdraw.test(tweetInfo.text)) return withdraw(tweetInfo);
                 else if (config.regexp.followme.test(tweetInfo.text)) return followme(tweetInfo);
+                else if (config.regexp.history.test(tweetInfo.text)) return history(tweetInfo);
             })
             .then(() => {resolve()})
             .catch((err) => {
