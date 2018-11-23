@@ -92,7 +92,7 @@ var reflesh = function() {
                         callback();
                     }
                 }, function (error) {
-                    if (!error) console.log("[" + util.getDateTimeString() + "]" + error);
+                    if (error) console.log("[" + util.getDateTimeString() + "]" + error);
                     resolve();
                 });
             }
