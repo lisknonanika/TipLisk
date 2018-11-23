@@ -7,6 +7,7 @@ const friendsCollection = require('./mongo/friends');
 
 var friends = [];
 var followers = [];
+var localFriends = [];
 module.exports = function(){
     getFriends()
     .then(() => {return getFollowers()})
@@ -74,6 +75,7 @@ var getFollowers = function() {
 
 var reflesh = function() {
     return new Promise(function(resolve, reject){
+        localFriends = [];
         friendsCollection.find({})
         .then((result) => {
             if (result.length === 0) resolve();
@@ -85,10 +87,12 @@ var reflesh = function() {
                         .then(() => {callback()})
                         .catch(() => {callback()});
                     } else if (item.friend === 0 && friends.indexOf(item.twitterId) >= 0) {
+                        localFriends.push(item.twitterId);
                         friendsCollection.update({twitterId: item.twitterId}, {$set:{twitterId: item.twitterId, friend: 1}})
                         .then(() => {callback()})
                         .catch(() => {callback()});
                     } else {
+                        localFriends.push(item.twitterId);
                         callback();
                     }
                 }, function (error) {
@@ -103,22 +107,27 @@ var reflesh = function() {
 var execute = function(twitterId) {
     return new Promise(function(resolve, reject){
         var friend = 0;
-        findFriends(twitterId)
-        .then(() => {return isTarget(twitterId)})
-        .then((result) => {
-            friend = result;
-            if (result) return follow(twitterId);
-        })
-        .then(() => {return friendsCollection.update({twitterId: twitterId}, {$set:{twitterId: twitterId, friend: friend}})})
-        .then(() => {
-            if (followers.length > 0) return execute(followers.pop());
-            else resolve();
-        })
-        .catch((err) => {
-            if (err && err !== "already friends!") console.log("[" + util.getDateTimeString() + "]" + err);
-            if (followers.length > 0) return execute(followers.pop());
-            else resolve();
-        });
+
+        if (localFriends.length > 0 && localFriends.indexOf >= 0) {
+            return execute(followers.pop());
+        } else {
+            findFriends(twitterId)
+            .then(() => {return isTarget(twitterId)})
+            .then((result) => {
+                friend = result;
+                if (result) return follow(twitterId);
+            })
+            .then(() => {return friendsCollection.update({twitterId: twitterId}, {$set:{twitterId: twitterId, friend: friend}})})
+            .then(() => {
+                if (followers.length > 0) return execute(followers.pop());
+                else resolve();
+            })
+            .catch((err) => {
+                if (err && err !== "already friends!") console.log("[" + util.getDateTimeString() + "]" + err);
+                if (followers.length > 0) return execute(followers.pop());
+                else resolve();
+            });
+        }
     });
 }
 
