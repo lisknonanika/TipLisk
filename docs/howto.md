@@ -56,6 +56,13 @@
   - このコマンドを受け取ると残高をリプライします。
   - 「@tiplsk 残高」 or 「@tiplsk 所持金」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
 
+### 履歴確認： ```@tiplsk [history|履歴]```
+  ```
+  例1： @tiplsk history
+  例2： @tiplsk 履歴
+  ```
+  - このコマンドを受け取ると直近20件の入出金履歴を**DMで**お知らせします。
+  
 ### フォロー依頼： ```@tiplsk [followme|フォローして]```
   ```
   例1： @tiplsk followme
