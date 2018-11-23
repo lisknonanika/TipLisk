@@ -10,127 +10,32 @@
     ul {margin-left: 0;padding-left: 20px;}
     #testnet, #mainnet {display:inline-block;}
     #mainnet {text-align:right;}
-    #changenet, #contents {padding-left: 10px;font-size: 12px;}
-    #changenet {margin-top: 10px;}
+    #contents {padding-left: 10px;font-size: 12px;}
     #contents input {padding: 3px;font-size: 12px;}
     #contents input[type="text"] {width: 30vw;}
     #contents input[type="password"] {width: 80vw;}
     #contents input[type="number"] {width: 30vw;}
     #contents button {padding: 3px 10px;font-size: 12px;margin-left:10px;}
     #sender-info, #recipient-info {margin-bottom: 15px;}
-    .small {font-size: 12px;color: #999;}
     .title {font-weight:bold;}
     .btn {text-align:center;background-color: #ddf;border-radius: 0.5rem;border: solid 1px #98a;margin-top: 10px;padding: 0.5rem 0;width: calc(80vw + 8px);}
     
     @media screen and (max-width: 800px){
       li {font-size: calc(10px + 1vw);}
-      #changenet, #contents {padding-left: 10px;font-size: calc(10px + 2vw);}
+      #contents {padding-left: 10px;font-size: calc(10px + 2vw);}
       #contents input[type="text"] {font-size: 18px;width: 60vw;}
       #contents input[type="password"] {font-size: 18px;}
       #contents input[type="number"] {font-size: 18px;width: 30vw;}
       #contents button {padding: 3px;font-size: 18px;margin-left:5px;}
       #message {font-size: 18px;width: 50vw !important;}
-      .small {font-size: calc(10px + 1vw);}
-    }
-    
-    /* The switch - the box around the slider */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-      margin-top: 5px;
-    }
-
-    /* Hide default HTML checkbox */
-    .switch input {display:none;}
-
-    /* The slider */
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .1s;
-      transition: .1s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .1s;
-      transition: .1s;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-      border-radius: 34px;
-    }
-
-    .slider.round:before {
-      border-radius: 50%;
-    }
-    
-    #changenet .switch {width: 19px;height: 11px;}
-    #changenet .slider:before {height: 9px;width: 9px;left: 1px;bottom: 1px;}
-    #changenet input:checked + .slider:before {-webkit-transform: translateX(8px);-ms-transform: translateX(8px);transform: translateX(8px);}
-    @media screen and (max-width: 480px){
-      #changenet .switch {width: 30px;height: 17px;}
-      #changenet .slider:before {height: 13px;width: 13px;left: 2px;bottom: 2px;}
-      #changenet input:checked + .slider:before {-webkit-transform: translateX(13px);-ms-transform: translateX(13px);transform: translateX(13px);}
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
   <script src="https://js.lisk.io/lisk-elements-1.0.0.min.js"></script>
   <script>
     var senderAddress = "";
-    var recipientAddress = "";
-    var client = lisk.APIClient.createTestnetAPIClient();
-    function changenet(elem) {
-      if(elem.checked) {
-        client = lisk.APIClient.createMainnetAPIClient();
-        document.getElementById('testnet').style = '';
-        document.getElementById('mainnet').style = 'text-decoration:underline;';
-        document.getElementById('senderaddress').value = '';
-        continuesend();
-      }else{
-        client = lisk.APIClient.createTestnetAPIClient();
-        document.getElementById('testnet').style = 'text-decoration:underline;';
-        document.getElementById('mainnet').style = '';
-        document.getElementById('senderaddress').value = '';
-        continuesend();
-      }
-    }
-    
-    function changenet2(bol) {
-      var switchelem = document.getElementById('switchnet');
-      if(switchelem.checked !== bol){
-        switchelem.checked=bol;
-        changenet(switchelem);
-      }
-    }
+    var recipientAddress = "10242065482765502110L";
+    var client = lisk.APIClient.createMainnetAPIClient();
     
     function checksender(arg) {
       var liskaddressElem = document.getElementById('senderaddress');
@@ -165,45 +70,9 @@
       });
     }
     
-    function checkrecipient(arg) {
-      var liskaddressElem = document.getElementById('recipientaddress');
-      recipientAddress = liskaddressElem.value.trim();
-      if (recipientAddress === '') {
-        swal({position: 'center',type: 'error',text: 'Recipient Address を入力して下さい。'});
-        return false;
-      }
-      if (arg) document.getElementById('recipient-info').innerHTML = "Now Loading ..";
-      
-      var params = {};
-      params.address = recipientAddress;
-      client.accounts.get(params)
-      .then(res => {
-        if (res.data.length === 0) {
-          swal({position: 'center',type: 'error',text: '存在しないAddressです。'});
-          document.getElementById('recipient-info').innerHTML = '';
-          return;
-        }
-        
-        var accountinfo = res.data[0];
-        var html = '<ul>';
-        html += '<li>address: ' + accountinfo.address + '</li>'
-        html += '<li>balance: ' + (Number(accountinfo.balance) / 100000000) + ' LSK</li>'
-        html += '</ul>';
-        document.getElementById('recipient-info').innerHTML = html;
-        
-      }, function (s) {
-        swal({position: 'center',type: 'error',text: s});
-        document.getElementById('recipient-info').innerHTML = '';
-      });
-    }
-    
     function send() {
       if (senderAddress.length === 0) {
         swal({position: 'center',type: 'error',text: 'Sender の check を実施して下さい。'});
-        return;
-      }
-      if (recipientAddress.length === 0) {
-        swal({position: 'center',type: 'error',text: 'Recipient の check を実施して下さい。'});
         return;
       }
       
@@ -229,8 +98,8 @@
       for (i = 0; i < message.length; i++) {
         len += tbl [encodeURIComponent(message.charAt(i)).length];
       }
-      if (len > 64) {
-        swal({position: 'center',type: 'error',text: 'メッセージはUTF-8で64バイトまでしか設定できません。'});
+      if (len == 0) {
+        swal({position: 'center',type: 'error',text: 'deposit key を入力して下さい。'});
         return;
       }
 
@@ -253,7 +122,7 @@
       confmsg += '<div style="font-size: 12px;">' + senderAddress + ' から</div>';
       confmsg += '<div style="font-size: 12px;">' + recipientAddress + ' へ</div>';
       confmsg += '<div style="font-size: 12px;">' + amount + ' LSK 送金します。</div>';
-      confmsg += '<div style="font-size: 10px;">※手数料が0.1LSK別にかかります。</div>';
+      confmsg += '<div style="font-size: 10px;">※手数料が別にかかります。</div>';
       swal({position: 'center',
             type: 'warning',
             html: confmsg,
@@ -279,11 +148,12 @@
         .then(res => {
           swal({position: 'center',type: 'info',text: '送金しました！'});
           
-          document.getElementById('result').innerHTML = '<div>状況はLisk Explorer等で確認してください。</div><br>' +
+          document.getElementById('result').innerHTML = '<div>状況は以下で確認してください。</div><br>' +
+                                                        ’<a href="https://testnet-explorer.lisk.io/tx/' + transactionstring + '">Lisk Explorer</a>' +
                                                         '<div style="color:red;font-weight:bold;">Lisk Address: ' + senderAddress + '</div><br>' +
                                                         '<div style="color:red;font-weight:bold;">TransactionID: ' + transactionstring.id + '</div>' +
                                                         '<br>' +
-                                                        '<div class="btn" onclick="continuesend()">続けて送金する</div>';
+                                                        '<div class="btn" onclick="continuesend()">続けて入金する</div>';
         }, function (s) {
           swal({position: 'center',type: 'error',text: s});
           document.getElementById('result').innerHTML = '';
@@ -294,14 +164,11 @@
     
     function continuesend() {
       senderAddress = '';
-      recipientAddress = '';
-      document.getElementById('recipientaddress').value = '';
       document.getElementById('amount').value = '';
       document.getElementById('message').value = '';
       document.getElementById('passphrase').value = '';
       document.getElementById('passphrase2').value = '';
       document.getElementById('sender-info').innerHTML = '';
-      document.getElementById('recipient-info').innerHTML = '';
       document.getElementById('result').innerHTML = '';
       document.getElementById('contents').style="";
     }
@@ -309,29 +176,18 @@
 </head>
 
 <body>
-  <div id="changenet">
-    <div id="testnet" onclick="changenet2(false);" style="text-decoration:underline;">Testnet:</div>
-    <label class="switch"><input type="checkbox" onclick="changenet(this);" id="switchnet"><span class="slider round"></span></label>
-    <div id="mainnet" onclick="changenet2(true);">:Mainnet</div>
-  </div>
-  <hr>
   <div id="contents">
     <div class="title">Sender Account</div>
     <input type="text" id="senderaddress" placeholder="Sednder Address">
     <button onclick="checksender(true)">check</button>
     <div id="sender-info"></div>
     
-    <div class="title">Recipient Account</div>
-    <input type="text" id="recipientaddress" placeholder="Recipient Address">
-    <button onclick="checkrecipient(true)">check</button>
-    <div id="recipient-info"></div>
-    
     <div class="title">Send</div>
-    <div><input type="number" id="amount" placeholder="amount"> LSK<span class="small"> +0.1 LSK (fee)</span></div>
-    <div><input type="text" id="message" placeholder="message"> <span class="small"> MAX:64byte</span></div>
+    <div><input type="number" id="amount" placeholder="amount"> LSK</div>
+    <div><input type="text" id="message" placeholder="deposit key"></div>
     <div><input type="password" id="passphrase" placeholder="Passphrase"></div>
     <div><input type="password" id="passphrase2" placeholder="Second Passphrase"></div>
-    <div class="btn" onclick="send()">送金！</div>
+    <div class="btn" onclick="send()">入金！</div>
   </div>
   <div id="result"></div>
 </body>
