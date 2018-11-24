@@ -62,12 +62,12 @@ module.exports = function(tweetInfo, isReply) {
 
 var checkBalance = function(amount, balance, replyId, screenName){
     return new Promise(function(resolve, reject){
-        console.log(amount, balance, replyId, screenName)
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 || +balance === 0 || +balance < +amount) {
             var text = util.getMessage(config.message.tipError, []);
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
             .catch((err) => {
+                console.log(amount, balance, replyId, screenName)
                 console.log("[" + util.getDateTimeString() + "]" + err);
                 reject(err);
             });
