@@ -6,7 +6,9 @@ module.exports = function(twitterId){
         show(twitterId)
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(twitterId);
+            console.log(err);
             reject(err);
         });
     });
@@ -26,7 +28,9 @@ var show = function(twitterId){
                 resolve(result);
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] show");
+                console.log(twitterId);
+                console.log(err);
                 reject(err);
             });
         });

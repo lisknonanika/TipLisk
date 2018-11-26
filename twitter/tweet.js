@@ -8,7 +8,9 @@ module.exports = function(text, replyId, screenName){
         .then((remain) => {return tweet(text, replyId, screenName, remain)})
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(replyId, screenName);
+            console.log(err);
             reject(err);
         });
     });
@@ -25,7 +27,9 @@ var tweet = function(text, replyId, screenName, remain){
                 resolve();
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] tweet");
+                console.log(replyId, screenName);
+                console.log(err);
                 reject(err);
             });
 

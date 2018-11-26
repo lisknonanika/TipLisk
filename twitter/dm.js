@@ -8,7 +8,9 @@ module.exports = function(twitterId, text){
         .then((remain) => {return sendDM(twitterId, text, remain)})
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(twitterId);
+            console.log(err);
             reject(err);
         });
     });
@@ -23,7 +25,9 @@ var sendDM = function(twitterId, text, remain){
                 resolve();
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] sendDM");
+                console.log(twitterId);
+                console.log(err);
                 reject(err);
             });
         } else {

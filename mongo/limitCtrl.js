@@ -22,7 +22,9 @@ module.exports.update = function(target){
                         if (!error) {
                             resolve(data["$set"].remain);
                         } else {
-                            console.log("[" + util.getDateTimeString() + "]" + error);
+                            console.log("[" + util.getDateTimeString() + "] update");
+                            console.log(target);
+                            console.log(error);
                             reject(error);
                         }
                     });

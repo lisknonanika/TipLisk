@@ -34,7 +34,7 @@ module.exports = function(tweetInfo, isReply) {
             isJPY = (commands[1] === "チップ");
         }
         if (!recipientId) {
-            console.log("[" + util.getDateTimeString() + "]recipientId not found");
+            console.log("[" + util.getDateTimeString() + "] recipientId not found");
             resolve();
 
         } else {
@@ -53,7 +53,8 @@ module.exports = function(tweetInfo, isReply) {
             })
             .then(() => {resolve()})
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] Main");
+                console.log(err);
                 reject(err);
             });
         }
@@ -67,8 +68,9 @@ var checkBalance = function(amount, balance, replyId, screenName){
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
             .catch((err) => {
-                console.log(amount, balance, replyId, screenName)
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] checkBalance");
+                console.log(amount, balance, replyId, screenName);
+                console.log(err);
                 reject(err);
             });
         } else {

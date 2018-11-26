@@ -7,7 +7,9 @@ module.exports.find = function(condition){
         findByCondition(condition)
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] find");
+            console.log(condition);
+            console.log(err);
             reject(err);
         });
     });
@@ -38,7 +40,10 @@ module.exports.update = function(condition, data){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] update");
+                        console.log(condition);
+                        console.log(data);
+                        console.log(error);
                         reject(error);
                     }
                 });
@@ -57,7 +62,9 @@ module.exports.delete = function(condition){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] delete");
+                        console.log(condition);
+                        console.log(error);
                         reject(error);
                     }
                 });

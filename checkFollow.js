@@ -13,7 +13,10 @@ module.exports = function(){
     .then(() => {return getFollowers()})
     .then(() => {return reflesh()})
     .then(() => {return execute(followers.pop())})
-    .catch((err) => {console.log("[" + util.getDateTimeString() + "]" + err)});
+    .catch((err) => {
+        console.log("[" + util.getDateTimeString() + "] Main");
+        console.log(err);
+    });
 }
 
 var getFriends = function() {
@@ -32,12 +35,14 @@ var getFriends = function() {
                 resolve();
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] getFriends");
+                console.log(err);
                 reject(err);
             });
         })
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] getFriends");
+            console.log(err);
             reject(err);
         });
     });
@@ -62,12 +67,14 @@ var getFollowers = function() {
                 resolve();
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] getFollowers");
+                console.log(err);
                 reject(err);
             });
         })
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] getFollowers");
+            console.log(err);
             reject(err);
         });
     });
@@ -96,7 +103,10 @@ var reflesh = function() {
                         callback();
                     }
                 }, function (error) {
-                    if (error) console.log("[" + util.getDateTimeString() + "]" + error);
+                    if (error) {
+                        console.log("[" + util.getDateTimeString() + "] reflesh");
+                        console.log(error);
+                    }
                     resolve();
                 });
             }
@@ -109,7 +119,8 @@ var execute = function(twitterId) {
         var friend = 0;
 
         if (localFriends.length > 0 && localFriends.indexOf(twitterId) >= 0) {
-            return execute(followers.pop());
+            if (followers.length > 0) return execute(followers.pop());
+            else resolve();
         } else {
             findFriends(twitterId)
             .then(() => {return isTarget(twitterId)})
@@ -123,7 +134,10 @@ var execute = function(twitterId) {
                 else resolve();
             })
             .catch((err) => {
-                if (err && err !== "already friends!") console.log("[" + util.getDateTimeString() + "]" + err);
+                if (err && err !== "already friends!") {
+                    console.log("[" + util.getDateTimeString() + "] execute");
+                    console.log(err);
+                }
                 if (followers.length > 0) return execute(followers.pop());
                 else resolve();
             });

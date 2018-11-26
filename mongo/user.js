@@ -8,7 +8,9 @@ module.exports.find = function(condition){
         findOne(condition)
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] find");
+            console.log(condition);
+            console.log(err);
             reject(err);
         });
     });
@@ -45,7 +47,9 @@ module.exports.update = function(param){
         })
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] update");
+            console.log(param);
+            console.log(err);
             reject(err);
         });
     });
@@ -65,7 +69,9 @@ var updateOne = function(param) {
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] updateOne");
+                        console.log(param);
+                        console.log(error);
                         reject(error);
                     }
                 });

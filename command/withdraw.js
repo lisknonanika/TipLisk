@@ -30,7 +30,8 @@ module.exports = function(tweetInfo){
         })
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(err);
             reject(err);
         });
     });
@@ -44,7 +45,9 @@ var checkBalance = function(amount, replyId, balance, screenName){
             tweet(text, replyId, screenName)
             .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] checkBalance");
+                console.log(amount, balance, replyId, screenName);
+                console.log(err);
                 reject(err);
             });
         } else {
@@ -68,7 +71,8 @@ var withdraw = function(amount, recipientId){
         .then(res => {
             resolve(trxstr.id);
         }, function(error){
-            console.log("[" + util.getDateTimeString() + "]" + error);
+            console.log("[" + util.getDateTimeString() + "] withdraw");
+            console.log(error);
             reject(error);
         });
     });

@@ -7,7 +7,9 @@ module.exports.find = function(condition){
         findOne(condition)
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] find");
+            console.log(condition);
+            console.log(err);
             reject(err);
         });
     });
@@ -37,7 +39,10 @@ module.exports.update = function(condition, data){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] update");
+                        console.log(condition);
+                        console.log(data);
+                        console.log(error);
                         reject(error);
                     }
                 });
@@ -52,7 +57,9 @@ module.exports.insertHistory = function(mentionId){
         then(() => {return insHistory(mentionId)})
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] insertHostory");
+            console.log(mentionId);
+            console.log(err);
             reject(err)
         });
     });
@@ -68,7 +75,9 @@ var insHistory = function(mentionId){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] insHostory");
+                        console.log(mentionId);
+                        console.log(error);
                         reject(error);
                     }
                 });
@@ -87,7 +96,8 @@ var delHistory = function() {
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] delHistory");
+                        console.log(error);
                         reject(error);
                     }
                 });

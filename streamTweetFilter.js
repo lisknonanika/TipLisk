@@ -7,9 +7,15 @@ module.exports = function(){
     .on("start", response => console.log(`stream start: status=${response.status}`))
     .on("data", data => {
         allocate(data)
-        .catch((err) => {console.log("[" + util.getDateTimeString() + "]" + err)});
+        .catch((err) => {
+            console.log("[" + util.getDateTimeString() + "] data");
+            console.log(err);
+        });
     })
     // .on("ping", () => console.log("ping ok"))
-    .on("error", error => console.log("[" + util.getDateTimeString() + "]" + error))
+    .on("error", error => {
+        console.log("[" + util.getDateTimeString() + "] error");
+        console.log(error);
+    })
     .on("end", _response => console.log("[" + util.getDateTimeString() + "]stream end"));
 }

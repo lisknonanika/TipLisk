@@ -8,7 +8,9 @@ module.exports = function(twitterId){
         .then((remain) => {return follow(twitterId, remain)})
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(twitterId);
+            console.log(err);
             reject(err);
         });
     });
@@ -22,7 +24,9 @@ var follow = function(twitterId, remain){
                 resolve();
             })
             .catch((err) => {
-                console.log("[" + util.getDateTimeString() + "]" + err);
+                console.log("[" + util.getDateTimeString() + "] follow");
+                console.log(twitterId);
+                console.log(err);
                 reject(err);
             });
         } else {

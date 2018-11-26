@@ -17,7 +17,8 @@ module.exports = function(tweetInfo){
         })
         .then(() => {resolve()})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] Main");
+            console.log(err);
             reject(err);
         });
     });

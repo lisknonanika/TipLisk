@@ -7,7 +7,9 @@ module.exports.find = function(condition){
         findMany(condition)
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] find");
+            console.log(condition);
+            console.log(err);
             reject(err);
         });
     });
@@ -41,7 +43,9 @@ module.exports.insert = function(param){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] insert");
+                        console.log(param);
+                        console.log(error);
                         reject(error);
                     }
                 });

@@ -7,7 +7,8 @@ module.exports.find = function(){
         findOne()
         .then((result) => {resolve(result)})
         .catch((err) => {
-            console.log("[" + util.getDateTimeString() + "]" + err);
+            console.log("[" + util.getDateTimeString() + "] find");
+            console.log(err);
             reject(err);
         });
     });
@@ -38,7 +39,9 @@ module.exports.update = function(trxId){
                     if (!error) {
                         resolve();
                     } else {
-                        console.log("[" + util.getDateTimeString() + "]" + error);
+                        console.log("[" + util.getDateTimeString() + "] update");
+                        console.log(trxId);
+                        console.log(error);
                         reject(error);
                     }
                 });
