@@ -108,7 +108,7 @@ var execute = function(twitterId) {
     return new Promise(function(resolve, reject){
         var friend = 0;
 
-        if (localFriends.length > 0 && localFriends.indexOf >= 0) {
+        if (localFriends.length > 0 && localFriends.indexOf(twitterId) >= 0) {
             return execute(followers.pop());
         } else {
             findFriends(twitterId)
