@@ -83,7 +83,7 @@ var reflesh = function() {
                 async.each(result, function(item, callback){
                     if (item.friend === 1 && friends.indexOf(item.twitterId) < 0) {
                         console.log("[" + util.getDateTimeString() + "]remove：" + item.twitterId);
-                        friendsCollection.deleteOne({twitterId: item.twitterId})
+                        friendsCollection.delete({twitterId: item.twitterId})
                         .then(() => {callback()})
                         .catch(() => {callback()});
                     } else if (item.friend === 0 && friends.indexOf(item.twitterId) >= 0) {
