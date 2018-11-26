@@ -159,7 +159,7 @@ var isTarget = function(twitterId) {
     return new Promise(function(resolve, reject){
         userShow(twitterId)
         .then((result) => {
-            if (result && result.protected) resolve(1);
+            if (result && result.protected && !result.following && !result.follow_request_sent) resolve(1);
             else resolve(0);
         });
     });
