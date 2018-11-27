@@ -37,13 +37,13 @@ define('blacklist', blacklist);
 
 var regexp = {
     "receivekey": new RegExp(/(^[0-9a-zA-Z]{12,12}$)|(^[0-9a-zA-Z]{24,24}$)/),
-    "tip": new RegExp(/(^|\s)@tiplsk\s(tip|send|チップ)\s@[0-9a-zA-Z_]{5,15}\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
-    "tip_s": new RegExp(/(^|\s)@tiplsk\s(tip|send|チップ)\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
-    "balance": new RegExp(/(^|\s)@tiplsk\s(balance|残高|所持金)($|\s)/),
-    "deposit": new RegExp(/(^|\s)@tiplsk\s(deposit|入金)($|\s)/),
-    "withdraw": new RegExp(/(^|\s)@tiplsk\s(withdraw|出金|送金)\s[0-9]{1,}L\s([1-9][0-9]{0,4}|0)(\.\d{1,8})?($|\s)/),
+    "tip": new RegExp(/(^|\s)@tiplsk\s(tip:e|tip|send|チップ)\s@[0-9a-zA-Z_]{5,15}\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
+    "tip_s": new RegExp(/(^|\s)@tiplsk\s(tip:e|tip|send|チップ)\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
+    "balance": new RegExp(/(^|\s)@tiplsk\s(balance:e|balance|残高|所持金)($|\s)/),
+    "deposit": new RegExp(/(^|\s)@tiplsk\s(deposit:e|deposit|入金)($|\s)/),
+    "withdraw": new RegExp(/(^|\s)@tiplsk\s(withdraw:e|withdraw|出金|送金)\s[0-9]{1,}L\s([1-9][0-9]{0,4}|0)(\.\d{1,8})?($|\s)/),
     "followme": new RegExp(/(^|\s)@tiplsk\s(followme|フォローして)($|\s)/),
-    "history": new RegExp(/(^|\s)@tiplsk\s(history|履歴)($|\s)/)
+    "history": new RegExp(/(^|\s)@tiplsk\s(history:e|history|履歴)($|\s)/)
 }
 define('regexp', regexp);
 
@@ -91,19 +91,8 @@ var message = {
                       "そんなに出金できるほど持ってないでしょ？",
                       "出金？\nムリムリ",
                       "出金するにはちょーっと足りひんみたいやわぁ。。"],
-    "balance": ["残高は {0} です。\n出金時はLiskの送金手数料がかかるのでご注意ください。",
-                "残高は {0} だよ！\n出金するときはLiskの送金手数料がかかるから注意してね？",
-                "残高は {0} みたい。",
-                "残高は～。。\n{0}？\nへー。",
-                "んー？\n{0} かな？",
-                "{0} だよ！",
-                "{0} やで～",
-                "ウチの調べによると、残高は {0} みたいやで？",
-                "残高はなんと！\n{0}！",
-                "えーっと、残高は。。\n{0}！",
-                "{0} ですよ。",
-                "{0} 持ってるよ。",
-                "な、なんと！\n{0} です！"],
+    "balanceDM": ["残高は {0} です。\n出金時はLiskの送金手数料がかかるのでご注意ください。",
+                  "残高は {0} だよ！\n出金するときはLiskの送金手数料がかかるから注意してね？"],
     "depositDM": ["入金の際は発行されたKEYをトランザクションのメモ欄に入力してください。\n" +
                   "入力のし忘れ、間違いは対応できない可能性があるのでご注意ください。\n" +
                   "・KEY：{0}\n・入金先：{1}"],

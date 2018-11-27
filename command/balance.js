@@ -1,17 +1,15 @@
 const userCollection = require('../mongo/user');
 const config = require('../config');
 const util = require('../util');
-const tweet = require('../twitter/tweet');
+const dm = require('../twitter/dm');
 const lisk2jpy = require('../api/lisk2jpy');
 
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
         var twitterId = tweetInfo.user.id_str;
-        var tweetId = tweetInfo.id_str;
-        var screenNm = tweetInfo.user.screen_name;
         var amount = "0";
         var commands = tweetInfo.text.match(config.regexp.balance)[0].trim().split(/\s/);
-        var isJPY = (commands[1] !== "balance");
+        var isJPY = (commands[1] === "残高" || commands[1] === "所持金");
         userCollection.find({twitterId: twitterId})
         .then((result) => {
             amount = !result? "0": result.amount;
@@ -20,7 +18,7 @@ module.exports = function(tweetInfo){
         .then((jpy) => {
             var params = [`${amount}LSK`];
             if (isJPY) params = [`${amount}LSK（約${jpy}円）`];
-            return tweet(util.getMessage(config.message.balance, params), tweetId, screenNm)
+            return dm(twitterId, util.getMessage(config.message.balanceDM, params))
         })
         .then(() => {resolve()})
         .catch((err) => {
