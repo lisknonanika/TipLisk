@@ -17,7 +17,7 @@ module.exports = function(tweetInfo){
                 var text = commands[1].endsWith(":e")? "-Withdrawal details-\n\n": "入出金履歴をお知らせします。\n\n";
                 for(i=0; i<result.length;i++) {
                     var ymd = dateformat(result[i].execDate, 'yyyy/mm/dd HH:MM:ss');
-                    if (commands[1].endsWith(":e")) ymd = ymd + "(UTC+0900)";
+                    if (commands[1].endsWith(":e")) ymd = ymd + "（UTC+0900）";
                     var io = result[i].type === 0? "To": "From";
                     var amount = result[i].amount + "LSK";
                     var target = result[i].targetNm; 
