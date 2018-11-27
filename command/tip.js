@@ -39,7 +39,7 @@ module.exports = function(tweetInfo, isReply) {
 
         } else {
             userCollection.find({twitterId: twitterId})
-            .then((result) => {return checkBalance(amount, !result? "0": result.amount, replyId, screenName)})
+            .then((result) => {return checkBalance(commands[1], amount, !result? "0": result.amount, replyId, screenName)})
             .then(() => {return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")})})
             .then(() => {return userCollection.update({twitterId: recipientId, amount: amount})})
             .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: targetNm})})
@@ -48,7 +48,12 @@ module.exports = function(tweetInfo, isReply) {
             .then((jpy) => {
                 var params = [targetNm, `@${screenName}`, `${amount}LSK`];
                 if (isJPY) params = [targetNm, `@${screenName}`, `${amount}LSK（約${jpy}円）`];
-                var text = util.getMessage(config.message.tipOk, params);
+                var text = "";
+                if((commands[1]).endsWith(":e")) {
+                    text = util.getMessageEng(config.message.tipOk_e, params);
+                } else {
+                    text = util.getMessage(config.message.tipOk, params);
+                }
                 return tweet(text, replyId, targetNm);
             })
             .then(() => {resolve()})
@@ -61,10 +66,15 @@ module.exports = function(tweetInfo, isReply) {
     });
 }
 
-var checkBalance = function(amount, balance, replyId, screenName){
+var checkBalance = function(command, amount, balance, replyId, screenName){
     return new Promise(function(resolve, reject){
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 || +balance === 0 || +balance < +amount) {
-            var text = util.getMessage(config.message.tipError, []);
+            var text = "";
+            if(command.endsWith(":e")) {
+                text = util.getMessageEng(config.message.tipError_e, []);
+            } else {
+                text = util.getMessage(config.message.tipError, []);
+            }
             tweet(text, replyId, screenName)
             .then(() => {reject("tip: not have enough Lisk")})
             .catch((err) => {

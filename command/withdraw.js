@@ -17,7 +17,7 @@ module.exports = function(tweetInfo){
 
         var trxId = "";
         userCollection.find({twitterId: twitterId})
-        .then((result) => {return checkBalance(amount, replyId, !result? "0": result.amount, screenName)})
+        .then((result) => {return checkBalance(commands[1], amount, replyId, !result? "0": result.amount, screenName)})
         .then(() => {return withdraw(amount, recipientId)})
         .then((result) => {
             trxId = result;
@@ -25,7 +25,13 @@ module.exports = function(tweetInfo){
         })
         .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: recipientId})})
         .then(() => {
-            var text = util.getMessage(config.message.withdrawDM, [amount, recipientId, trxId]);
+            var params = [amount, recipientId, trxId];
+            var text = "";
+            if(commands[1].endsWith(":e")) {
+                text = util.getMessageEng(config.message.withdrawDM_e, params);
+            } else {
+                text = util.getMessage(config.message.withdrawDM, params);
+            }
             return dm(twitterId, text);
         })
         .then(() => {resolve()})
@@ -37,11 +43,16 @@ module.exports = function(tweetInfo){
     });
 }
 
-var checkBalance = function(amount, replyId, balance, screenName){
+var checkBalance = function(command, amount, replyId, balance, screenName){
     return new Promise(function(resolve, reject){
         if (util.isNumber(util.num2str(amount)) === false || +amount < 0.00000001 ||
             +balance === 0 || +util.calc(balance, 0.1, "sub") < +amount) {
-            var text = util.getMessage(config.message.withdrawError, []);
+            var text = "";
+            if(command.endsWith(":e")) {
+                text = util.getMessageEng(config.message.withdrawError_e, []);
+            } else {
+                text = util.getMessage(config.message.withdrawError, []);
+            }
             tweet(text, replyId, screenName)
             .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {

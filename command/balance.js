@@ -18,7 +18,13 @@ module.exports = function(tweetInfo){
         .then((jpy) => {
             var params = [`${amount}LSK`];
             if (isJPY) params = [`${amount}LSK（約${jpy}円）`];
-            return dm(twitterId, util.getMessage(config.message.balanceDM, params))
+            var text = "";
+            if(commands[1].endsWith(":e")) {
+                text = util.getMessageEng(config.message.balanceDM_e, params);
+            } else {
+                text = util.getMessage(config.message.balanceDM, params);
+            }
+            return dm(twitterId, text);
         })
         .then(() => {resolve()})
         .catch((err) => {

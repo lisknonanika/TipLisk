@@ -39,7 +39,6 @@ function getTransaction(limit, idx, trxId) {
 function receive(item) {
     var key = item.asset.data;
     if (key != null && key.length > 0 && config.regexp.receivekey.test(key)) {
-        console.log(`transactionId: ${item.id}, userId: ${key}`);
         trxIdCollection.update(item.id)
         .then(() => {return userCollection.find({_id: ObjectId(key)})})
         .then((result) => {
@@ -53,6 +52,7 @@ function receive(item) {
                 })
                 .catch((err) => {
                     console.log("[" + util.getDateTimeString() + "] receive");
+                    console.log(`transactionId: ${item.id}, userId: ${item.asset.data}`);
                     console.log(err);
                     if (trxData.length > 0) return receive(trxData.pop());
                 })
@@ -61,6 +61,7 @@ function receive(item) {
         .then(() => {if (trxData.length > 0) return receive(trxData.pop())})
         .catch((err) => {
             console.log("[" + util.getDateTimeString() + "] receive");
+            console.log(`transactionId: ${item.id}, userId: ${item.asset.data}`);
             console.log(err);
             if (trxData.length > 0) return receive(trxData.pop());
         });

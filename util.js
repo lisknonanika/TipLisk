@@ -24,6 +24,15 @@ module.exports.getMessage = function(messages, params) {
   return text;
 }
 
+module.exports.getMessageEng = function(messages, params) {
+  var text = shuffle(messages, {'copy': true})[0];
+  text = this.formatString(text, params);
+  text = text + shuffle(config.message.random_e, {'copy': true})[0];
+  text = text + "\nTime：" + this.getTimeString() + "(UTC+0900)"
+  if (config.mode === "test") text = text + "\n\n※Running on Testnet";
+  return text;
+}
+
 module.exports.getDateTime = function(addminutes) {
   var d = new Date();
   if (addminutes) d.setMinutes(d.getMinutes() + addminutes);
