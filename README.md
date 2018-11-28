@@ -9,18 +9,16 @@ MIT License
 - **```mode```:**
   - test または releaseを設定。
   <br>test or release
+
 - **```lisk.address```:**
   - チップBOT用Liskアドレスを設定。
   <br>enter the Lisk Address for Tip Bot.
-  
 - **```lisk.passphrase```:**
   - チップBOT用Liskアドレスのパスフレーズを設定。
   <br>enter the Lisk passphrase for Tip Bot.
-  
 - **```lisk.secondPassphrase```:**
   - チップBOT用Liskアドレスのセカンドパスフレーズを設定。(設定していない場合は空欄でOK)
   <br>enter the Lisk secondPassphrase for Tip Bot. (optional)
-  
 - **```lisk.transactionLimit```:**
   - Liskトランザクションの最大取得件数を設定。
   <br>enter the maximum number of transaction.(MAX:100)
