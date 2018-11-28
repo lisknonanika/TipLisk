@@ -13,9 +13,9 @@
   "author": "lisknonanika",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lisknonanika/TipLisk/issues"
+    "url": "https://github.com/lisknonanika/tiplisk/issues"
   },
-  "homepage": "https://github.com/lisknonanika/TipLisk#readme",
+  "homepage": "https://github.com/lisknonanika/tiplisk#readme",
   "dependencies": {
     "async": "^2.6.1",
     "babel-runtime": "^6.26.0",
