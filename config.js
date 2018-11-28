@@ -98,27 +98,27 @@ var message = {
                   "・KEY：{0}\n・入金先：{1}"],
     "receiveDM": ["{0}LSK 入金を確認しました。\n" +
                   "承認状況はLisk Explorer等で確認してください。\n" +
-                  "I received {0}LSK.\n" +
+                  "Received {1}LSK.\n" +
                   "Please confirm the approval status with Lisk Explorer etc.\n" +
-                  liskExplorer + "{1}"],
-    "tipOk_e": ["Hi! {0}\n\n{1} sent you {2}!",
-                "Hi! {0}\n\n{1} sent you {2}!\nIs today your anniversary?",
-                "Hi! {0}\n\n{1} sent you {2}!\nwow, good for you!",
-                "Hi! {0}\n\nYou got {2} from {1}.",
-                "Hi! {0}\n\nWow!\nYou got {2} from {1}."],
+                  liskExplorer + "{2}"],
+    "tipOk_e": ["Hi {0}!\n\n{1} sent you {2}!",
+                "Hi {0}!\n\n{1} sent you {2}!\nIs today your anniversary?",
+                "Hi {0}!\n\n{1} sent you {2}!\nwow, good for you!",
+                "Hi {0}!\n\nYou got {2} from {1}.",
+                "Hi {0}!\n\nWow!\nYou got {2} from {1}."],
     "tipError_e": ["You do not have enough LSK..",
-                   "Oops! I can not send LSK.\nBecause You do not have enough LSK..",
-                   "I could not do it!\nPlease check your balance."],
-    "withdrawDM_e": ["I sent {0}LSK to {1}.\n" +
+                   "Oops! Can not send LSK.\nBecause You do not have enough LSK..",
+                   "Could not do it!\nPlease check your balance."],
+    "withdrawDM_e": ["Sent {0}LSK to {1}.\n" +
                      "Please confirm the approval status with Lisk Explorer etc.\n" +
                      liskExplorer + "{2}"],
     "withdrawError_e": ["You do not have enough LSK..",
-                        "Oops! I can not send LSK.\nBecause You do not have enough LSK..",
-                        "I could not do it!\nPlease check your balance."],
+                        "Oops! Can not send LSK.\nBecause You do not have enough LSK..",
+                        "Could not do it!\nPlease check your balance."],
     "balanceDM_e": ["You have {0}!\nIf you transfer LSK to your Lisk address, a fee will be charged."],
-    "depositDM_e": ["When depositing money, please enter the issued KEY in the reference field of the transaction.\n" +
-                    "If you forget to enter it or wrong it, I may not be able to cope.\n" +
-                    "・KEY：{0}\n・ADDRESS：{1}"],
+    "depositDM_e": ["When depositing LSK, please enter the issued KEY in the reference field of the transaction.\n" +
+                    "・KEY：{0}\n・ADDRESS：{1}\n\n" +
+                    "[Notes]\nIf you forget to enter the KEY or wrong it, I may not be able to cope."],
     "random": ["\n",
                "\n\ntiplskって？：https://lisknonanika.github.io/tiplisk/",
                "\n\ntiplskの使い方：https://lisknonanika.github.io/tiplisk/howto.html"],

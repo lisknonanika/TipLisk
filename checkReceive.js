@@ -47,7 +47,7 @@ function receive(item) {
                 userCollection.update({twitterId: result.twitterId, amount: amount})
                 .then(() => {return historyCollection.insert({twitterId: result.twitterId, amount: amount, type: 1, targetNm: item.senderId})})
                 .then(() => {
-                    var text = util.getMessage(config.message.receiveDM, [amount, item.id]);
+                    var text = util.getMessage(config.message.receiveDM, [amount, amount, item.id]);
                     return dm(result.twitterId, text)
                 })
                 .catch((err) => {
