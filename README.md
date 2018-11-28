@@ -36,3 +36,9 @@ MIT License
 - Set contents of tweet and DM.
 - Set tweet filter.
 - Set blacklist.
+
+## Run the Bot
+- **```streamTweetFilter.js```:** Immediate Processing on receive mention. using twitterAPI 'statuses/filter'.
+- **```checkMention.js```:** Process protected tweet. Recommend periodic execution using pm2 etc.
+- **```checkFollow.js```:** Follow back private account. Recommend periodic execution using pm2 etc.
+- **```checkReceive.js```:** Monitor lisk transaction and process deposit. Recommend periodic execution using pm2 etc.
