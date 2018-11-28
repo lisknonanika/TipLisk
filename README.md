@@ -4,9 +4,11 @@ TipLisk - LSK Tip Bot
 ## License
 MIT License
 
-## Bot Settings
+## Botの設定 (Bot Settings)
 ### 1. ```./config/default.json, release.json```
-- **```mode```:** test or release
+- **```mode```:**
+  - test または releaseを設定。
+  <br>test or release
 - **```lisk.address```:**
   - チップBOT用Liskアドレスを設定。
   <br>enter the Lisk Address for Tip Bot.
@@ -87,7 +89,7 @@ MIT License
 - ブラックリスト(コマンドを処理しないTwitterアカウント)を設定。
 <br>Set blacklist.
 
-## Run the Bot
+## Botの実行 (Run the Bot)
 - **```streamTweetFilter.js```:**
   - TwitterAPI 'statuses/filter' を使用して、コマンドを即時実行する。
   <br>Immediate Processing on receive mention. using TwitterAPI 'statuses/filter'.
