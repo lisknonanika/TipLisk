@@ -101,20 +101,20 @@ var message = {
                   "Received {1}LSK.\n" +
                   "Please confirm the approval status with Lisk Explorer etc.\n" +
                   liskExplorer + "{2}"],
-    "tipOk_e": ["Hi {0}!\n\n{1} sent you {2}!",
-                "Hi {0}!\n\n{1} sent you {2}!\nIs today your anniversary?",
-                "Hi {0}!\n\n{1} sent you {2}!\nwow, good for you!",
-                "Hi {0}!\n\nYou got {2} from {1}.",
-                "Hi {0}!\n\nWow!\nYou got {2} from {1}."],
+    "tipOk_e": ["Hi {0}！\n\n{1} sent you {2}！",
+                "Hi {0}！\n\n{1} sent you {2}！\nIs today your anniversary？",
+                "Hi {0}！\n\n{1} sent you {2}！\ngood for you！",
+                "Hi {0}！\n\nYou got {2} from {1}.",
+                "Hi {0}！\n\nWow！\nYou got {2} from {1}."],
     "tipError_e": ["You do not have enough LSK..",
-                   "Oops! Can not send LSK.\nBecause You do not have enough LSK..",
-                   "Could not do it!\nPlease check your balance."],
+                   "Oops！ Can not send LSK.\nBecause You do not have enough LSK..",
+                   "Could not do it！\nPlease check your balance."],
     "withdrawDM_e": ["Sent {0}LSK to {1}.\n" +
                      "Please confirm the approval status with Lisk Explorer etc.\n" +
                      liskExplorer + "{2}"],
     "withdrawError_e": ["You do not have enough LSK..",
-                        "Oops! Can not send LSK.\nBecause You do not have enough LSK..",
-                        "Could not do it!\nPlease check your balance."],
+                        "Oops！ Can not send LSK.\nBecause You do not have enough LSK..",
+                        "Could not do it！\nPlease check your balance."],
     "balanceDM_e": ["You have {0}!\nIf you transfer LSK to your Lisk address, a fee will be charged."],
     "depositDM_e": ["When depositing LSK, please enter the issued KEY in the reference field of the transaction.\n" +
                     "・KEY：{0}\n・ADDRESS：{1}\n\n" +
