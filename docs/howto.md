@@ -14,9 +14,11 @@
 - コマンドの英数字はすべて半角で入力して下さい。 
 - コマンドの区切り文字は半角スペース1文字です。
 - 下記コマンド説明の [xxx|yyy]　のような記述は、その処理を行う為のコマンドが複数あることを示します。<br>
-  処理内容に違いはないので、好きな方を使用して下さい。
+  処理内容に大きな違いはないので、好きなものを使用して下さい。<br>
+  ※ **:e** が付いているコマンドは、リプライおよびDMの内容が英語になります。
+- **DMでのコマンドは受け付けていません。**
 
-### 入金： ```@tiplsk [deposit|入金]```
+### 入金： ```@tiplsk [deposit|deposit:e|入金]```
   ```
   例1： @tiplsk deposit
   例2： @tiplsk 入金
@@ -26,7 +28,7 @@
     <img src="https://lisknonanika.github.io/tiplisk/img/howto_deposit.png" width="20%" height="20%"/>
   - 入力間違い、入力忘れの際は [@tiplsk](https://twitter.com/tiplsk) または [中の人](https://twitter.com/ys_mdmg) にDM下さい。
 
-### 出金： ```@tiplsk [withdraw|出金|送金] Liskアドレス 枚数```
+### 出金： ```@tiplsk [withdraw|withdraw:e|出金|送金] Liskアドレス 枚数```
   ```
   例1： @tiplsk withdraw　12345678901234567890L 3
   例2： @tiplsk 出金 12345678901234567890L 0.1
@@ -38,7 +40,7 @@
   - 出金先誤りはどうしようも出来ないので十分ご注意下さい。
   - 0.0000001〜99999.99999999枚まで指定出来ます。
   
-### チップ： ```@tiplsk [tip|send|チップ] @相手 枚数```
+### チップ： ```@tiplsk [tip|tip:e|send|チップ] @相手 枚数```
   ```
   例1： @tiplsk tip @example001 0.01
   例2： @tiplsk チップ 1
@@ -48,15 +50,15 @@
   - 「@tiplsk チップ」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
   - 0.00001〜99999.99999枚まで指定出来ます。
 
-### 残高確認： ```@tiplsk [balance|残高|所持金]```
+### 残高確認： ```@tiplsk [balance|balance:e|残高|所持金]```
   ```
   例1： @tiplsk balance
   例2： @tiplsk 残高
   ```
-  - このコマンドを受け取ると残高をリプライします。
+  - このコマンドを受け取ると残高を**DMで**お知らせします。
   - 「@tiplsk 残高」 or 「@tiplsk 所持金」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
 
-### 履歴確認： ```@tiplsk [history|履歴]```
+### 履歴確認： ```@tiplsk [history|history:e|履歴]```
   ```
   例1： @tiplsk history
   例2： @tiplsk 履歴
