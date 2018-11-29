@@ -7,26 +7,28 @@ module.exports.update = function(target){
         MongoClient.connect(config.mongo.url, config.mongoClientParams, (error, client) => {
             const db = client.db(config.mongo.db);
             db.collection(config.mongo.collectionLimitCtrl, (error, collection) => {
-                collection.findOne({name: target}, (error, result) => {
-                    var data = {};
-                    if (!result || result.reset <= util.getDateTime()) {
-                        data = {$set: {name: target,
-                                       max: config.twitter[target].max,
-                                       remain: config.twitter[target].max,
-                                       reset: util.getDateTime(config.twitter[target].interval)}};
-                    } else {
-                        data= {$set: {remain: result.remain - 1}};
-                    }
-                    collection.updateOne({name: target}, data, {upsert: true}, (error, result) => {
+                collection.deleteMany({name: target, execDate:{$lte: util.getDateTime(config.twitter[target].interval * -1)}}, (error, result) => {
+                    if (error) {
                         client.close();
-                        if (!error) {
-                            resolve(data["$set"].remain);
-                        } else {
+                        console.log("[" + util.getDateTimeString() + "] update");
+                        console.log(target);
+                        console.log(error);
+                        reject(error);
+                        return;
+                    }
+                    collection.insertOne({name: target, execDate: util.getDateTime()}, (error, result) => {
+                        if (error) {
+                            client.close();
                             console.log("[" + util.getDateTimeString() + "] update");
                             console.log(target);
                             console.log(error);
                             reject(error);
+                            return;
                         }
+                        collection.find({name: target}).toArray((error, items) => {
+                            client.close();
+                            resolve(config.twitter[target].max - items.length);
+                        });
                     });
                 });
             });
