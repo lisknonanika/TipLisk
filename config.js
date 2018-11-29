@@ -37,13 +37,13 @@ define('blacklist', blacklist);
 
 var regexp = {
     "receivekey": new RegExp(/(^[0-9a-zA-Z]{12,12}$)|(^[0-9a-zA-Z]{24,24}$)/),
-    "tip": new RegExp(/(^|\s)@tiplsk\s(tip:e|tip|send|チップ)\s@[0-9a-zA-Z_]{5,15}\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
-    "tip_s": new RegExp(/(^|\s)@tiplsk\s(tip:e|tip|send|チップ)\s([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/),
-    "balance": new RegExp(/(^|\s)@tiplsk\s(balance:e|balance|残高|所持金)($|\s)/),
-    "deposit": new RegExp(/(^|\s)@tiplsk\s(deposit:e|deposit|入金)($|\s)/),
-    "withdraw": new RegExp(/(^|\s)@tiplsk\s(withdraw:e|withdraw|出金|送金)\s[0-9]{1,}L\s([1-9][0-9]{0,4}|0)(\.\d{1,8})?($|\s)/),
-    "followme": new RegExp(/(^|\s)@tiplsk\s(followme|フォローして)($|\s)/),
-    "history": new RegExp(/(^|\s)@tiplsk\s(history:e|history|履歴)($|\s)/)
+    "tip": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(tip:e|tip|send|チップ)\s+(@|＠)[0-9a-zA-Z_]{5,15}\s+([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/i),
+    "tip_s": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(tip:e|tip|send|チップ)\s+([1-9][0-9]{0,4}|0)(\.\d{1,5})?($|\s)/i),
+    "balance": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(balance:e|balance|残高|所持金)($|\s)/i),
+    "deposit": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(deposit:e|deposit|入金)($|\s)/i),
+    "withdraw": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(withdraw:e|withdraw|出金|送金)\s+[0-9]{1,}L\s+([1-9][0-9]{0,4}|0)(\.\d{1,8})?($|\s)/i),
+    "followme": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(followme|フォローして)($|\s)/i),
+    "history": new RegExp(/(^|\s+)(@|＠)tiplsk\s+(history:e|history|履歴)($|\s)/i)
 }
 define('regexp', regexp);
 
