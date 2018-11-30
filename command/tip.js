@@ -46,15 +46,15 @@ module.exports = function(tweetInfo, isReply) {
             .then(() => {return historyCollection.insert({twitterId: recipientId, amount: amount, type: 1, targetNm: screenName})})
             .then(() => {if(isJPY) return lisk2jpy(amount)})
             .then((jpy) => {
-                var params = [targetNm, `@${screenName}`, `${amount}LSK`];
-                if (isJPY) params = [targetNm, `@${screenName}`, `${amount}LSK（約${jpy}円）`];
+                var params = [targetNm, screenName, `${amount}LSK`];
+                if (isJPY) params = [targetNm, screenName, `${amount}LSK（約${jpy}円）`];
                 var text = "";
                 if((commands[1]).endsWith(":e")) {
                     text = util.getMessageEng(config.message.tipOk_e, params);
                 } else {
                     text = util.getMessage(config.message.tipOk, params);
                 }
-                return tweet(text, replyId, targetNm);
+                return tweet(text, replyId, screenName);
             })
             .then(() => {resolve()})
             .catch((err) => {
