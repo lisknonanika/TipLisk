@@ -16,20 +16,28 @@ module.exports.update = function(target){
                         reject(error);
                         return;
                     }
-                    collection.insertOne({name: target, execDate: util.getDateTime()}, (error, result) => {
-                        if (error) {
+
+                    var remain = 0;
+                    collection.find({name: target}).toArray((error, items) => {
+                        remain = config.twitter[target].max - items.length;
+                        if (remain <= 0) {
                             client.close();
-                            console.log("[" + util.getDateTimeString() + "] update");
-                            console.log(target);
-                            console.log(error);
-                            reject(error);
-                            return;
+                            resolve(remain);
+                        } else {
+                            collection.insertOne({name: target, execDate: util.getDateTime()}, (error, result) => {
+                                client.close();
+                                if (!error) {resolve(remain);} 
+                                else {
+                                    console.log("[" + util.getDateTimeString() + "] update");
+                                    console.log(target);
+                                    console.log(error);
+                                    reject(error);
+                                    return;
+                                }
+                            });
                         }
-                        collection.find({name: target}).toArray((error, items) => {
-                            client.close();
-                            resolve(config.twitter[target].max - items.length);
-                        });
                     });
+
                 });
             });
         });
