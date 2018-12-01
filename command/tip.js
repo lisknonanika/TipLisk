@@ -54,7 +54,7 @@ module.exports = function(tweetInfo, isReply) {
                 } else {
                     text = util.getMessage(config.message.tipOk, params);
                 }
-                return tweet(text, replyId, screenName);
+                return tweet(text, replyId, targetNm);
             })
             .then(() => {resolve()})
             .catch((err) => {
