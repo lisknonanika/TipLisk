@@ -54,7 +54,7 @@ module.exports = function(tweetInfo, isReply) {
                 } else {
                     text = util.getMessage(config.message.tipOk, params);
                 }
-                return tweet(text, replyId, targetNm);
+                return tweet(text, replyId, `@${screenName} @${targetNm}`);
             })
             .then(() => {resolve()})
             .catch((err) => {
@@ -75,7 +75,7 @@ var checkBalance = function(command, amount, balance, replyId, screenName){
             } else {
                 text = util.getMessage(config.message.tipError, []);
             }
-            tweet(text, replyId, screenName)
+            tweet(text, replyId, `@${screenName}`)
             .then(() => {reject("tip: not have enough Lisk")})
             .catch((err) => {
                 console.log("[" + util.getDateTimeString() + "] checkBalance");

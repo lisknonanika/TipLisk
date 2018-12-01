@@ -53,7 +53,7 @@ var checkBalance = function(command, amount, replyId, balance, screenName){
             } else {
                 text = util.getMessage(config.message.withdrawError, []);
             }
-            tweet(text, replyId, screenName)
+            tweet(text, replyId, `@${screenName}`)
             .then(() => {reject("withdraw: not have enough Lisk")})
             .catch((err) => {
                 console.log("[" + util.getDateTimeString() + "] checkBalance");
