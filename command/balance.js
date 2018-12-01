@@ -8,7 +8,7 @@ module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
         var twitterId = tweetInfo.user.id_str;
         var amount = "0";
-        var commands = tweetInfo.text.match(config.regexp.balance)[0].trim().split(/\s/);
+        var commands = tweetInfo.text.match(config.regexp.balance)[0].trim().split(/\s+/);
         var isJPY = (commands[1] === "残高" || commands[1] === "所持金");
         userCollection.find({twitterId: twitterId})
         .then((result) => {

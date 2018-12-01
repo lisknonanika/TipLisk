@@ -8,7 +8,7 @@ const util = require('../util');
 
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
-        var commands = tweetInfo.text.match(config.regexp.withdraw)[0].trim().split(/\s/);
+        var commands = tweetInfo.text.match(config.regexp.withdraw)[0].trim().split(/\s+/);
         var twitterId = tweetInfo.user.id_str;
         var amount = commands[3];
         var recipientId = commands[2];

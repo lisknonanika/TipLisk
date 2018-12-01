@@ -6,7 +6,7 @@ const dm = require('../twitter/dm');
 module.exports = function(tweetInfo){
     return new Promise(function(resolve, reject){
         var twitterId = tweetInfo.user.id_str;
-        var commands = tweetInfo.text.match(config.regexp.deposit)[0].trim().split(/\s/);
+        var commands = tweetInfo.text.match(config.regexp.deposit)[0].trim().split(/\s+/);
         userCollection.find({twitterId: twitterId})
         .then((result) => {
             if (!result) {

@@ -15,14 +15,14 @@ module.exports = function(tweetInfo, isReply) {
         var amount = "0";
         var isJPY = false;
         if (isReply) {
-            var commands = tweetInfo.text.match(config.regexp.tip_s)[0].trim().split(/\s/);
+            var commands = tweetInfo.text.match(config.regexp.tip_s)[0].trim().split(/\s+/);
             recipientId = tweetInfo.in_reply_to_user_id_str;
             targetNm = tweetInfo.in_reply_to_screen_name;
             amount = commands[2];
             isJPY = (commands[1] === "チップ");
 
         } else {
-            var commands = tweetInfo.text.match(config.regexp.tip)[0].trim().split(/\s/);
+            var commands = tweetInfo.text.match(config.regexp.tip)[0].trim().split(/\s+/);
             for (i = 0; i < tweetInfo.entities.user_mentions.length; i++) {
                 if (tweetInfo.entities.user_mentions[i].screen_name.toUpperCase() === commands[2].substring(1).toUpperCase()) {
                     recipientId = tweetInfo.entities.user_mentions[i].id_str;
@@ -33,8 +33,8 @@ module.exports = function(tweetInfo, isReply) {
             amount = commands[3];
             isJPY = (commands[1] === "チップ");
         }
-        if (!recipientId) {
-            console.log("[" + util.getDateTimeString() + "] recipientId not found");
+        if (!recipientId || config.blacklist.indexOf(recipientId) >= 0) {
+            console.log("[" + util.getDateTimeString() + "] recipientId not found or black!");
             resolve();
 
         } else {
