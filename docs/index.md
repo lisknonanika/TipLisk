@@ -3,7 +3,10 @@
 ## TipLiskとは
 Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするためのBOTプログラムです。
 - Twitter：[@tiplsk](https://twitter.com/tiplsk)
-- 使い方：[こちら](https://lisknonanika.github.io/tiplisk/howto.html)
+- 使い方：
+  - [github pages](https://lisknonanika.github.io/tiplisk/howto.html)
+  - [google slides(JP)](https://docs.google.com/presentation/d/e/2PACX-1vSDKpamTEG4j8qkz90wyNDzJWGgAKEFuAxp_2M-Akcwmsm054Dr4NErfFE3chn2ZKERuzqBWpBLlRsB/pub?start=false&loop=false&delayms=3000)
+  - [google slides(EN)](https://docs.google.com/presentation/d/e/2PACX-1vTaJ3FTqwG6FlqHejAanStBpn5K3kZBpQu7gIqX25RLoG7nel3FxeiZWsy8u3wb-WEu6fcDuBj9ci4H/pub?start=false&loop=false&delayms=3000)
 - Liskアドレス：[10242065482765502110L ](https://explorer.lisk.io/address/10242065482765502110L)
 
 仮想通貨をやり取りするプログラムは他に以下のようなものがあります。
