@@ -1,4 +1,5 @@
-const lisk = require('lisk-elements').default;
+const lisk = require('@liskhq/lisk-api-client');
+const liskTransaction = require('@liskhq/lisk-transactions');
 const twitter = require('twitter-lite');
 const config = require('config');
 
@@ -16,9 +17,10 @@ define('lisk', config.lisk);
 define('twitter', config.twitter);
 define('mongo', config.mongo);
 
-var liskClient = config.mode === 'test'? lisk.APIClient.createTestnetAPIClient():
-                                         lisk.APIClient.createMainnetAPIClient();
+var liskClient = lisk.APIClient.createTestnetAPIClient();
+//var liskClient = lisk.APIClient.createMainnetAPIClient();
 define('LiskClient', liskClient);
+define('LiskTransaction', liskTransaction);
 
 var twitterClient = new twitter({
     consumer_key: config.twitter.apiKey,

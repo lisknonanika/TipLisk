@@ -1,4 +1,3 @@
-const lisk = require('lisk-elements').default;
 const userCollection = require('../mongo/user');
 const historyCollection = require('../mongo/history');
 const tweet = require('../twitter/tweet');
@@ -77,7 +76,7 @@ var withdraw = function(amount, recipientId){
         }
         if (config.lisk.secondPassphrase.length > 0) params['secondPassphrase'] = config.lisk.secondPassphrase;
     
-        var trxstr = lisk.transaction.transfer(params);
+        var trxstr = config.LiskTransaction.transfer(params);
         config.LiskClient.transactions.broadcast(trxstr)
         .then(res => {
             resolve(trxstr.id);

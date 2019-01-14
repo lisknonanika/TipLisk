@@ -21,7 +21,7 @@
     "babel-runtime": "^6.26.0",
     "dateformat": "^3.0.3",
     "decimal": "0.0.2",
-    "lisk-elements": "^1.1.3",
+    "lisk-elements": "^2.0.0",
     "mongodb": "^3.1.8",
     "node-cron": "^2.0.3",
     "request": "^2.88.0",
