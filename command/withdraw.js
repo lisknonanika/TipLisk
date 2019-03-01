@@ -20,9 +20,10 @@ module.exports = function(tweetInfo){
         .then(() => {return withdraw(amount, recipientId)})
         .then((result) => {
             trxId = result;
-            return userCollection.update({twitterId: twitterId, amount: util.calc(amount, -1, "mul")});
+            return userCollection.update({twitterId: twitterId, amount: util.calc(util.calc(amount, 0.1, "add"), -1, "mul")});
         })
         .then(() => {return historyCollection.insert({twitterId: twitterId, amount: amount, type: 0, targetNm: recipientId})})
+        .then(() => {return historyCollection.insert({twitterId: twitterId, amount: 0.1, type: 2, targetNm: recipientId})})
         .then(() => {
             var params = [amount, recipientId, trxId];
             var text = "";

@@ -18,7 +18,14 @@ module.exports = function(tweetInfo){
                 for(i=0; i<result.length;i++) {
                     var ymd = dateformat(result[i].execDate, 'yyyy/mm/dd HH:MM:ss');
                     if (commands[1].endsWith(":e")) ymd = ymd + "（UTC+0900）";
-                    var io = result[i].type === 0? "To": "From";
+                    var io = "Unknown";
+                    if (result[i].type === 0) {
+                        io = "To";
+                    } else if (result[i].type === 1) {
+                        io = "From";
+                    } else if (result[i].type === 2) {
+                        io = "Fee";
+                    }
                     var amount = result[i].amount + "LSK";
                     var target = result[i].targetNm; 
                     text = text + `[${ymd}]\n${amount} ${io} ${target}\n\n`;
