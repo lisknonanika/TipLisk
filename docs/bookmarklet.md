@@ -78,3 +78,5 @@ javascript:
   document.querySelector('#TIPLSK_TEXT').addEventListener('click',fncTIPLSK_COMMAND_COPY);
 }())
 ```
+
+[戻る](https://lisknonanika.github.io/tiplisk/)
