@@ -8,10 +8,14 @@ Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするため�
   - [google slides(JP)](https://docs.google.com/presentation/d/e/2PACX-1vSDKpamTEG4j8qkz90wyNDzJWGgAKEFuAxp_2M-Akcwmsm054Dr4NErfFE3chn2ZKERuzqBWpBLlRsB/pub?start=false&loop=false&delayms=3000)
   - [google slides(EN)](https://docs.google.com/presentation/d/e/2PACX-1vTaJ3FTqwG6FlqHejAanStBpn5K3kZBpQu7gIqX25RLoG7nel3FxeiZWsy8u3wb-WEu6fcDuBj9ci4H/pub?start=false&loop=false&delayms=3000)
 - Liskアドレス：[10242065482765502110L ](https://explorer.lisk.io/address/10242065482765502110L)
+- 便利ツール：
+  - [ブックマークレット](https://lisknonanika.github.io/tiplisk/bookmarklet.html)
 
 仮想通貨をやり取りするプログラムは他に以下のようなものがあります。
 - [@tipnem](https://twitter.com/tipnem)：XEMおよびモザイクのやり取り
 - [@tipmona](https://twitter.com/tipmona)：MONAコインのやり取り
+- [@monatiproid](https://twitter.com/monatiproid)：MONAコインのやり取り
+- [@btctiproid](https://twitter.com/btctiproid)：Bitcoinのやり取り
 - [@zenyhime](https://twitter.com/zenyhime)：BitZenyのやり取り
 - [@tipxrp](https://twitter.com/tipxrp)：XRPのやり取り
 
