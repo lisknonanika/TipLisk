@@ -55,7 +55,13 @@ var filter = {
            "@tiplsk deposit,@tiplsk 入金," +
            "@tiplsk withdraw,@tiplsk 出金,@tiplsk 送金," +
            "@tiplsk followme,@tiplsk フォローして," +
-           "@tiplsk history,@tiplsk 履歴"
+           "@tiplsk history,@tiplsk 履歴," +
+           "＠tiplsk tip,＠tiplsk send,＠tiplsk チップ," +
+           "＠tiplsk balance,＠tiplsk 残高,＠tiplsk 所持金," +
+           "＠tiplsk deposit,＠tiplsk 入金," +
+           "＠tiplsk withdraw,＠tiplsk 出金,＠tiplsk 送金," +
+           "＠tiplsk followme,＠tiplsk フォローして," +
+           "＠tiplsk history,＠tiplsk 履歴"
 }
 define('filter', filter);
 
@@ -157,11 +163,9 @@ var message = {
                "\n\nチップコマンドで「チップ」を使うと、円換算されるって知ってました？",
                "\n\n所持金確認コマンドで「残高」を使うと、円換算されるって知ってました？",
                "\n\n所持金確認コマンドで「所持金」を使うと、円換算されるって知ってました？",
-               "\n\Liskって？：https://lisk.io/",
                "\n\ntiplskって？：https://lisknonanika.github.io/tiplisk/",
                "\n\ntiplskの使い方：https://lisknonanika.github.io/tiplisk/howto.html"],
     "random_e": ["\n",
-                 "\n\nwhat is Lisk？：https://lisk.io/",
                  "\n\nwhat is tiplsk？：https://lisknonanika.github.io/tiplisk/",
                  "\n\nhow to tiplsk：https://lisknonanika.github.io/tiplisk/howto.html"]
 }
