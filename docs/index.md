@@ -12,12 +12,15 @@ Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするため�
   - [ブックマークレット](https://lisknonanika.github.io/tiplisk/bookmarklet.html)
 
 仮想通貨をやり取りするプログラムは他に以下のようなものがあります。
-- [@tipnem](https://twitter.com/tipnem)：XEMおよびモザイクのやり取り
-- [@tipmona](https://twitter.com/tipmona)：MONAコインのやり取り
-- [@monatiproid](https://twitter.com/monatiproid)：MONAコインのやり取り
-- [@btctiproid](https://twitter.com/btctiproid)：Bitcoinのやり取り
-- [@zenyhime](https://twitter.com/zenyhime)：BitZenyのやり取り
-- [@tipxrp](https://twitter.com/tipxrp)：XRPのやり取り
+- [ねむりんちゃん](https://twitter.com/tipnem)：XEMおよびモザイクのやり取り
+- [モナコインちゃんbot](https://twitter.com/tipmona)：MONAコインのやり取り　※2019/09/10停止予定
+- [ももなちゃん](https://twitter.com/monatipbot)：MONAコインのやり取り
+- [MONA Tiproidちゃん](https://twitter.com/monatiproid)：MONAコインのやり取り
+- [BTC Tiproidちゃん](https://twitter.com/btctiproid)：Bitcoinのやり取り
+- [りん姫ちゃん](https://twitter.com/zenytips)：BitZenyのやり取り
+- [ことねちゃん](https://twitter.com/tipkotone)：KOTOのやり取り
+- [Tippleさん](https://twitter.com/tipxrp)：XRPのやり取り
+- [オダイロイド１号ちゃん](https://twitter.com/odairoid_001)：各チップBOTちゃんを介して色んな仮想通貨を賞金に
 
 ## 入出金とチップについて
 - Liskの仕様上、tiplskへの入金および、tiplskからの出金には0.1LSKの手数料が発生します。
