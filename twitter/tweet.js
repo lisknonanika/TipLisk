@@ -22,7 +22,7 @@ var tweet = function(text, replyId, replyuser, remain){
             var param ={}
             param['status'] = !replyuser? text: `${replyuser} ${text}`;
             param['in_reply_to_status_id'] = !replyId? null: replyId;
-            config.TwitterClient.post('statuses/update', null, param)
+            config.TwitterClient.post('statuses/update', param)
             .then((result) => {
                 resolve();
             })

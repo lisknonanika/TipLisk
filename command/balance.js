@@ -17,7 +17,7 @@ module.exports = function(tweetInfo){
         })
         .then((jpy) => {
             var params = [`${amount}LSK`];
-            if (isJPY) params = [`${amount}LSK（約${jpy}円）`];
+            if (isJPY) params = [`${amount}LSK(約${jpy}円)`];
             var text = "";
             if(commands[1].endsWith(":e")) {
                 text = util.getMessageEng(config.message.balanceDM_e, params);

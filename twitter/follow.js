@@ -19,7 +19,7 @@ module.exports = function(twitterId){
 var follow = function(twitterId, remain){
     return new Promise(function(resolve, reject){
         if(remain > 0) {
-            config.TwitterClient.post('friendships/create', null, {user_id: twitterId, follow: false})
+            config.TwitterClient.post('friendships/create', {user_id: twitterId, follow: false})
             .then((result) => {
                 resolve();
             })

@@ -17,8 +17,8 @@ define('lisk', config.lisk);
 define('twitter', config.twitter);
 define('mongo', config.mongo);
 
-var liskClient = lisk.APIClient.createTestnetAPIClient();
-//var liskClient = lisk.APIClient.createMainnetAPIClient();
+//var liskClient = lisk.APIClient.createTestnetAPIClient();
+var liskClient = lisk.APIClient.createMainnetAPIClient();
 define('LiskClient', liskClient);
 define('LiskTransaction', liskTransaction);
 
@@ -71,8 +71,8 @@ var message = {
     "tipOk": ["{0} さんへ\n\n{1} さんから {2} チップが届きました！",
               "{0} さんへ\n\n{1} さんから {2} だーよー！",
               "{0} さんへ\n\n{1} さんから {2} 届いていますよ？",
-              "{0} さんへ\n\n{1} さんからチップだよ！\n（ ・ω・）つ【{2}】",
-              "{0} さんへ\n\n{1} さんからです！\n（ ・ω・）つ【{2}】",
+              "{0} さんへ\n\n{1} さんからチップだよ！\n( ・ω・)つ【{2}】",
+              "{0} さんへ\n\n{1} さんからです！\n( ・ω・)つ【{2}】",
               "{0} さんへ\n\n{1} さんが {2} チップをくれたみたい。",
               "{0} さんへ\n\n{1} さんが {2} チップをくれたよ！",
               "{0} さんへ\n\n{1} さんが {2} くれましたよ！",
@@ -87,8 +87,8 @@ var message = {
               "{0} さんへ\n\nやったやん！\n{1} さんから {2} 届いたで！",
               "{0} さんへ\n\nやったね！\n{1} さんから {2} 届いたよ！",
               "{0} さんへ\n\nやったね！\n{1} さんが {2} くれるんだって！",
-              "{0} さんへ\n\nどうぞ！\n（ ・ω・）つ【{2}】\n{1} さんからです。",
-              "{0} さんへ\n\nどうぞ！\n{1} さんからだよ！\n（ ・ω・）つ【{2}】",
+              "{0} さんへ\n\nどうぞ！\n( ・ω・)つ【{2}】\n{1} さんからです。",
+              "{0} さんへ\n\nどうぞ！\n{1} さんからだよ！\n( ・ω・)つ【{2}】",
               "{0} さんへ\n\nおぉ！？\n{1} さんが {2} くれたよ！",
               "{0} さんへ\n\nおぉ！？\n{1} さんから {2} 届いたよ！"
             ],
@@ -127,34 +127,34 @@ var message = {
                   "Received {1}LSK.\n" +
                   "Please confirm the approval status with Lisk Explorer etc.\n" +
                   liskExplorer + "{2}"],
-    "tipOk_e": ["Hi {0}！\n\n{1} sent you {2}！",
-                "Hi {0}！\n\n{1} sent you {2}！\nIs today your anniversary？",
-                "Hi {0}！\n\n{1} sent you {2}！\ngood for you！",
-                "Hi {0}！\n\nYou got {2}！\nfrom {1}.",
-                "Hi {0}！\n\nWow！\nYou got {2} from {1}.",
-                "Hello {0}！\n\n{1} sent you {2}！",
-                "Hello {0}！\n\n{1} sent you {2}！\nIs today your anniversary？",
-                "Hello {0}！\n\n{1} sent you {2}！\ngood for you！",
-                "Hello {0}！\n\nYou got {2}！\nfrom {1}."],
+    "tipOk_e": ["Hi {0}!\n\n{1} sent you {2}!",
+                "Hi {0}!\n\n{1} sent you {2}!\nIs today your anniversary?",
+                "Hi {0}!\n\n{1} sent you {2}!\ngood for you!",
+                "Hi {0}!\n\nYou got {2}!\nfrom {1}.",
+                "Hi {0}!\n\nWow!\nYou got {2} from {1}.",
+                "Hello {0}!\n\n{1} sent you {2}!",
+                "Hello {0}!\n\n{1} sent you {2}!\nIs today your anniversary?",
+                "Hello {0}!\n\n{1} sent you {2}!\ngood for you!",
+                "Hello {0}!\n\nYou got {2}!\nfrom {1}."],
     "tipError_e": ["You do not have enough LSK..",
-                   "Oops！Can not send LSK.\nBecause You do not have enough LSK..",
-                   "Oops！\nYou do not have enough LSK..",
+                   "Oops!Can not send LSK.\nBecause You do not have enough LSK..",
+                   "Oops!\nYou do not have enough LSK..",
                    "Sorry.\nCan not send LSK.\nBecause You do not have enough LSK..",
                    "Sorry.\nYou do not have enough LSK..",
                    "You do not seem to have enough LSK to send it..",
-                   "Could not do it！\nPlease check your balance.",
-                   "Did you enter a wrong value？\nIt seems to be more than your LSK."],
+                   "Could not do it!\nPlease check your balance.",
+                   "Did you enter a wrong value?\nIt seems to be more than your LSK."],
     "withdrawDM_e": ["Sent {0}LSK to {1}.\n" +
                      "Please confirm the approval status with Lisk Explorer etc.\n" +
                      liskExplorer + "{2}"],
     "withdrawError_e": ["You do not have enough LSK..",
-                        "Oops！Can not send LSK.\nBecause You do not have enough LSK..",
-                        "Oops！\nYou do not have enough LSK..",
+                        "Oops!Can not send LSK.\nBecause You do not have enough LSK..",
+                        "Oops!\nYou do not have enough LSK..",
                         "Sorry.\nCan not send LSK.\nBecause You do not have enough LSK..",
                         "Sorry.\nYou do not have enough LSK..",
                         "You do not seem to have enough LSK to send it..",
-                        "Could not do it！\nPlease check your balance.",
-                        "Did you enter a wrong value？\nIt seems to be more than your LSK."],
+                        "Could not do it!\nPlease check your balance.",
+                        "Did you enter a wrong value?\nIt seems to be more than your LSK."],
     "balanceDM_e": ["You have {0}!\nIf you transfer LSK to your Lisk address, a fee will be charged."],
     "depositDM_e": ["When depositing LSK, please enter the issued KEY in the reference field of the transaction.\n" +
                     "・KEY：{0}\n・ADDRESS：{1}\n\n" +
@@ -166,7 +166,7 @@ var message = {
                "\n\ntiplskって？：https://lisknonanika.github.io/tiplisk/",
                "\n\ntiplskの使い方：https://lisknonanika.github.io/tiplisk/howto.html"],
     "random_e": ["\n",
-                 "\n\nwhat is tiplsk？：https://lisknonanika.github.io/tiplisk/",
+                 "\n\nwhat is tiplsk?：https://lisknonanika.github.io/tiplisk/",
                  "\n\nhow to tiplsk：https://lisknonanika.github.io/tiplisk/howto.html"]
 }
 define('message', message);
