@@ -23,7 +23,7 @@ Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするため�
 - [オダイロイド１号ちゃん](https://twitter.com/odairoid_001)：各チップBOTちゃんを介して色んな仮想通貨を賞金に
 
 ## 入出金とチップについて
-- Liskの仕様上、tiplskへの入金および、tiplskからの出金には0.1LSKの手数料が発生します。
+- Liskの仕様上、@tiplskへの入金および、@tiplskからの出金には0.1LSKの手数料が発生します。
 - Tipのやり取りはチェーン外で行われるため、[Lisk Blockchain Explorer](https://explorer.lisk.io/)には表示されません。
 ![tipimg](https://lisknonanika.github.io/tiplisk/img/tipimg.png)
 
