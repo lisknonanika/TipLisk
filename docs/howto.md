@@ -5,7 +5,7 @@
 2. DMをすべての人から受信する設定ではない人はフォロー or 設定変更してください。
    - 確認方法
      - 設定 > プライバシーとセキュリティの「ダイレクトメッセージ」セクション
-       ![dmsetting](https://lisknonanika.github.io/tiplisk/img/dmsetting.png)
+       ![dmsetting](https://lisknonanika.github.io/tiplsk-doc/img/dmsetting.png)
 3. 鍵垢の人は必ずフォローしてください。フォローリクエストを出します。
 4. 鍵垢の人のコマンドは2,3分程度受付に時間がかかります。
 5. Twitterの制限回避のため、突然つぶやかなくなることがあります。
@@ -25,7 +25,7 @@
   ```
   - このコマンドを受け取ると**DMで**入金先のLiskアドレスと入金キーを送ります。<br>(入金先、入金キーは以降変わりません。)
   - 入金キーは Lisk Hub などから入金時にメッセージ欄に入力して下さい。<br>
-    <img src="https://lisknonanika.github.io/tiplisk/img/howto_deposit.png" width="20%" height="20%"/>
+    <img src="https://lisknonanika.github.io/tiplsk-doc/img/howto_deposit.png" width="20%" height="20%"/>
   - 入力間違い、入力忘れの際は [@tiplsk](https://twitter.com/tiplsk) または [中の人](https://twitter.com/ys_mdmg) にDM下さい。
 
 ### 出金： ```@tiplsk [withdraw|withdraw:e|出金|送金] Liskアドレス 枚数```
@@ -88,4 +88,4 @@
   - このコマンドを受け取るとTipLiskのWEBサイトへアクセスする為のパスワードをリセットし**DMで**お知らせします。
   - どうしてもわからなくなった場合にだけ実行してください。
 
-[戻る](https://lisknonanika.github.io/tiplisk/)
+[戻る](https://lisknonanika.github.io/tiplsk-doc/)
