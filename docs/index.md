@@ -1,5 +1,12 @@
 # TipLisk
 
+## サービス停止に伴う重要なおしらせ
+・2019/12/31 入金停止＆Tip機能の停止
+・2020/03/31 出金停止
+・2020/01/01～2020/03/31 個別出金対応
+※保有額が0.1LSK以下の場合はLiskの仕様により出金出来ません。
+　どうしてもという場合は、個別出金対応期間時にDMにてご連絡下さい。
+
 ## TipLiskとは
 Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするためのBOTプログラムです。
 - Twitter：[@tiplsk](https://twitter.com/tiplsk)
@@ -12,14 +19,14 @@ Twitter上で 仮想通貨 [LSK](https://lisk.io/) をやり取りするため�
   - [ブックマークレット](https://lisknonanika.github.io/tiplsk-doc/bookmarklet.html)
 
 仮想通貨をやり取りするプログラムは他に以下のようなものがあります。
-- [ねむりんちゃん](https://twitter.com/tipnem)：XEMおよびモザイクのやり取り
-- [モナコインちゃんbot](https://twitter.com/tipmona)：MONAコインのやり取り　※2019/09/10停止予定
-- [ももなちゃん](https://twitter.com/monatipbot)：MONAコインのやり取り
+- [ねむりんちゃん](https://twitter.com/tipnem)：XEMおよびモザイクのやり取り　※2019/11/01停止
+- [モナコインちゃんbot](https://twitter.com/tipmona)：MONAコインのやり取り　※2019/09/10停止
+- [ももなちゃん](https://twitter.com/monatipbot)：MONAコインのやり取り　※2019/11/01停止
+- [りん姫ちゃん](https://twitter.com/zenytips)：BitZenyのやり取り　※2020/03/31停止(出金以外は2019/12/31停止)
+- [ことねちゃん](https://twitter.com/tipkotone)：KOTOのやり取り
+- [Tippleさん](https://twitter.com/tipxrp)：XRPのやり取り　※今期停止
 - [MONA Tiproidちゃん](https://twitter.com/monatiproid)：MONAコインのやり取り
 - [BTC Tiproidちゃん](https://twitter.com/btctiproid)：Bitcoinのやり取り
-- [りん姫ちゃん](https://twitter.com/zenytips)：BitZenyのやり取り
-- [ことねちゃん](https://twitter.com/tipkotone)：KOTOのやり取り
-- [Tippleさん](https://twitter.com/tipxrp)：XRPのやり取り
 - [オダイロイド１号ちゃん](https://twitter.com/odairoid_001)：各チップBOTちゃんを介して色んな仮想通貨を賞金に
 
 ## 入出金とチップについて
