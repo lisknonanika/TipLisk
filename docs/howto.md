@@ -18,7 +18,7 @@
   ※ **:e** が付いているコマンドは、リプライおよびDMの内容が英語になります。
 - **DMでのコマンドは受け付けていません。**
 
-### 入金： ```@tiplsk [deposit|deposit:e|入金]```
+~~**入金： ```@tiplsk [deposit|deposit:e|入金]```**~~
   ```
   例1： @tiplsk deposit
   例2： @tiplsk 入金
@@ -27,6 +27,7 @@
   - 入金キーは Lisk Hub などから入金時にメッセージ欄に入力して下さい。<br>
     <img src="https://lisknonanika.github.io/tiplsk-doc/img/howto_deposit.png" width="20%" height="20%"/>
   - 入力間違い、入力忘れの際は [@tiplsk](https://twitter.com/tiplsk) または [中の人](https://twitter.com/ys_mdmg) にDM下さい。
+  - **2020/01/01 00:00:00 をもって停止しました。**
 
 ### 出金： ```@tiplsk [withdraw|withdraw:e|出金|送金] Liskアドレス 枚数```
   ```
@@ -40,7 +41,7 @@
   - 出金先誤りはどうしようも出来ないので十分ご注意下さい。
   - 0.00000001〜99999.99999999枚まで指定出来ます。
   
-### チップ： ```@tiplsk [tip|tip:e|send|チップ] @相手 枚数```
+~~**チップ： ```@tiplsk [tip|tip:e|send|チップ] @相手 枚数```**~~
   ```
   例1： @tiplsk tip @example001 0.01
   例2： @tiplsk チップ 1
@@ -49,6 +50,7 @@
   - リプライ時は相手の入力を省略できます。(リプライ先のツイート主に渡します)
   - 「@tiplsk チップ」を使用した場合、[Coincheckの時点のレート](https://coincheck.com/api/rate/lsk_jpy)で円換算した金額を併記します。
   - 0.00001〜99999.99999枚まで指定出来ます。
+  - **2020/01/01 00:00:00 をもって停止しました。**
 
 ### 残高確認： ```@tiplsk [balance|balance:e|残高|所持金]```
   ```
